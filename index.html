@@ -256,7 +256,7 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
 </head>
 <body data-sheet="">
 <header>
-  <span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a45"/><stop offset="1" stop-color="#ff4a2e"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lg)"/><path d="M18 15V34a14 14 0 0 0 28 0V15M32 33V47" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><path class="drop" d="M32 7C32 7 25.5 14.5 25.5 19a6.5 6.5 0 0 0 13 0C38.5 14.5 32 7 32 7Z" fill="#1c1f3b"/></svg>UI<b>Drop</b></span><span class="tag">Make your first UI in just a minute</span>
+  <span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a45"/><stop offset="1" stop-color="#ff4a2e"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lg)"/><path d="M18 15V34a14 14 0 0 0 28 0V15M32 33V47" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><path class="drop" d="M32 7C32 7 25.5 14.5 25.5 19a6.5 6.5 0 0 0 13 0C38.5 14.5 32 7 32 7Z" fill="#1c1f3b"/></svg>UI<b>VisualBuilder</b></span><span class="tag">Make your first UI in just a minute</span>
   <span class="sp"></span>
   <div id="tools" hidden>
     <input id="pname" type="text" aria-label="Project name">
@@ -807,7 +807,7 @@ $('#dl').onclick=()=>{
  if(mode=='image')saveFile(slug()+'.png',new Blob([b64(png())],{type:'image/png'}));
  else if(mode=='code')saveFile(slug()+'.html',parts().full);else saveFile(slug()+'.json',design())};
 
-$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.app!='dropform')throw 0;newProj(d.name||'Imported design',DEV[d.device]?d.device:'pc',d,{w:d.w,h:d.h,rot:d.rot});toast('Design opened')}catch(_){toast('That file is not a Dropform design')}};r.readAsText(f)};
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.app!='dropform')throw 0;newProj(d.name||'Imported design',DEV[d.device]?d.device:'pc',d,{w:d.w,h:d.h,rot:d.rot});toast('Design opened')}catch(_){toast('That file is not a UIVisualBuilder design')}};r.readAsText(f)};
 // image upload
 let replaceId=null;
 function readImg(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*k));c.height=Math.max(1,Math.round(im.height*k));c.getContext('2d').drawImage(im,0,0,c.width,c.height);const keep=/png|gif|webp|svg/.test(file.type);cb(c.toDataURL(keep?'image/png':'image/jpeg',.85),c.width,c.height)};im.onerror=()=>toast('That file is not an image I can open');im.src=r.result};r.readAsDataURL(file)}
@@ -981,7 +981,7 @@ function wBg(){const c=['#ff7a45','#3b3fd8','#2ec4b6','#ffd23f','#f3a6ff'];$('#w
 function wAsk(){clearTimeout(wTimer);wl.classList.add('ask');setTimeout(()=>{wn.focus();wn.select()},120)}
 function welcome(first){wFirst=first;clearTimeout(wTimer);wl.classList.remove('out','ask','done');wl.hidden=false;wBg();wn.value=uname;$('#wgo').disabled=!wn.value.trim();
  ['header','#homev','#editor'].forEach(q=>{const n=$(q);if(n)n.inert=true});
- wTitle(first?[['Welcome to ',''],['UI',''],['Drop','dr']]:[['Change your name','']],!first);
+ wTitle(first?[['Welcome to ',''],['UIVisualBuilder','dr']]:[['Change your name','']],!first);
  $('#wsub').hidden=!first;
  if(first)wTimer=setTimeout(wAsk,3300);else wAsk()}
 function wClose(){wl.classList.add('out');['header','#homev','#editor'].forEach(q=>{const n=$(q);if(n)n.inert=false});setTimeout(()=>{wl.hidden=true},550);greet()}
