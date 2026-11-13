@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' aria-hidden='true'%3E%3Cdefs%3E%3ClinearGradient id='lg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff7a45'/%3E%3Cstop offset='1' stop-color='%23ff4a2e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23lg)'/%3E%3Cpath d='M18 15V34a14 14 0 0 0 28 0V15M32 33V47' fill='none' stroke='%23fff' stroke-width='5.5' stroke-linecap='round'/%3E%3Cpath class='drop' d='M32 7C32 7 25.5 14.5 25.5 19a6.5 6.5 0 0 0 13 0C38.5 14.5 32 7 32 7Z' fill='%231c1f3b'/%3E%3C/svg%3E">
-<title>UIDrop – Make your first UI in just a minute</title>
+<title>UIVisualBuilder – Make your first UI in just a minute</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
 <style>
 :root{--bg:#e6e9f5;--panel:#f6f7fc;--ink:#1c1f3b;--mute:#6a6f94;--line:#d0d4ea;--acc:#ff5a36;--blue:#3b3fd8;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -274,7 +274,7 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
 </header>
 <section id="homev">
   <div class="hero">
-    <div><p class="greet" id="greet" hidden></p><h1>Your projects</h1><p>Make your first UI in just a minute. Drag shapes and colors, and UIDrop writes the code.</p></div>
+    <div><p class="greet" id="greet" hidden></p><h1>Your projects</h1><p>Make your first UI in just a minute. Drag shapes and colors, and UIVisualBuilder writes the code.</p></div>
     <div class="acts"><label class="btn" style="margin:0;color:var(--ink);font-size:15px">Open design file<input id="file" type="file" accept=".json" hidden></label><button class="btn pri" id="newh">Make a website</button></div>
   </div>
   <p id="none" class="hint">No projects yet. Make your first website.</p>
@@ -363,7 +363,7 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
   <div class="wbg" id="wbg" aria-hidden="true"></div>
   <div class="wcard">
     <div class="wlogo" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><linearGradient id="lgw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a45"/><stop offset="1" stop-color="#ff4a2e"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lgw)"/><path d="M18 15V34a14 14 0 0 0 28 0V15M32 33V47" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><circle class="wring" cx="32" cy="26" r="7"/><path class="wdrop" d="M32 7C32 7 25.5 14.5 25.5 19a6.5 6.5 0 0 0 13 0C38.5 14.5 32 7 32 7Z" fill="#1c1f3b"/></svg></div>
-    <h2 id="wt" aria-label="Welcome to UIDrop"></h2>
+    <h2 id="wt" aria-label="Welcome to UIVisualBuilder"></h2>
     <p id="wsub">Make your first UI in just a minute</p>
     <form class="wform" id="wform" autocomplete="off">
       <label for="wname">What should we call you?</label>
@@ -416,7 +416,7 @@ const DEF={
  menubar:{pre:1,w:720,h:60,fill:'#1c1f3b',radius:6,ic:'\u2261',label:'Menu bar'},
  sidebarmenu:{pre:1,w:240,h:60,fill:'#1c1f3b',radius:6,ic:'\u2630',label:'Sidebar menu'},
  dropmenu:{pre:1,w:150,h:46,fill:'#3b3fd8',radius:10,ic:'\u25be',label:'Dropdown menu'},
- footer:{w:720,h:80,fill:'#e6e9f5',radius:0,text:'Made with UIDrop',color:'#1c1f3b',fs:14,fw:400,full:'bottom',tag:'footer',label:'Footer'}};
+ footer:{w:720,h:80,fill:'#e6e9f5',radius:0,text:'Made with UIVisualBuilder',color:'#1c1f3b',fs:14,fw:400,full:'bottom',tag:'footer',label:'Footer'}};
 const SW=['#ff5a36','#3b3fd8','#1c1f3b','#ffffff','#ffd23f','#2ec4b6','#f3a6ff','#e6e9f5','linear-gradient(135deg,#ffb199,#ff0844)','linear-gradient(135deg,#3b3fd8,#2ec4b6)','linear-gradient(135deg,#ffd23f,#ff5a36)','linear-gradient(135deg,#1c1f3b,#3b3fd8)'];
 const ANIM={float:['3s ease-in-out','50%{transform:translateY(-14px)}'],pulse:['1.6s ease-in-out','50%{transform:scale(1.08)}'],bounce:['1s ease-in-out','0%,100%{transform:translateY(0)}40%{transform:translateY(-20px)}'],wiggle:['1.2s ease-in-out','25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}']};
 const EA={pulse:['.5s ease','50%{transform:scale(1.15)}','Pulse'],shake:['.5s ease','20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}','Shake'],bounce:['.7s ease','0%,100%{transform:translateY(0)}40%{transform:translateY(-22px)}','Bounce'],flip:['.7s ease','from{transform:perspective(500px) rotateY(0)}to{transform:perspective(500px) rotateY(360deg)}','Flip'],spin:['.7s ease','to{transform:rotate(360deg)}','Spin'],zoom:['.45s cubic-bezier(.2,1.4,.4,1)','from{transform:scale(.3);opacity:0}','Zoom in'],fade:['.6s ease','from{opacity:0}','Fade in'],slideup:['.5s ease-out','from{transform:translateY(40px);opacity:0}','Slide up'],slideleft:['.5s ease-out','from{transform:translateX(-60px);opacity:0}','Slide from left'],flash:['.7s linear','0%,50%,100%{opacity:1}25%,75%{opacity:0}','Flash']};
@@ -802,7 +802,7 @@ $('#dl').onclick=()=>{
  if(mode=='folder'){syncPage();const s=slug(),T=new TextEncoder(),f=[];
   proj.pages.forEach(pg=>{const p=partsFor(pg),st=stemOf(pg);f.push({name:s+'/'+pth(pg),data:T.encode(p.html)},{name:s+'/css/'+st+'.css',data:T.encode(p.css)});
    pg.elements.forEach((e,i)=>{if(e.src)f.push({name:s+'/images/'+st+'-photo-'+(i+1)+(e.src.startsWith('data:image/png')?'.png':'.jpg'),data:b64(e.src)})})});
-  f.push({name:s+'/design.json',data:T.encode(design())},{name:s+'/README.txt',data:T.encode(`${proj.name}\nMade with UIDrop for: ${DEV[proj.device].n}\n\nOpen index.html in a browser.\nPages: ${proj.pages.map(p=>pth(p)).join(', ')}\nEdit the files in css/ to change the design.\nOpen design.json in UIDrop to keep editing.`)},{name:s+'/preview.png',data:b64(png())});
+  f.push({name:s+'/design.json',data:T.encode(design())},{name:s+'/README.txt',data:T.encode(`${proj.name}\nMade with UIVisualBuilder for: ${DEV[proj.device].n}\n\nOpen index.html in a browser.\nPages: ${proj.pages.map(p=>pth(p)).join(', ')}\nEdit the files in css/ to change the design.\nOpen design.json in UIVisualBuilder to keep editing.`)},{name:s+'/preview.png',data:b64(png())});
   saveFile(s+'.zip',zip(f));return}
  if(mode=='image')saveFile(slug()+'.png',new Blob([b64(png())],{type:'image/png'}));
  else if(mode=='code')saveFile(slug()+'.html',parts().full);else saveFile(slug()+'.json',design())};

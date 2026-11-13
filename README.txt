@@ -1,4 +1,4 @@
-UIDrop
+UIVisualBuilder
 Make your first UI in just a minute.
 
 Open index.html in a browser to use the designer.
@@ -6,7 +6,7 @@ Projects are saved in your browser.
 Use Save design > Folder to download the website you make as a ZIP.
 
 Welcome screen
-  The first time you open UIDrop, an animated welcome plays (the drop falls into the logo), then asks your name. Type it and press Continue (or Enter).
+  The first time you open UIVisualBuilder, an animated welcome plays (the drop falls into the logo), then asks your name. Type it and press Continue (or Enter).
   Your name is saved in your browser and shown as "Hi, Name" on the projects page. Click Change name to enter a different one. Esc closes the screen once a name is saved.
 
 Shortcuts
