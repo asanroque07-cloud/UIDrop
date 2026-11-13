@@ -462,7 +462,7 @@ const DEV={phone:{n:'Phone',w:390,h:760,d:'390 x 760'},tablet:{n:'iPad / tablet'
 const KEY='dropform:projects';
 const RS=()=>(proj&&proj.resp)||(proj&&proj.device=='all'?'scale':'fixed');
 try{mem=JSON.parse(localStorage.getItem(KEY))||[]}catch(_){mem=[]}
-const nodes={};
+const nodes={},previewHandlers=new WeakMap();
 
 // ---------- helpers for form controls
 const A=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
@@ -609,8 +609,8 @@ function sync(o){const n=nodes[o.id];if(!n)return;const s=n.style;
  else if(o.text!=null){if(p)p.remove();if(!t){t=document.createElement('span');n.prepend(t)}t.textContent=shown(o);t.style.opacity=isPH(o)?'.55':''}
  n.classList.toggle('sel',sel==o);n.querySelectorAll('.hd').forEach(x=>x.remove());
  if(sel==o){['nw','n','ne','w','e','sw','s','se'].forEach(d=>{const h=document.createElement('div');h.className='hd';h.dataset.h=d;n.appendChild(h)})}}
-function playEA(o){const t=get(actOf(o)=='toggle'?o.tg:o.et)||o,n=nodes[t.id];if(!n||!o.ea||!EA[o.ea])return;n.style.animation='none';void n.offsetWidth;n.style.animation=`ea-${o.ea} ${animSeconds(EA,o.ea,o.eaDuration)}s ${animEasing(EA,o.ea)} both`;
- n.addEventListener('animationend',()=>sync(t),{once:true})}
+function playEA(o){const t=get(actOf(o)=='toggle'?o.tg:o.et)||o,n=nodes[t.id];if(!n||!o.ea||!EA[o.ea])return;const previous=previewHandlers.get(n);if(previous)n.removeEventListener('animationend',previous);const name=`ea-${o.ea}`,duration=animSeconds(EA,o.ea,o.eaDuration);n.style.animation='none';void n.offsetWidth;n.style.animation=`${name} ${duration}s ${animEasing(EA,o.ea)} both`;
+ const done=e=>{if(e.target!==n||e.animationName!==name)return;n.removeEventListener('animationend',done);previewHandlers.delete(n);sync(t)};previewHandlers.set(n,done);n.addEventListener('animationend',done)}
 function select(o){const p=sel;sel=o;if(p&&p!==o)sync(p);if(o)sync(o);inspect();
  if(mob()){if(o||body.dataset.sheet=='edit')sheet('');$('#editFab').hidden=!o}else if(o)sheet('')}
 art.addEventListener('pointerdown',e=>{
@@ -725,7 +725,7 @@ const SCR=['(function(){','var f=document.getElementById("f"),t=document.getElem
 'function say(m){t.textContent=m;t.className="toast on";clearTimeout(tm);tm=setTimeout(function(){t.className="toast"},3500)}',
 'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-msg]");if(b){e.preventDefault();say(b.getAttribute("data-msg"))}});',
 'document.addEventListener("click",ea);document.addEventListener("change",ea);',
-'function pl(t,a,d){var c="ea-"+a,end=function(e){if(e.animationName!==c)return;t.classList.remove(c);t.style.removeProperty("--ea-duration");t.removeEventListener("animationend",end)};t.classList.remove(c);t.style.removeProperty("--ea-duration");void t.offsetWidth;if(Number.isFinite(d)&&d>=.1&&d<=60)t.style.setProperty("--ea-duration",d+"s");t.classList.add(c);t.addEventListener("animationend",end)}',
+'function pl(t,a,d){var c="ea-"+a,end=function(e){if(e.target!==t||e.animationName!==c)return;t.classList.remove(c);t.style.removeProperty("--ea-duration");t.removeEventListener("animationend",end)};t.classList.remove(c);t.style.removeProperty("--ea-duration");void t.offsetWidth;if(Number.isFinite(d)&&d>=.1&&d<=60)t.style.setProperty("--ea-duration",d+"s");t.classList.add(c);t.addEventListener("animationend",end)}',
 'function ea(e){var n=e.target.closest&&e.target.closest("[data-ea]");if(!n||n.getAttribute("data-ev")!==e.type)return;var q=n.getAttribute("data-et"),t=q?document.querySelector("."+q):n;if(!t)return;t.classList.remove("is-hid");pl(t,n.getAttribute("data-ea"),parseFloat(n.getAttribute("data-ad")))}',
 'document.addEventListener("click",function(e){var n=e.target.closest&&e.target.closest("[data-tg]");if(!n)return;e.preventDefault();var q=n.getAttribute("data-tg"),l=document.querySelectorAll("."+q+",[data-g=\\""+q+"\\"]"),a=n.getAttribute("data-ea"),d=parseFloat(n.getAttribute("data-ad"));for(var i=0;i<l.length;i++){if(l[i].classList.contains("is-hid")){l[i].classList.remove("is-hid");if(a)pl(l[i],a,d)}else l[i].classList.add("is-hid")}});','f.addEventListener("submit",function(e){e.preventDefault();var o=[];new FormData(f).forEach(function(v,k){o.push(k+": "+(typeof v==="string"?v:(v&&v.name)||"(no file)"))});say(o.length?"Sent! "+o.join(", "):"Form sent!")});',
 'f.addEventListener("reset",function(){say("Form cleared");setTimeout(function(){var l=f.querySelectorAll("[data-ph]");for(var i=0;i<l.length;i++)l[i].textContent=l[i].getAttribute("data-ph")},0)});',
