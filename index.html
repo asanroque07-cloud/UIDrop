@@ -731,7 +731,7 @@ const SCR=['(function(){','var f=document.getElementById("f"),t=document.getElem
 'f.addEventListener("reset",function(){say("Form cleared");setTimeout(function(){var l=f.querySelectorAll("[data-ph]");for(var i=0;i<l.length;i++)l[i].textContent=l[i].getAttribute("data-ph")},0)});',
 'f.addEventListener("change",function(e){var i=e.target;if(i.type==="file"){var s=i.parentNode.querySelector("span");s.textContent=i.files&&i.files[0]?i.files[0].name:s.getAttribute("data-ph")}});',
 '})();'].join('\n');
-function parts(){
+function parts(preview=false){
  const stem=PS||curStem(),dir=PS?PD:curDir(),rs=RS(),all=rs!='fixed',P=(v,t)=>all?(v/t*100).toFixed(2)+'%':v+'px',F=v=>all?(v/W*100).toFixed(2)+'cqw':v+'px';
  const used=[...new Set(els.map(e=>e.anim).filter(Boolean))],uea=[...new Set(els.filter(e=>e.ea&&EVT[e.tag]&&EA[e.ea]).map(e=>e.ea))],has=(...k)=>els.some(e=>k.includes(e.tag));
  let css=`*{box-sizing:border-box;margin:0}\nbody{font-family:system-ui,sans-serif}\ninput,select,textarea,button,a{font:inherit;border:0;text-decoration:none}\ninput[type=text],input[type=email],input[type=password],input[type=search],input[type=tel],textarea,button{appearance:none}\ninput::placeholder,textarea::placeholder{color:inherit;opacity:.55}\n:focus-visible{outline:3px solid rgba(59,63,216,.5);outline-offset:2px}\nbutton,a.el,label{cursor:pointer}\nbutton:hover,a.el:hover{filter:brightness(1.1)}\ninput.el,select.el,textarea.el{display:block}\ntextarea.el{resize:none;line-height:1.4}\n.stage{position:relative;${all?`width:100%;max-width:${W}px;aspect-ratio:${W}/${H};container-type:inline-size;`:`width:${W}px;max-width:100%;height:${H}px;`}margin:auto;overflow:hidden;background:${bg}}\n.el{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:600}`;
@@ -745,7 +745,7 @@ function parts(){
  used.forEach(k=>css+=`\n@keyframes ${k}{${ANIM[k][1]}}`);
  if(els.some(e=>e.hid||actOf(e)=='toggle'))css+='\n.is-hid{visibility:hidden;opacity:0}';
  uea.forEach(k=>{const[d,ease]=EA[k][0].split(/\s+/,2);css+=`\n@keyframes ea-${k}{${EA[k][1]}}\n.ea-${k}{animation:ea-${k} var(--ea-duration,${d}) ${ease} both}`});
- if(uea.length)css+='\n@media (prefers-reduced-motion:reduce){[class*="ea-"]{animation:none!important}}';
+ if(uea.length&&!preview)css+='\n@media (prefers-reduced-motion:reduce){[class*="ea-"]{animation:none!important}}';
  if(rs=='stack'&&els.length){let ord=els.map((_,i)=>i).sort((a,b)=>els[a].y-els[b].y||els[a].x-els[b].x);
   let m='\n@media (max-width:640px){\n.stage{display:flex;flex-direction:column;gap:12px;padding:12px;height:auto;aspect-ratio:auto;container-type:normal;overflow:visible}\n.el{position:static;max-width:100%}\n.el:has(>.el){position:relative}\n.el .el{position:absolute}\n.is-hid{display:none}';
   ord=ord.filter(i=>!els[i].ovl);
@@ -905,7 +905,7 @@ function dirOpts(sel){const ds=[...new Set(proj.pages.map(p=>p.dir||'').filter(B
  return `<option value="" ${sel==''?'selected':''}>Project root</option>`+ds.map(d=>`<option value="${d}" ${d==sel?'selected':''}>${d}/</option>`).join('')+`<option value="__new">New folder...</option>`}
 function curStem(){return proj&&proj.pages?stemOf(cp()):'index'}
 function syncPage(){if(!proj||!proj.pages)return;const pg=cp();pg.bg=bg;pg.elements=els}
-function partsFor(pg){const se=els,sb=bg;els=pg.elements;bg=pg.bg;PS=stemOf(pg);PD=pg.dir||'';PT=pg.name;try{return parts()}finally{els=se;bg=sb;PS=null;PT=''}}
+function partsFor(pg,preview=false){const se=els,sb=bg;els=pg.elements;bg=pg.bg;PS=stemOf(pg);PD=pg.dir||'';PT=pg.name;try{return parts(preview)}finally{els=se;bg=sb;PS=null;PT=''}}
 function treeText(mark){syncPage();const s=slug(),L=[s+'/'];
  const byDir={};proj.pages.forEach((pg,i)=>{(byDir[pg.dir||'']=byDir[pg.dir||'']||[]).push([pg,i])});
  const ln=(pg,i,ind)=>ind+pg.file+(mark&&i==proj.cur?'   <- editing':'');
@@ -993,7 +993,7 @@ function plSizes(){const all=proj.device=='all'||RS()!='fixed';$('#psize').hidde
  const cur=pl.vw+'x'+pl.vh;let o=sizeOpts('all',cur);if(!o.includes('value="'+cur+'"'))o+=`<option value="${cur}" selected>Custom (${pl.vw} x ${pl.vh})</option>`;$('#psize').innerHTML=o}
 function openPlay(){if(!proj||$('#editor').hidden)return;syncPage();
  if(proj.pages.every(p=>!p.elements.length)){toast('Add something to the canvas first, then press Play');return}
- pl.site={};proj.pages.forEach(pg=>{pl.site[pth(pg)]=partsFor(pg).full.replace('</body>',()=>PSCRIPT+'</body>')});
+ pl.site={};proj.pages.forEach(pg=>{pl.site[pth(pg)]=partsFor(pg,true).full.replace('</body>',()=>PSCRIPT+'</body>')});
  pl.hist=[];pl.vw=W;pl.vh=H;
  $('#ppage').innerHTML=proj.pages.map((p,i)=>`<option value="${i}">${esc(p.name)} (${pth(p)})</option>`).join('');
  plSizes();plHint();$('#play').classList.add('on');plGo(proj.cur);requestAnimationFrame(plFit)}
