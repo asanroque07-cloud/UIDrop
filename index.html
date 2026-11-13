@@ -139,7 +139,9 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
 .ci .tiles{margin:2px 0 12px}
 .dv{display:block;border:2px solid currentColor;margin-bottom:8px;border-radius:6px}
 .dv-phone{width:18px;height:32px;border-radius:5px}.dv-tablet{width:28px;height:36px}.dv-pc{width:42px;height:26px}.dv-all{width:42px;height:26px;border-style:dashed}
-#fab{display:none}
+ #mobileActions{display:none}
+ #editFab[hidden]{display:none}
+
 /* tablets and small laptops: tighter columns, canvas auto-scales */
 @media(max-width:1060px){#editor>main{grid-template-columns:170px minmax(0,1fr) 240px}#dev{display:none}}
 @media(max-height:680px){.ig label{margin:6px 0 2px}.ig>.btn{margin-top:10px}aside{padding:12px}}
@@ -160,8 +162,9 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
  .sheet .tiles{grid-template-columns:repeat(4,1fr)}
  .sheet .sws{grid-template-columns:repeat(6,1fr)}
  #menuA .sh{margin-bottom:6px}
- #fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:11;border-radius:999px;padding:12px 20px;box-shadow:0 6px 18px rgba(10,12,30,.35)}
- body.ed[data-sheet=""] #fab{display:block}
+ #mobileActions{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:11;display:none;gap:8px;align-items:center}
+ body.ed[data-sheet=""] #mobileActions{display:flex}
+ #mobileActions .btn{border-radius:999px;padding:12px 20px;box-shadow:0 6px 18px rgba(10,12,30,.35)}
  .sizer{margin-left:auto}
 }
 @media(max-width:560px){.hero{align-items:start}.logo{font-size:20px}.sheet .tiles{grid-template-columns:repeat(3,1fr)}#grid{grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr))}.th{height:100px}.pcard.new{min-height:160px}}
@@ -299,8 +302,8 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
   </div>
   <aside id="insp" class="sheet"></aside>
 </main>
+<div id="mobileActions"><button class="btn pri" id="fab">+ Insert</button><button class="btn" id="editFab" hidden>Edit</button></div>
 </div>
-<button class="btn pri" id="fab">+ Insert</button>
 
 <div id="modal" class="modal"><div class="card" role="dialog" aria-modal="true" aria-labelledby="mt">
   <h3 id="mt">Save your design</h3>
@@ -522,6 +525,7 @@ $('#menu').addEventListener('click',e=>{
  if(!o){c.classList.add('open');h.setAttribute('aria-expanded','true')}});
 $('#menuA').addEventListener('click',e=>{if(e.target.closest('[data-close]'))sheet('')});
 $('#fab').onclick=()=>{select(null);sheet('insert')};
+$('#editFab').onclick=()=>{if(sel)sheet('edit')};
 
 // ---------- canvas: drop, select, move, resize
 art.addEventListener('dragover',e=>{e.preventDefault();art.classList.add('over')});
@@ -569,7 +573,7 @@ function sync(o){const n=nodes[o.id];if(!n)return;const s=n.style;
 function playEA(o){const t=get(actOf(o)=='toggle'?o.tg:o.et)||o,n=nodes[t.id];if(!n||!o.ea||!EA[o.ea])return;n.style.animation='none';void n.offsetWidth;n.style.animation=`ea-${o.ea} ${EA[o.ea][0]} both`;
  n.addEventListener('animationend',()=>sync(t),{once:true})}
 function select(o){const p=sel;sel=o;if(p&&p!==o)sync(p);if(o)sync(o);inspect();
- if(mob()){if(o)sheet('edit');else if(body.dataset.sheet=='edit')sheet('')}}
+ if(mob()){if(o||body.dataset.sheet=='edit')sheet('');$('#editFab').hidden=!o}else if(o)sheet('')}
 art.addEventListener('pointerdown',e=>{
  if(e.button>0)return;
  const n=e.target.closest('.el');if(!n){select(null);return}
