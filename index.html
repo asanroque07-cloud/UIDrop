@@ -7,9 +7,9 @@
 <title>UIVisualBuilder – Make your first UI in just a minute</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
 <style>
-:root{--bg:#e6e9f5;--panel:#f6f7fc;--ink:#1c1f3b;--mute:#6a6f94;--line:#d0d4ea;--acc:#ff5a36;--blue:#3b3fd8;--motion-fast:180ms;--motion-spring:cubic-bezier(.22,1,.36,1);--focus-ring:rgba(59,63,216,.5);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12142a;--panel:#1c1f40;--ink:#eceefc;--mute:#9a9fc8;--line:#30346a;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#12142a;--panel:#1c1f40;--ink:#eceefc;--mute:#9a9fc8;--line:#30346a;color-scheme:dark}
+:root{--bg:#f3f5fa;--panel:#fff;--ink:#1b2240;--mute:#58627b;--line:#dbe1ed;--acc:#d9472b;--blue:#4945c8;--motion-fast:180ms;--motion-spring:cubic-bezier(.22,1,.36,1);--focus-ring:rgba(73,69,200,.48);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111625;--panel:#1a2134;--ink:#f4f6ff;--mute:#aab5ca;--line:#303b52;--acc:#ff765b;--blue:#9d9aff;--focus-ring:rgba(157,154,255,.52);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111625;--panel:#1a2134;--ink:#f4f6ff;--mute:#aab5ca;--line:#303b52;--acc:#ff765b;--blue:#9d9aff;--focus-ring:rgba(157,154,255,.52);color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Bricolage Grotesque",system-ui,sans-serif;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
@@ -291,13 +291,141 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
 .greet{margin:0 0 6px;color:var(--mute);font-size:16px}
 .greet b{color:var(--ink)}
 .greet .link{background:none;border:0;color:var(--blue);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline;margin-left:6px;padding:0}
+
+body{background:var(--bg);color:var(--ink)}
+body.ed{height:100dvh;overflow:hidden}
+header{position:relative;z-index:10;min-height:64px;padding:10px 18px;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:0 3px 14px rgba(25,34,64,.06)}
+.logo{font-size:22px;letter-spacing:-.035em}
+.logo svg{height:36px;width:36px}
+#tools{gap:8px}
+#pname{height:42px;padding:8px 12px;border-radius:11px;background:var(--bg);border-color:var(--line);font-weight:600}
+.btn{min-height:40px;padding:9px 14px;border-radius:11px;background:var(--panel);font-weight:600;transition:transform .16s var(--motion-spring),box-shadow .16s,border-color .16s,background .16s,color .16s}
+.btn:hover:not(:disabled){transform:translateY(-1px);border-color:var(--blue);box-shadow:0 5px 12px rgba(27,34,64,.1)}
+.btn.pri{background:var(--acc);border-color:var(--acc);box-shadow:0 5px 12px rgba(217,71,43,.18)}
+.btn.pri:hover:not(:disabled){background:#bf3b23;border-color:#bf3b23;box-shadow:0 7px 16px rgba(217,71,43,.25)}
+.btn.play{background:#08744e;border-color:#08744e;box-shadow:0 5px 12px rgba(8,116,78,.18)}
+.btn.play:hover:not(:disabled){background:#05613f;border-color:#05613f}
+.btn:focus-visible,.tile:focus-visible,.sw:focus-visible,.tab:focus-visible,.ch:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px}
+#homev{max-width:1240px;padding:clamp(20px,4vw,48px) clamp(16px,4vw,36px)}
+.hero{position:relative;align-items:center;min-height:230px;margin-bottom:28px;padding:clamp(24px,4vw,42px);border:1px solid rgba(255,255,255,.1);border-radius:24px;overflow:hidden;color:#fff;background:radial-gradient(ellipse at 90% 12%,rgba(153,151,255,.48),transparent 34%),linear-gradient(125deg,#182044 0%,#303b80 62%,#4845c8 100%);box-shadow:0 18px 40px rgba(29,38,81,.16)}
+.hero>div:first-child{max-width:620px;position:relative;z-index:1}
+.hero .eyebrow{margin:0 0 10px;color:#c7cdf7;font-size:12px;font-weight:800;letter-spacing:.16em}
+.hero h1{font-size:clamp(38px,5vw,56px);line-height:1.02;letter-spacing:-.045em;color:#fff}
+.hero p:not(.greet):not(.eyebrow){margin:12px 0 0;color:#e1e5fb;max-width:48ch;font-size:16px;line-height:1.6}
+.hero .greet{color:#d4daf7;font-size:14px}
+.hero .greet b{color:#fff}
+.hero .greet .link{color:#d9ddff;text-underline-offset:3px}
+.hero .acts{position:relative;z-index:1;gap:10px}
+#homev .hero .btn{min-height:48px;padding:12px 18px;border-radius:13px}
+#homev .hero .btn:not(.pri){background:rgba(255,255,255,.96);border-color:rgba(255,255,255,.7);color:#202747}
+#homev .hero .btn:not(.pri):hover{background:#fff}
+#homev .hero .btn.pri{background:#d9472b;border-color:#d9472b;color:#fff}
+#none{margin:18px 2px 12px;color:var(--mute);font-size:14px}
+#grid{gap:18px}
+.pcard{padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:17px;box-shadow:0 5px 18px rgba(26,36,66,.06);transition:transform .18s var(--motion-spring),box-shadow .18s,border-color .18s}
+.pcard:not(.new):hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(26,36,66,.12);border-color:#b7bee0}
+.pcard.new{min-height:250px;border:2px dashed #d48b7c;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.4));gap:12px}
+.pcard.new:hover{border-color:var(--acc);background:#fff8f5;box-shadow:0 12px 26px rgba(217,71,43,.1)}
+.pcard.new span{display:grid;place-items:center;width:58px;height:58px;border-radius:18px;background:#fff0eb;color:var(--acc);font-size:36px;box-shadow:inset 0 0 0 1px rgba(217,71,43,.12)}
+.th{border:1px solid var(--line);border-radius:11px;background:var(--bg)}
+#editor>main{grid-template-columns:minmax(210px,250px) minmax(0,1fr) minmax(270px,310px);gap:16px;padding:16px}
+aside{padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 5px 18px rgba(26,36,66,.05)}
+#menuA{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+#insp{align-self:start;max-height:100%;padding:16px}
+.center{gap:12px}
+.sh{margin-bottom:8px}
+h2{margin-bottom:12px;color:var(--ink);font-size:15px;font-weight:700;letter-spacing:-.01em}
+.sh h2{font-size:15px}
+.tiles{gap:10px;margin-bottom:20px}
+.tile{min-height:76px;padding:11px 6px;border-radius:13px;background:var(--bg);font-size:13px;font-weight:600;transition:transform .16s var(--motion-spring),border-color .16s,background .16s,box-shadow .16s}
+.tile:hover{transform:translateY(-2px);border-color:var(--blue);background:var(--panel);box-shadow:0 6px 14px rgba(27,34,64,.08)}
+.tile b{width:38px;height:28px;margin-bottom:7px;border-radius:9px;line-height:24px}
+.ch{padding:13px 3px;font-size:14px}
+.cat{border-top-color:var(--line)}
+.hint{color:var(--mute);line-height:1.55}
+.pagebar{gap:8px;align-items:center;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:0 3px 12px rgba(26,36,66,.04)}
+.tab{min-height:36px;padding:7px 14px;background:var(--bg);border-color:var(--line);font-weight:600}
+.tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.sizer select{min-height:36px;padding:6px 10px;border-radius:10px;background:var(--bg);border-color:var(--line);font-weight:600}
+.btn.sm{min-height:36px;padding:7px 11px;border-radius:9px}
+.stage-wrap{background-color:var(--panel);background-image:radial-gradient(rgba(96,108,145,.18) 1px,transparent 1px);background-size:18px 18px;border-color:var(--line);border-radius:18px;padding:20px;box-shadow:inset 0 1px 2px rgba(26,36,66,.03)}
+#art{border-radius:12px;box-shadow:0 16px 36px rgba(24,31,57,.18),0 2px 6px rgba(24,31,57,.08)}
+#empty{color:#6d7894;font-size:14px;line-height:1.65}
+label{font-size:13px;font-weight:600;color:var(--mute)}
+aside input[type=text],aside input[type=number],aside select,.card input[type=text],.card select{min-height:40px;padding:8px 11px;border-radius:10px;background:var(--bg);border-color:var(--line)}
+aside input[type=color]{height:40px;border-radius:10px}
+aside input[type=range]{height:38px}
+#code{padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 16px rgba(26,36,66,.05)}
+#code .top{gap:12px;margin-bottom:10px}
+#code .top h2{font-size:14px;color:var(--ink)}
+#code pre{border:1px solid rgba(255,255,255,.07);border-radius:12px}
+.sheet::before{content:"";display:none}
+@media(min-width:901px) and (max-width:1180px){#editor>main{grid-template-columns:185px minmax(0,1fr) 250px;gap:12px;padding:12px}aside{padding:14px}.center{gap:10px}}
+@media(max-width:900px){
+ body.ed header{position:sticky;top:0;padding:9px 10px;background:var(--panel);box-shadow:0 3px 12px rgba(25,34,64,.08)}
+ body.ed header .logo{font-size:17px}
+ body.ed header .logo svg{width:31px;height:31px;margin-right:7px}
+ body.ed #tools{gap:7px}
+ #tools>.btn,#tools .grp .btn{min-height:42px;border-radius:10px}
+ #pname{height:42px;border-radius:10px}
+ body.ed #editor>main{gap:9px;padding:9px}
+ .center{gap:9px}
+ .pagebar{padding:8px;gap:7px;border-radius:14px}
+ .tabs{gap:6px;scrollbar-width:none}
+ .tabs::-webkit-scrollbar{display:none}
+ .tab{min-height:38px;padding:8px 13px}
+ .pagebar .btn.sm{min-height:38px}
+ .sizer select{min-height:40px}
+ .stage-wrap{padding:12px;border-radius:15px}
+ #code{max-height:29vh;padding:11px;border-radius:14px}
+ #code pre{max-height:21vh}
+ .sheet{max-height:68vh;max-height:68dvh;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;box-shadow:0 -14px 36px rgba(17,24,46,.22)}
+ .sheet::before{display:block;width:42px;height:5px;margin:0 auto 13px;border-radius:999px;background:var(--line)}
+ #mobileActions .btn{min-height:48px;padding:12px 20px;border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 22px rgba(21,30,62,.28)}
+}
+@media(max-width:560px){
+ #homev{padding:16px}
+ .hero{align-items:flex-start;gap:20px;min-height:0;margin-bottom:22px;padding:24px 20px;border-radius:20px}
+ .hero h1{font-size:clamp(36px,10vw,46px)}
+ .hero p:not(.greet):not(.eyebrow){font-size:15px}
+ .hero .acts{width:100%;justify-content:stretch}
+ #homev .hero .acts .btn{flex:1;justify-content:center;white-space:nowrap;padding-inline:12px;font-size:14px}
+ #grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .pcard{padding:10px;border-radius:14px}
+ .pcard.new{min-height:172px}
+ .pcard.new span{width:48px;height:48px;border-radius:15px;font-size:30px}
+ .th{height:112px}
+ body.ed header{padding:8px}
+ body.ed #tools{gap:6px}
+ #tools>.btn{font-size:12px;padding-inline:5px}
+ #editor>main{padding:7px;gap:7px}
+ .pagebar{grid-template-columns:minmax(0,1fr) auto auto;gap:6px;padding:7px}
+ .tabs{grid-column:1;min-width:0}
+ #addpage{grid-column:2}
+ #pset{grid-column:3}
+ .pagebar .btn.sm{font-size:12px;padding:6px 8px}
+ .sizer{grid-column:1/-1;width:100%}
+ .sizer select{flex:1;max-width:none}
+ .stage-wrap{padding:9px}
+ #code{max-height:27vh}
+ #code pre{max-height:19vh}
+}
+@media(max-width:380px){
+ #grid{grid-template-columns:1fr}
+ .pcard.new{min-height:145px}
+ .hero .acts{flex-direction:column}
+ #homev .hero .acts .btn{width:100%}
+ body.ed header .logo{font-size:16px}
+ .pagebar .btn.sm{font-size:11px;padding:6px}
+}
+@media(pointer:coarse){.btn,.tile,aside select,aside input[type=text],aside input[type=number],.card input[type=text],.card select{min-height:44px}.tile{padding:12px 5px}}
 </style>
 </head>
 <body data-sheet="">
 <header>
   <span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a45"/><stop offset="1" stop-color="#ff4a2e"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lg)"/><path d="M18 15V34a14 14 0 0 0 28 0V15M32 33V47" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><path class="drop" d="M32 7C32 7 25.5 14.5 25.5 19a6.5 6.5 0 0 0 13 0C38.5 14.5 32 7 32 7Z" fill="#1c1f3b"/></svg>UI<b>VisualBuilder</b></span><span class="tag">Make your first UI in just a minute</span>
   <span class="sp"></span>
-  <div id="tools" hidden>
+  <div id="tools" role="toolbar" aria-label="Project actions" hidden>
     <input id="pname" type="text" aria-label="Project name">
     <span class="hint" id="dev"></span>
     <span class="grp">
@@ -313,7 +441,7 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
 </header>
 <section id="homev">
   <div class="hero">
-    <div><p class="greet" id="greet" hidden></p><h1>Your projects</h1><p>Make your first UI in just a minute. Drag shapes and colors, and UIVisualBuilder writes the code.</p></div>
+    <div><p class="greet" id="greet" hidden></p><p class="eyebrow">YOUR CREATIVE WORKSPACE</p><h1>Your projects</h1><p>Start with a blank canvas, add the pieces you need, and watch your design become code.</p></div>
     <div class="acts"><label class="btn" style="margin:0;color:var(--ink);font-size:15px">Open design file<input id="file" type="file" accept=".json" hidden></label><button class="btn pri" id="newh">Make a website</button></div>
   </div>
   <p id="none" class="hint">No projects yet. Make your first website.</p>
@@ -333,7 +461,7 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
       <button class="btn sm" id="pset">Page settings</button>
       <span class="sizer"><select id="szsel" aria-label="Screen size"></select><button class="btn sm" id="rot" aria-pressed="false" title="Rotate the screen" hidden>Portrait</button></span>
     </div>
-    <section class="stage-wrap" id="sw"><div id="scaler"><div id="art"><div id="empty">Drag a shape here to start.<br>The code writes itself below.</div></div></div></section>
+    <section class="stage-wrap" id="sw" aria-label="Design canvas"><div id="scaler"><div id="art"><div id="empty">Drag a shape here to start.<br>The code writes itself below.</div></div></div></section>
     <section id="code">
       <div class="top"><h2 id="ct">Live code</h2><button class="btn sm" id="copy">Copy code</button></div>
       <pre id="out"></pre>
