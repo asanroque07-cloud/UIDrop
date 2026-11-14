@@ -460,7 +460,7 @@ aside input[type=range]{height:38px}
       <div class="tabs" id="tabs" aria-label="Pages"></div>
       <button class="btn sm" id="addpage">+ Add page</button>
       <button class="btn sm" id="pset">Page settings</button>
-      <select id="bp" aria-label="Edit responsive layout"><option value="base">Base layout</option><option value="tablet">Tablet · ≤900px</option><option value="phone">Phone · ≤640px</option></select>
+      <select id="bp" aria-label="Edit responsive layout"><option value="base">Base layout</option><option value="tablet">Tablet · ≤960px</option><option value="phone">Phone · ≤640px</option></select>
       <button class="btn sm" id="resetbp" type="button" hidden>Reset layout</button>
       <span class="sizer"><select id="szsel" aria-label="Screen size"></select><button class="btn sm" id="rot" aria-pressed="false" title="Rotate the screen" hidden>Portrait</button></span>
     </div>
@@ -614,7 +614,7 @@ const actionAttrs=o=>o.ea&&EA[o.ea]?` data-ad="${animSeconds(EA,o.ea,o.eaDuratio
 {const x=document.createElement('style');x.textContent=Object.keys(EA).map(k=>`@keyframes ea-${k}{${EA[k][1]}}`).join('\n');document.head.appendChild(x)}
 let els=[],bg='#ffffff',sel=null,uid=0,mode='folder',proj=null,mem=[],dev='pc';
 const DEV={phone:{n:'Phone',w:390,h:760,d:'390 x 760'},tablet:{n:'iPad / tablet',w:768,h:960,d:'768 x 960'},pc:{n:'Computer',w:1100,h:620,d:'1100 x 620'},all:{n:'All devices',w:960,h:560,d:'One layout that fits every screen'}};
-const MEDIA_VIEW={tablet:{w:768,h:960,label:'Tablet · @media (max-width: 900px)'},phone:{w:390,h:760,label:'Phone · @media (max-width: 640px)'}};
+const MEDIA_VIEW={tablet:{w:768,h:960,label:'Tablet · @media (max-width: 960px)'},phone:{w:390,h:760,label:'Phone · @media (max-width: 640px)'}};
 const MEDIA_FIELDS=['x','y','w','h','fill','radius','color','fs','fw','lh','align','border','shadow','hid'];
 let activeBreakpoint='base',baseBg='#ffffff',partsMediaBg=null;
 const mediaValues=e=>Object.fromEntries(MEDIA_FIELDS.map(k=>[k,e[k]]));
@@ -934,7 +934,7 @@ function parts(preview=false){
    s.push(`left:${(o.x/pw*100).toFixed(3)}%`,`top:${(o.y/ph*100).toFixed(3)}%`,`width:${(o.w/pw*100).toFixed(3)}%`,`height:${(o.h/ph*100).toFixed(3)}%`,`border-radius:${o.radius}px`);
    if(o.fs!=null)s.push(`font-size:${o.fs}px`);if(o.fw!=null)s.push(`font-weight:${o.fw}`);if(o.lh!=null)s.push(`line-height:${o.lh}`);if(o.fill!=null)s.push(`background:${o.fill}`);if(o.color!=null)s.push(`color:${o.color}`);if(o.align!=null)s.push(o.align=='left'?'justify-content:flex-start;text-align:left;padding:0 14px':'justify-content:center;text-align:center;padding:0');if(o.border!=null)s.push(`border:${o.border}`);if(o.shadow!=null)s.push(`box-shadow:${o.shadow}`);if(o.hid!=null)s.push(o.hid?'display:none;visibility:hidden;opacity:0;pointer-events:none':'display:flex;visibility:visible;opacity:1;pointer-events:auto');m+=`\n.e${i+1}{${s.join(';')}}`})}
   return m+'\n}'};
- css+=responsiveRules('tablet','(min-width: 641px) and (max-width: 900px)',MEDIA_VIEW.tablet.w,MEDIA_VIEW.tablet.h)+responsiveRules('phone','(max-width: 640px)',MEDIA_VIEW.phone.w,MEDIA_VIEW.phone.h);
+ css+=responsiveRules('tablet','(min-width: 641px) and (max-width: 960px)',MEDIA_VIEW.tablet.w,MEDIA_VIEW.tablet.h)+responsiveRules('phone','(max-width: 640px)',MEDIA_VIEW.phone.w,MEDIA_VIEW.phone.h);
  const addEA=(h,e)=>{let a=e.grp?` data-g="${A(e.grp)}"`:'';if(e.tag=='button'&&BUTTON_HOVERS[e.btnHover]&&e.btnHover!='none')a+=` data-bh="${e.btnHover}"`;const tt=actOf(e)=='toggle'&&(e.tag=='button'||e.tag=='a')?els.find(x=>x.id==e.tg&&x!==e):null,aa=actionAttrs(e);
   if(tt)a+=` data-tg="${tt.grp?A(tt.grp):'e'+(els.indexOf(tt)+1)}"`+(e.ea&&EA[e.ea]?` data-ea="${e.ea}"${aa}`:'');
   else if(e.ea&&EVT[e.tag]&&EA[e.ea]){const ti=e.et?els.findIndex(x=>x.id==e.et):-1;a+=` data-ea="${e.ea}" data-ev="${EVT[e.tag]}"${ti>=0?` data-et="e${ti+1}"`:''}${aa}`}
@@ -1001,7 +1001,7 @@ function preview(){const p=$('#prev');
  if(mode=='folder')p.innerHTML=`<pre style="max-height:170px">${esc(treeText())}</pre>`;
  else if(mode=='image')p.innerHTML=`<img alt="Design preview" src="${png()}">`;
  else p.innerHTML=`<textarea readonly aria-label="Export content"></textarea>`,p.firstChild.value=mode=='code'?parts().full.replace(/data:image\/[a-z]+;base64,[^"')]+/g,'data:image/...'):design()}
-$('#save').onclick=()=>{$('#modal').classList.add('on');preview()};
+$('#save').onclick=()=>{clearTimeout(st);saveProj();$('#modal').classList.add('on');preview()};
 $('#cancel').onclick=()=>$('#modal').classList.remove('on');
 $('#modal').onclick=e=>{if(e.target.id=='modal')$('#modal').classList.remove('on')};
 $('#opts').onclick=e=>{const o=e.target.closest('.opt');if(o){mode=o.dataset.k;preview()}};
