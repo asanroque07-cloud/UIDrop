@@ -59,7 +59,8 @@ h2{font-size:14px;margin:0 0 10px;font-weight:600;color:var(--mute)}
 .tab{flex:none;border:1px solid var(--line);background:var(--panel);padding:6px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;max-width:190px;overflow:hidden;text-overflow:ellipsis}
 .tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
 .sizer{display:flex;gap:6px;align-items:center;min-width:0}
-.sizer select{padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:13px;max-width:210px;min-width:0}
+.sizer select,#bp{padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:13px;max-width:210px;min-width:0}
+#bp{border-color:color-mix(in srgb,var(--blue) 35%,var(--line));font-weight:600}
 /* canvas */
 .stage-wrap{flex:1;min-height:0;overflow:auto;display:flex;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
 #scaler{position:relative;margin:auto;flex:none}
@@ -459,6 +460,8 @@ aside input[type=range]{height:38px}
       <div class="tabs" id="tabs" aria-label="Pages"></div>
       <button class="btn sm" id="addpage">+ Add page</button>
       <button class="btn sm" id="pset">Page settings</button>
+      <select id="bp" aria-label="Edit responsive layout"><option value="base">Base layout</option><option value="tablet">Tablet · ≤900px</option><option value="phone">Phone · ≤640px</option></select>
+      <button class="btn sm" id="resetbp" type="button" hidden>Reset layout</button>
       <span class="sizer"><select id="szsel" aria-label="Screen size"></select><button class="btn sm" id="rot" aria-pressed="false" title="Rotate the screen" hidden>Portrait</button></span>
     </div>
     <section class="stage-wrap" id="sw" aria-label="Design canvas"><div id="scaler"><div id="art"><div id="empty">Drag a shape here to start.<br>The code writes itself below.</div></div></div></section>
@@ -611,6 +614,10 @@ const actionAttrs=o=>o.ea&&EA[o.ea]?` data-ad="${animSeconds(EA,o.ea,o.eaDuratio
 {const x=document.createElement('style');x.textContent=Object.keys(EA).map(k=>`@keyframes ea-${k}{${EA[k][1]}}`).join('\n');document.head.appendChild(x)}
 let els=[],bg='#ffffff',sel=null,uid=0,mode='folder',proj=null,mem=[],dev='pc';
 const DEV={phone:{n:'Phone',w:390,h:760,d:'390 x 760'},tablet:{n:'iPad / tablet',w:768,h:960,d:'768 x 960'},pc:{n:'Computer',w:1100,h:620,d:'1100 x 620'},all:{n:'All devices',w:960,h:560,d:'One layout that fits every screen'}};
+const MEDIA_VIEW={tablet:{w:768,h:960,label:'Tablet · @media (max-width: 900px)'},phone:{w:390,h:760,label:'Phone · @media (max-width: 640px)'}};
+const MEDIA_FIELDS=['x','y','w','h','fill','radius','color','fs','fw','lh','align','border','shadow','hid'];
+let activeBreakpoint='base',baseBg='#ffffff',partsMediaBg=null;
+const mediaValues=e=>Object.fromEntries(MEDIA_FIELDS.map(k=>[k,e[k]]));
 const KEY='dropform:projects';
 const RS=()=>(proj&&proj.resp)||(proj&&proj.device=='all'?'scale':'fixed');
 try{mem=JSON.parse(localStorage.getItem(KEY))||[]}catch(_){mem=[]}
@@ -673,10 +680,12 @@ function sizeOpts(device,cur){
  if(device!='all')return DEV[device].sizes.map(([n,w,h])=>opt1(n,w,h,cur)).join('');
  return [['All devices',DEV.all.own],['Phone',DEV.phone.sizes],['Tablet',DEV.tablet.sizes],['Computer',DEV.pc.sizes]]
   .map(([t,l])=>`<optgroup label="${t}">${l.map(([n,w,h])=>opt1(n,w,h,cur)).join('')}</optgroup>`).join('')}
-function setDims(){const d=DEV[proj.device],bw=proj.w||d.w,bh=proj.h||d.h,r=proj.rot&&ROT[proj.device];W=r?bh:bw;H=r?bw:bh}
-function sizeUI(){const d=DEV[proj.device],bw=proj.w||d.w,bh=proj.h||d.h,cur=bw+'x'+bh;let o=sizeOpts(proj.device,cur);
+function setDims(){if(activeBreakpoint!='base'){const v=MEDIA_VIEW[activeBreakpoint],bottom=Math.max(0,...els.map(e=>{const base=e.baseStyle||e,o={...base,...(e.media&&e.media[activeBreakpoint]||{})};return(+o.y||0)+(+o.h||0)+16}));W=v.w;H=Math.max(v.h,bottom);return}const d=DEV[proj.device],bw=proj.w||d.w,bh=proj.h||d.h,r=proj.rot&&ROT[proj.device];W=r?bh:bw;H=r?bw:bh}
+function sizeUI(){const bp=$('#bp');if(bp)bp.value=activeBreakpoint;const reset=$('#resetbp');if(reset)reset.hidden=activeBreakpoint=='base';
+ if(activeBreakpoint!='base'){const v=MEDIA_VIEW[activeBreakpoint];$('#szsel').hidden=true;const b=$('#rot');b.hidden=true;$('#dev').textContent=v.label;return}
+ const d=DEV[proj.device],bw=proj.w||d.w,bh=proj.h||d.h,cur=bw+'x'+bh;let o=sizeOpts(proj.device,cur);
  if(!d.sizes.some(s=>s[1]+'x'+s[2]==cur))o+=`<option value="${cur}" selected>Custom (${bw} x ${bh})</option>`;
- $('#szsel').innerHTML=o;const r=!!ROT[proj.device],b=$('#rot');b.hidden=!r;b.textContent='\u21bb '+(proj.rot?'Landscape':'Portrait');
+ $('#szsel').hidden=false;$('#szsel').innerHTML=o;const r=!!ROT[proj.device],b=$('#rot');b.hidden=!r;b.textContent='\u21bb '+(proj.rot?'Landscape':'Portrait');
  b.setAttribute('aria-pressed',String(!!proj.rot));b.title='Rotate '+(ROT[proj.device]||'screen');
  $('#dev').textContent=d.n+(r&&proj.rot?' (landscape)':'')}
 function applySize(){syncPage();setDims();H_={};
@@ -684,6 +693,12 @@ function applySize(){syncPage();setDims();H_={};
  showPage();sizeUI();fit();saveProj()}
 $('#szsel').onchange=e=>{const[w,h]=e.target.value.split('x').map(Number);proj.w=w;proj.h=h;applySize()};
 $('#rot').onclick=()=>{proj.rot=!proj.rot;applySize()};
+function seedBreakpointLayout(key,pg){const target=MEDIA_VIEW[key],d=DEV[proj.device],baseW=proj.w||d.w,baseH=proj.h||d.h,roots=pg.elements.filter(e=>!e.parent&&!e.ovl).sort((a,b)=>a.y-b.y||a.x-b.x),states=new Map();let y=16;
+ roots.forEach(e=>{const w=Math.max(24,Math.min(e.w,target.w-32)),h=Math.max(20,e.h),wide=e.w>=baseW*.8,ww=wide?target.w-32:w,cx=e.x+e.w/2,x=e.align=='left'?16:cx<baseW*.4?16:cx>baseW*.6?target.w-16-ww:(target.w-ww)/2;const value={x:Math.round(x),y:Math.round(y),w:Math.round(ww),h:Math.round(h)};states.set(e.id,value);y+=h+14});
+ pg.elements.forEach(e=>{const base=mediaValues(e),p=e.parent&&pg.elements.find(x=>x.id==e.parent),parentState=p&&states.get(p.id);let value=states.get(e.id);if(!value&&parentState&&p){value={x:Math.round(e.x/p.w*parentState.w),y:Math.round(e.y/p.h*parentState.h),w:Math.round(e.w/p.w*parentState.w),h:Math.round(e.h/p.h*parentState.h)}}if(!value){value={x:Math.min(e.x,target.w-24),y:Math.min(e.y,target.h-24),w:Math.min(e.w,target.w-24),h:e.h}}e.media=e.media||{};e.media[key]={...value}})}
+function switchBreakpoint(next){if(!MEDIA_VIEW[next]&&next!='base')return;if(next==activeBreakpoint)return;syncPage();activeBreakpoint=next;const pg=cp();if(next!='base'&&!pg.elements.some(e=>e.media&&Object.keys(e.media[next]||{}).length))seedBreakpointLayout(next,pg);setDims();showPage();saveProj()}
+$('#bp').onchange=e=>switchBreakpoint(e.target.value);
+$('#resetbp').onclick=()=>{if(activeBreakpoint=='base')return;syncPage();const pg=cp();pg.elements.forEach(e=>{if(e.media)delete e.media[activeBreakpoint];if(e.media&&!Object.keys(e.media).length)delete e.media});if(pg.mediaBg){delete pg.mediaBg[activeBreakpoint];if(!Object.keys(pg.mediaBg).length)delete pg.mediaBg}seedBreakpointLayout(activeBreakpoint,pg);showPage();saveProj();toast('Breakpoint restored to its default layout')}
 
 // ---------- undo / redo (one history per page)
 const HL=100;let H_={},lastKey=null,lastT=0;
@@ -746,7 +761,8 @@ function add(k,x,y,parent_id){checkpoint();if(DEF[k].pre)return preset(k,x,y);co
  const parent=parent_id&&!o.full?get(parent_id):null;o.parent=parent?parent.id:null;
  if(o.full=='left'){o.h=H;o.x=0;o.y=0}else if(o.full){o.w=W;o.x=0;o.y=o.full=='top'?0:H-o.h}else{const maxW=parent?parent.w:W,maxH=parent?parent.h:H;o.w=Math.min(o.w,maxW);o.h=Math.min(o.h,maxH);o.x=Math.max(0,Math.min(Math.max(0,maxW-o.w),Math.round(x)));o.y=Math.max(0,Math.min(Math.max(0,maxH-o.h),Math.round(y)))}
  els.push(o);mk(o,true);select(o);updateEmpty();update()}
-function mk(o,pop){if(nodes[o.id])return;const parent=o.parent&&get(o.parent);if(parent&&!nodes[parent.id])mk(parent,false);const n=document.createElement('div');if(o.src)getImg(o.src);n.className='el'+(pop?' pop':'');n.dataset.id=o.id;nodes[o.id]=n;(o.parent&&nodes[o.parent]?nodes[o.parent]:art).appendChild(n);sync(o);
+function initResponsiveElement(o){if(o.baseStyle)return;o.baseStyle=mediaValues(o);if(activeBreakpoint=='base')return;const d=DEV[proj.device],target=MEDIA_VIEW[activeBreakpoint],bw=proj.w||d.w,bh=proj.h||d.h;o.baseStyle.x=Math.round(o.x*bw/target.w);o.baseStyle.y=Math.round(o.y*bh/target.h);o.baseStyle.w=Math.round(o.w*bw/target.w);o.baseStyle.h=Math.round(o.h*bh/target.h);o.media=o.media||{};o.media[activeBreakpoint]={x:o.x,y:o.y,w:o.w,h:o.h}}
+function mk(o,pop){if(nodes[o.id])return;initResponsiveElement(o);const parent=o.parent&&get(o.parent);if(parent&&!nodes[parent.id])mk(parent,false);const n=document.createElement('div');if(o.src)getImg(o.src);n.className='el'+(pop?' pop':'');n.dataset.id=o.id;nodes[o.id]=n;(o.parent&&nodes[o.parent]?nodes[o.parent]:art).appendChild(n);sync(o);
  if(pop)setTimeout(()=>{n.classList.remove('pop');const c=get(o.id);if(c)sync(c)},420)}
 function sync(o){const n=nodes[o.id];if(!n)return;const s=n.style;
  const bp=o.tag=='button'?buttonPresentation(o):null;s.left=o.x+'px';s.top=o.y+'px';s.width=o.w+'px';s.height=o.h+'px';s.background=o.src?`${o.fill} center/${o.fit||'cover'} no-repeat url("${o.src}")`:bp?bp.background:o.fill;s.borderRadius=o.radius+'px';
@@ -869,7 +885,7 @@ function inspect(){const o=sel,p=$('#insp');
  b('op',v=>{o.opts=v;if(o.tag!='checks'&&!OPTS(o).includes(o.sel))o.sel='';fitRows(o);eh();const sl=$('#sl');if(sl&&sl.tagName=='SELECT')sl.innerHTML=selOpts(o)});
  if($('#ac'))$('#ac').onchange=e=>{checkpoint('ac'+o.id);o.act=e.target.value;if(o.act=='msg'&&!o.msg)o.msg='Thanks for clicking!';sync(o);update();inspect();const x=$('#ac');if(x)x.focus()};
  if($('#rep'))$('#rep').onclick=()=>{replaceId=o.id;$('#up').click()};
- $('#dup').onclick=()=>{checkpoint();const c={...o,id:++uid,x:o.x+20,y:o.y+20};els.push(c);mk(c,true);select(c);updateEmpty();update()};
+ $('#dup').onclick=()=>{checkpoint();const c={...o,id:++uid,x:o.x+20,y:o.y+20,baseStyle:{...o.baseStyle},media:Object.fromEntries(Object.entries(o.media||{}).map(([k,v])=>[k,{...v}]))};if(activeBreakpoint=='base')c.baseStyle=mediaValues(c);else{c.baseStyle.x+=20;c.baseStyle.y+=20;c.media[activeBreakpoint]={...(c.media[activeBreakpoint]||{}),x:c.x,y:c.y}}els.push(c);mk(c,true);select(c);updateEmpty();update()};
  $('#rm').onclick=del;$('#done').onclick=()=>select(null)}
 
 // code generation
@@ -885,6 +901,10 @@ const SCR=['(function(){','var f=document.getElementById("f"),t=document.getElem
 'f.addEventListener("change",function(e){var i=e.target;if(i.type==="file"){var s=i.parentNode.querySelector("span");s.textContent=i.files&&i.files[0]?i.files[0].name:s.getAttribute("data-ph")}});',
 '})();'].join('\n');
 function parts(preview=false){
+ const viewW=W,viewH=H,runtime=els.some(e=>e.baseStyle),live=runtime?els.map(mediaValues):null;
+ if(proj){const d=DEV[proj.device],bw=proj.w||d.w,bh=proj.h||d.h,r=proj.rot&&ROT[proj.device];W=r?bh:bw;H=r?bw:bh}
+ if(runtime){captureBreakpoint();els.forEach(e=>Object.assign(e,e.baseStyle));bg=baseBg}
+ const mediaBackgrounds=partsMediaBg||(cp()&&cp().mediaBg)||{};
  const stem=PS||curStem(),dir=PS?PD:curDir(),rs=RS(),all=rs!='fixed',P=(v,t)=>all?(v/t*100).toFixed(2)+'%':v+'px',F=v=>all?(v/W*100).toFixed(2)+'cqw':v+'px';
  const used=[...new Set(els.map(e=>e.anim).filter(Boolean))],uea=[...new Set(els.filter(e=>e.ea&&EVT[e.tag]&&EA[e.ea]).map(e=>e.ea))],loops=els.map((e,i)=>e.anim?`.e${i+1}`:'').filter(Boolean).join(','),hoverMotion=els.some(e=>e.tag=='button'&&e.btnHover&&e.btnHover!='none'),has=(...k)=>els.some(e=>k.includes(e.tag));
  let css=`:root{--motion-fast:180ms;--motion-spring:cubic-bezier(.22,1,.36,1);--focus-ring:rgba(59,63,216,.5)}\n*{box-sizing:border-box;margin:0}\nbody{font-family:system-ui,sans-serif}\ninput,select,textarea,button,a{font:inherit;border:0;text-decoration:none}\ninput[type=text],input[type=email],input[type=password],input[type=search],input[type=tel],textarea,button{appearance:none}\ninput::placeholder,textarea::placeholder{color:inherit;opacity:.55}\n:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px}\nbutton,a.el,label{cursor:pointer}\nbutton:hover,a.el:hover{filter:brightness(1.1)}\ninput.el,select.el,textarea.el{display:block}\ntextarea.el{resize:none;line-height:1.4}\n.stage{position:relative;${all?`width:100%;max-width:${W}px;aspect-ratio:${W}/${H};container-type:inline-size;`:`width:${W}px;max-width:100%;height:${H}px;`}margin:auto;overflow:hidden;background:${bg}}\n.el{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:600}`;
@@ -906,6 +926,15 @@ function parts(preview=false){
   ord.forEach((i,k)=>{const e=els[i],cx=e.x+e.w/2,wide=e.w>=W*.8,al=wide?'stretch':cx<W*.4?'flex-start':cx>W*.6?'flex-end':'center',tx=e.text!=null||e.opts!=null;
    m+=`\n.e${i+1}{order:${k};width:${wide?'100%':e.w+'px'};${e.src?`aspect-ratio:${e.w}/${e.h};height:auto;`:`height:auto;min-height:${e.h}px;`}align-self:${al};border-radius:${e.radius}px;${tx?`font-size:${e.fs}px;`:''}}`});
   css+=m+'\n}'}
+ const responsiveRules=(key,query,width,height)=>{const hasLayout=els.some(e=>e.media&&Object.keys(e.media[key]||{}).length),hasBg=Object.prototype.hasOwnProperty.call(mediaBackgrounds,key);if(!hasLayout&&!hasBg)return'';let m=`\n@media ${query}{`;
+  const pageHeight=Math.max(height,...els.map(e=>{const o={...mediaValues(e),...(e.media&&e.media[key]||{})};return(+o.y||0)+(+o.h||0)+16}));
+  if(hasLayout)m+=`\n.stage{display:block;position:relative;width:100%;max-width:${width}px;height:${pageHeight}px;min-height:${height}px;aspect-ratio:auto;container-type:normal;overflow:visible}\n.stage .el:has(>.el){position:absolute}\n.stage>.el{position:absolute}`;
+  if(hasBg)m+=`\n.stage{background:${mediaBackgrounds[key]}}`;
+  if(hasLayout){m+='\n.el{position:absolute}';els.forEach((e,i)=>{const o={...mediaValues(e),...(e.media&&e.media[key]||{})},p=e.parent&&get(e.parent),pw=p&&(p.media&&p.media[key]&&p.media[key].w||p.w)||width,ph=p&&(p.media&&p.media[key]&&p.media[key].h||p.h)||height,s=[];
+   s.push(`left:${(o.x/pw*100).toFixed(3)}%`,`top:${(o.y/ph*100).toFixed(3)}%`,`width:${(o.w/pw*100).toFixed(3)}%`,`height:${(o.h/ph*100).toFixed(3)}%`,`border-radius:${o.radius}px`);
+   if(o.fs!=null)s.push(`font-size:${o.fs}px`);if(o.fw!=null)s.push(`font-weight:${o.fw}`);if(o.lh!=null)s.push(`line-height:${o.lh}`);if(o.fill!=null)s.push(`background:${o.fill}`);if(o.color!=null)s.push(`color:${o.color}`);if(o.align!=null)s.push(o.align=='left'?'justify-content:flex-start;text-align:left;padding:0 14px':'justify-content:center;text-align:center;padding:0');if(o.border!=null)s.push(`border:${o.border}`);if(o.shadow!=null)s.push(`box-shadow:${o.shadow}`);if(o.hid!=null)s.push(o.hid?'display:none;visibility:hidden;opacity:0;pointer-events:none':'display:flex;visibility:visible;opacity:1;pointer-events:auto');m+=`\n.e${i+1}{${s.join(';')}}`})}
+  return m+'\n}'};
+ css+=responsiveRules('tablet','(min-width: 641px) and (max-width: 900px)',MEDIA_VIEW.tablet.w,MEDIA_VIEW.tablet.h)+responsiveRules('phone','(max-width: 640px)',MEDIA_VIEW.phone.w,MEDIA_VIEW.phone.h);
  const addEA=(h,e)=>{let a=e.grp?` data-g="${A(e.grp)}"`:'';if(e.tag=='button'&&BUTTON_HOVERS[e.btnHover]&&e.btnHover!='none')a+=` data-bh="${e.btnHover}"`;const tt=actOf(e)=='toggle'&&(e.tag=='button'||e.tag=='a')?els.find(x=>x.id==e.tg&&x!==e):null,aa=actionAttrs(e);
   if(tt)a+=` data-tg="${tt.grp?A(tt.grp):'e'+(els.indexOf(tt)+1)}"`+(e.ea&&EA[e.ea]?` data-ea="${e.ea}"${aa}`:'');
   else if(e.ea&&EVT[e.tag]&&EA[e.ea]){const ti=e.et?els.findIndex(x=>x.id==e.et):-1;a+=` data-ea="${e.ea}" data-ev="${EVT[e.tag]}"${ti>=0?` data-et="e${ti+1}"`:''}${aa}`}
@@ -932,10 +961,12 @@ function parts(preview=false){
   else h=`${pad}<${g} ${c}>${inside}</${g}>`;
   return addEA(h,e)};return els.filter(e=>!e.parent||!get(e.parent)).map(e=>render(e)).join('\n')};
  const tpl=(h,inl)=>`<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>${esc(proj?proj.name+(PT?' - '+PT:''):'My design')}</title>\n${h}\n</head>\n<body>\n<form class="stage" id="f" autocomplete="off">\n${mkBody(inl)}\n</form>${els.length?`\n<div class="toast" id="toast" role="status"></div>\n<script>\n${SCR}\n<\/script>`:''}\n</body>\n</html>`;
- return {css,html:tpl(`<link rel="stylesheet" href="${rel(dir,'css/'+stem+'.css')}">`),single:tpl(`<style>\n${css}\n</style>`),full:tpl(`<style>\n${css}\n</style>`,1)}}
+ const result={css,html:tpl(`<link rel="stylesheet" href="${rel(dir,'css/'+stem+'.css')}">`),single:tpl(`<style>\n${css}\n</style>`),full:tpl(`<style>\n${css}\n</style>`,1)};
+ if(runtime){els.forEach((e,i)=>Object.assign(e,live[i]));bg=activeBreakpoint=='base'?baseBg:(cp()&&cp().mediaBg&&cp().mediaBg[activeBreakpoint])||baseBg}
+ W=viewW;H=viewH;return result}
 const gen=()=>parts().single;
 let st,loading=false,PS=null,PT='',PD='';
-function update(){$('#out').textContent=gen();if(proj&&$('#tree'))$('#tree').textContent=treeText(true);if(proj&&!loading){clearTimeout(st);st=setTimeout(saveProj,500)}}
+function update(){if(proj&&!loading){syncPage();if(activeBreakpoint!='base'){setDims();fit()}}$('#out').textContent=gen();if(proj&&$('#tree'))$('#tree').textContent=treeText(true);if(proj&&!loading){clearTimeout(st);st=setTimeout(saveProj,500)}}
 
 // export
 const imgC={};function getImg(s){let i=imgC[s];if(!i){i=imgC[s]=new Image();i.src=s}return i}
@@ -1014,7 +1045,7 @@ $('#up').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
 
 // ---------- load / clear
 function load(d){Object.values(nodes).forEach(n=>n.remove());for(const k in nodes)delete nodes[k];
- els=d.elements||[];bg=d.bg||'#ffffff';art.style.background=bg;uid=els.reduce((m,e)=>Math.max(m,e.id),uid);els.forEach(e=>mk(e));
+ els=(d.elements||[]).map(e=>{const o={...e};o.baseStyle=mediaValues(o);Object.assign(o,o.media&&o.media[activeBreakpoint]||{});return o});baseBg=d.bg||'#ffffff';bg=activeBreakpoint=='base'?baseBg:(d.mediaBg&&d.mediaBg[activeBreakpoint])||baseBg;art.style.background=bg;uid=els.reduce((m,e)=>Math.max(m,e.id),uid);els.forEach(e=>mk(e));
  sel=null;if(mob()&&body.dataset.sheet=='edit')sheet('');updateEmpty();inspect();update()}
 $('#clear').onclick=()=>{if(!els.length&&bg=='#ffffff')return;checkpoint();load({elements:[],bg:'#ffffff'});toast('Cleared. Press Undo to bring it back.')};
 // projects and home
@@ -1057,8 +1088,9 @@ function uniqFile(base,dir,self){let f=base+'.html',n=2;while(proj.pages.some(p=
 function dirOpts(sel){const ds=[...new Set(proj.pages.map(p=>p.dir||'').filter(Boolean))].sort();
  return `<option value="" ${sel==''?'selected':''}>Project root</option>`+ds.map(d=>`<option value="${d}" ${d==sel?'selected':''}>${d}/</option>`).join('')+`<option value="__new">New folder...</option>`}
 function curStem(){return proj&&proj.pages?stemOf(cp()):'index'}
-function syncPage(){if(!proj||!proj.pages)return;const pg=cp();pg.bg=bg;pg.elements=els}
-function partsFor(pg,preview=false){const se=els,sb=bg;els=pg.elements;bg=pg.bg;PS=stemOf(pg);PD=pg.dir||'';PT=pg.name;try{return parts(preview)}finally{els=se;bg=sb;PS=null;PT=''}}
+function captureBreakpoint(){els.forEach(e=>{if(activeBreakpoint=='base'){e.baseStyle=mediaValues(e);return}const base=e.baseStyle||mediaValues(e),media=e.media||(e.media={}),patch={...(media[activeBreakpoint]||{})};MEDIA_FIELDS.forEach(k=>{if(e[k]===base[k])delete patch[k];else patch[k]=e[k]});if(Object.keys(patch).length)media[activeBreakpoint]=patch;else delete media[activeBreakpoint]})}
+function syncPage(){if(!proj||!proj.pages)return;const pg=cp();captureBreakpoint();if(activeBreakpoint=='base'){pg.bg=bg;baseBg=bg}else{pg.mediaBg=pg.mediaBg||{};if(bg===baseBg)delete pg.mediaBg[activeBreakpoint];else pg.mediaBg[activeBreakpoint]=bg;if(!Object.keys(pg.mediaBg).length)delete pg.mediaBg}pg.elements=els.map(e=>{const out={...e,...e.baseStyle};delete out.baseStyle;return out})}
+function partsFor(pg,preview=false){const se=els,sb=bg,sm=partsMediaBg;els=pg.elements;bg=pg.bg;partsMediaBg=pg.mediaBg||{};PS=stemOf(pg);PD=pg.dir||'';PT=pg.name;try{return parts(preview)}finally{els=se;bg=sb;partsMediaBg=sm;PS=null;PT=''}}
 function treeText(mark){syncPage();const s=slug(),L=[s+'/'];
  const byDir={};proj.pages.forEach((pg,i)=>{(byDir[pg.dir||'']=byDir[pg.dir||'']||[]).push([pg,i])});
  const ln=(pg,i,ind)=>ind+pg.file+(mark&&i==proj.cur?'   <- editing':'');
@@ -1068,7 +1100,7 @@ function treeText(mark){syncPage();const s=slug(),L=[s+'/'];
  const im=[];proj.pages.forEach(pg=>pg.elements.forEach((e,i)=>{if(e.src)im.push(stemOf(pg)+'-photo-'+(i+1)+(e.src.startsWith('data:image/png')?'.png':'.jpg'))}));
  if(im.length){L.push('  images/');im.forEach(n=>L.push('    '+n))}
  L.push('  design.json','  preview.png','  README.txt');return L.join('\n')}
-function showPage(){const pg=cp();loading=true;load({elements:pg.elements.map(e=>({...e})),bg:pg.bg});loading=false;lastKey=null;pagesUI();hbtns();$('#out').textContent=gen()}
+function showPage(){const pg=cp();if(activeBreakpoint!='base'&&!pg.elements.some(e=>e.media&&Object.keys(e.media[activeBreakpoint]||{}).length))seedBreakpointLayout(activeBreakpoint,pg);loading=true;load({elements:pg.elements.map(e=>({...e})),bg:pg.bg,mediaBg:pg.mediaBg});loading=false;setDims();lastKey=null;pagesUI();hbtns();sizeUI();fit();$('#out').textContent=gen()}
 function goPage(i){syncPage();proj.cur=i;showPage();saveProj()}
 function addPage(name,dir){syncPage();const file=uniqFile(slugN(name)||'page',dir||'',null);
  proj.pages.push({id:'p'+Date.now().toString(36),name,file,dir:dir||'',bg:'#ffffff',elements:[]});goPage(proj.pages.length-1)}
@@ -1096,9 +1128,10 @@ function settingsUI(){const pg=cp();
  <label for="rd">Folder</label><select id="rd" ${proj.cur?'':'disabled'}>${dirOpts(pg.dir||'')}</select>
  <input id="rf" type="text" placeholder="New folder name" aria-label="New folder name" hidden style="margin-top:6px">
  ${proj.cur?'':'<p class="hint">The first page stays in the project root as index.html.</p>'}
- <h2 style="margin:14px 0 6px">Responsive (whole website)</h2>
- <select id="rs" aria-label="Responsive layout"><option value="stack"${RS()=='stack'?' selected':''}>Rearrange into a column on phones</option><option value="scale"${RS()=='scale'?' selected':''}>Keep the layout, shrink to fit</option><option value="fixed"${RS()=='fixed'?' selected':''}>Fixed size</option></select>
- <p class="hint">Rearrange adds a CSS media query for screens up to 640px wide. Press Play and pick a phone size to test it.</p>
+  <h2 style="margin:14px 0 6px">Responsive (whole website)</h2>
+  <select id="rs" aria-label="Responsive layout"><option value="stack"${RS()=='stack'?' selected':''}>Rearrange into a column on phones</option><option value="scale"${RS()=='scale'?' selected':''}>Keep the layout, shrink to fit</option><option value="fixed"${RS()=='fixed'?' selected':''}>Fixed size</option></select>
+  <p class="hint">Choose Base, Tablet, or Phone above to preview and edit each layout. Breakpoint edits are saved separately and exported as CSS @media rules.</p>
+  <p class="hint">Rearrange adds an automatic layout for screens up to 640px. Press Play and pick a phone size to test it.</p>
  <h2 style="margin:14px 0 6px">File path</h2><pre id="tree"></pre>`;
  $('#tree').textContent=treeText(true);const d=$('#sdel');d.hidden=!proj.cur;d.textContent='Delete page';delete d.dataset.s}
 $('#pset').onclick=()=>{settingsUI();$('#smodal').classList.add('on')};
