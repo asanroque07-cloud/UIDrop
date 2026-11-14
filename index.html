@@ -688,8 +688,10 @@ function sizeUI(){const bp=$('#bp');if(bp)bp.value=activeBreakpoint;const reset=
  $('#szsel').hidden=false;$('#szsel').innerHTML=o;const r=!!ROT[proj.device],b=$('#rot');b.hidden=!r;b.textContent='\u21bb '+(proj.rot?'Landscape':'Portrait');
  b.setAttribute('aria-pressed',String(!!proj.rot));b.title='Rotate '+(ROT[proj.device]||'screen');
  $('#dev').textContent=d.n+(r&&proj.rot?' (landscape)':'')}
-function applySize(){syncPage();setDims();H_={};
- proj.pages.forEach(pg=>pg.elements.forEach(e=>{if(e.full=='left')e.h=H;else if(e.full){e.w=W;if(e.full=='bottom')e.y=H-e.h}}));
+function applySize(previousW=W,previousH=H){syncPage();setDims();const nextW=W,nextH=H;
+ if(activeBreakpoint=='base'&&RS()!='fixed'&&previousW>0&&previousH>0){const sx=nextW/previousW,sy=nextH/previousH;
+  proj.pages.forEach(pg=>pg.elements.forEach(e=>{if(e.full)return;e.x=Math.round(e.x*sx);e.y=Math.round(e.y*sy);e.w=Math.round(e.w*sx);e.h=Math.round(e.h*sy)}))}
+ H_={};proj.pages.forEach(pg=>pg.elements.forEach(e=>{if(e.full=='left')e.h=H;else if(e.full){e.w=W;if(e.full=='bottom')e.y=H-e.h}}));
  showPage();sizeUI();fit();saveProj()}
 $('#szsel').onchange=e=>{const[w,h]=e.target.value.split('x').map(Number);proj.w=w;proj.h=h;applySize()};
 $('#rot').onclick=()=>{proj.rot=!proj.rot;applySize()};
