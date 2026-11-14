@@ -45,7 +45,7 @@ Menus (Insert > Menus):
 
 Responsive: open Page settings > "Responsive (whole website)".
   Rearrange into a column on phones: adds a CSS media query (max-width 640px) that stacks the shapes top to bottom.
-  Keep the layout, shrink to fit: everything scales down with the screen.   Fixed size: no scaling.
+  Keep the layout, shrink to fit: everything scales with the screen - up on big monitors and down on phones - so the page always fills the full width with no side margins.   Fixed size: the design keeps its exact pixel size and is centred (it may grow up to 1.6x on very wide screens).
   In Play, pick a phone size from the size menu to test it.
 
 Pages: use the tabs above the canvas. "+ Add page" and "Page settings" open popups.
@@ -56,3 +56,8 @@ Play: press the green Play button (or Ctrl/Cmd+Enter) to run your website in a l
   Links and buttons that go to a page work, so you can click through every page. Use Back, Restart and the page menu at the top.
   Fields can be typed in and animations run. "All devices" projects have a screen size menu and Rotate button to test every screen.
   Press Stop or Esc to go back to the designer. Your design is not changed by testing.
+
+Margins and full-width pages
+  Exported pages have no outer margin: the page background and the design both run edge to edge.
+  The stage fills the browser width and keeps the design's proportions, so a 720 x 460 design looks exactly the same at 720 px wide and scales smoothly everywhere else. At the exact design width every shape lands on the same pixel it has in the designer.
+  Play mode scales the preview up or down to fit the window, so the design fills the device frame instead of sitting in a white box.
