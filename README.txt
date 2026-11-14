@@ -29,10 +29,10 @@ Resize: select any shape, image or file, then drag the square handles on its cor
   Corners keep an image's proportions; hold Shift to stretch it freely (for other shapes, Shift keeps proportions).
   The Width / Height boxes in the side panel still work and stay in sync.
 
-Animation after an action: select a Button, Link, Dropdown, Radio group, Checklist, Checkbox, Switch or Navbar, then pick "After it is clicked/used, animate" (Pulse, Shake, Bounce, Flip, Spin, Zoom in, Fade in, Slide up, Slide from left, Flash).
-  Choose "Animate which shape" to animate a different shape instead (for example, a button that reveals a card).
-  Set "Hidden until an animation shows it" to Yes on that shape so it appears when the animation plays. Use "Preview animation" to try it in the designer.
-  "Always animate (loop)" is the old looping animation.
+Animation after an action: select a Button, Link, Dropdown, Radio group, Checklist, Checkbox, Switch or Navbar, then choose an effect from Entrance (Fade, Zoom, Slide, Rotate or Flip), Emphasis (Pulse, Bounce, Heartbeat, Rubber band, Jello or Tada), or Attention (Shake, Wobble, Swing, Spin or Flash).
+  Tune duration, start delay, easing and repeat count, then use "Preview animation" to try it in the designer. Choose "Animate which shape" to animate a different shape.
+  Set "Hidden until an animation shows it" on a shape to reveal it from a button. "Always animate (loop)" includes Float, Pulse, Bounce, Wiggle, Sway, Heartbeat, Spin and Glow.
+Buttons: quickly insert Soft, Ghost or Gradient presets, or set any button to Solid, Outline, Soft, Ghost or Gradient style. Preview Lift, Grow, Glow, Shine or Press hover feedback in the editor and Play mode. Exported pages respect reduced-motion preferences.
 
 Menus (Insert > Menus):
   Menu bar        A navbar with Home / About / Contact links.
