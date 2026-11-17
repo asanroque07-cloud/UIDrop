@@ -173,22 +173,32 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
  body.ed header{position:sticky;top:0;z-index:10;padding:7px 10px;gap:6px 8px}
  body.ed header .logo{font-size:18px}
  #tools{flex:1 1 100%;justify-content:flex-start}
- body.ed #tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-items:center}
- #pname{grid-column:span 2;width:100%;min-width:0}
+ body.ed #tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;align-items:center}
+ #pname{grid-column:1/4;width:100%;min-width:0}
+ #saved{display:none}
  #dev{display:none}
- .grp{grid-column:span 1;gap:3px}
- .grp .btn.ico{flex:1;padding:6px 4px}
- #home{grid-column:span 1}
- #tools>.btn{min-width:0;min-height:40px;padding:6px 4px;font-size:12px;white-space:nowrap}
+ .grp{grid-column:4/6;gap:4px;justify-content:flex-end}
+ .grp .btn.ico{flex:1 1 0;min-width:0;max-width:64px;padding:6px 4px}
+ #home{grid-column:auto}
+ #tools>.btn{min-width:0;min-height:40px;padding:6px 2px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  body.ed #editor{display:flex;flex:1;min-height:0;overflow:hidden}
  #editor>main{display:flex;flex:1;flex-direction:column;gap:8px;min-height:0;padding:8px;overflow:hidden}
  .center{flex:1;min-height:0;overflow:hidden;gap:8px}
- .pagebar{display:grid;grid-template-columns:minmax(48px,1fr) auto auto;gap:6px;align-items:center}
- .tabs{grid-column:1;flex:none;width:100%;padding:3px 0}
- #addpage{grid-column:2;white-space:nowrap}
- #pset{grid-column:3;white-space:nowrap}
- .sizer{grid-column:1/-1;width:100%;margin:0}
- .sizer select{flex:1;max-width:none}
+ .pagebar{display:flex;flex-wrap:nowrap;gap:6px;align-items:center;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:7px 8px}
+ .pagebar::-webkit-scrollbar{display:none}
+ .tabs{flex:none;width:auto;max-width:46vw;min-width:0;padding:3px 0;scrollbar-width:none}
+ .tabs::-webkit-scrollbar{display:none}
+ #addpage,#pset,#layersb,#snap,#bp,#resetbp{flex:none;white-space:nowrap}
+ .tabs{order:0}
+ #addpage{order:1}
+ .sizer{order:2}
+ #bp{order:3}
+ #resetbp{order:4}
+ #pset{order:5}
+ #layersb{order:6}
+ #snap{order:7}
+ .sizer{flex:none;width:auto;margin:0}
+ .sizer select{flex:none;max-width:46vw}
  .stage-wrap{flex:1;min-height:0;padding:8px;overflow:auto;border-radius:12px}
  #code{display:flex;flex-direction:column;flex:none;max-height:32vh}
  #code pre{max-height:24vh}
@@ -411,6 +421,9 @@ aside input[type=range]{height:38px}
  .th{height:112px}
  body.ed header{padding:8px}
  body.ed #tools{gap:6px}
+ #tools>.btn{font-size:11.5px;padding-inline:1px}
+ .save-long{display:none}
+ .save-short{display:inline}
  #tools>.btn{font-size:12px;padding-inline:5px}
  #editor>main{padding:7px;gap:7px}
  .pagebar{grid-template-columns:minmax(0,1fr) auto auto;gap:6px;padding:7px}
@@ -418,7 +431,7 @@ aside input[type=range]{height:38px}
  #addpage{grid-column:2}
  #pset{grid-column:3}
  .pagebar .btn.sm{font-size:12px;padding:6px 8px}
- .sizer{grid-column:1/-1;width:100%}
+ .sizer{width:auto}
  .sizer select{flex:1;max-width:none}
  .stage-wrap{padding:9px}
  #code{max-height:27vh}
@@ -1169,7 +1182,7 @@ $('#grid').onclick=e=>{const o=e.target.closest('[data-o]'),d=e.target.closest('
  if(d){if(d.dataset.s){mem=mem.filter(p=>p.id!=d.dataset.d);persist();home()}else{d.dataset.s=1;d.textContent='Sure?'}}};
 $('#home').onclick=()=>{clearTimeout(st);saveProj();home()};
 let codeManual=false;
-function setCodeVisible(visible,manual=false){const c=$('#code'),t=$('#tcode');c.hidden=!visible;t.textContent=visible?'Hide code':'View code';t.setAttribute('aria-pressed',String(visible));if(manual)codeManual=true}
+function setCodeVisible(visible,manual=false){const c=$('#code'),t=$('#tcode'),sm=matchMedia('(max-width:560px)').matches;c.hidden=!visible;t.textContent=visible?'Hide code':(sm?'Code':'View code');t.setAttribute('aria-pressed',String(visible));if(manual)codeManual=true}
 matchMedia('(max-width:900px)').addEventListener('change',()=>{if(!$('#editor').hidden&&!codeManual)setCodeVisible(desk())});
 $('#tcode').onclick=()=>setCodeVisible($('#code').hidden,true);
 $('#pname').oninput=e=>{proj.name=e.target.value;update()};
