@@ -2,7 +2,9 @@
    Runs as an ES module after the editor script, and talks to the app through window.UICloudBridge.
    Everything degrades to local-only when no Supabase project is configured. */
 const CFG = window.UICLOUD_CONFIG || {};
-const ON = !!(CFG.url && CFG.anonKey);
+const SB_URL = String(CFG.url || '').trim().replace(/\/+$/, '');
+const SB_KEY = String(CFG.anonKey || '').trim();
+const ON = !!(SB_URL && SB_KEY);
 const B = () => window.UICloudBridge || {};
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
@@ -418,8 +420,22 @@ async function boot() {
 
   if (!ON) { renderAccount(); return; }
 
-  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-  sb = createClient(CFG.url, CFG.anonKey, { auth: { persistSession: true, autoRefreshToken: true } });
+  let createClient;
+  try {
+    ({ createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'));
+  } catch (_) {
+    toast('Could not load the Supabase library — check your internet connection.');
+    renderAccount();
+    return;
+  }
+  try {
+    sb = createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+  } catch (_) {
+    sb = null;
+    toast('Supabase URL or anon key looks wrong — check supabase-config.js');
+    renderAccount();
+    return;
+  }
 
   const { data } = await sb.auth.getSession();
   user = data && data.session ? data.session.user : null;
