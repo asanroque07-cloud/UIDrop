@@ -446,6 +446,52 @@ aside input[type=range]{height:38px}
  .pagebar .btn.sm{font-size:11px;padding:6px}
 }
 @media(pointer:coarse){.btn,.tile,aside select,aside input[type=text],aside input[type=number],.card input[type=text],.card select{min-height:44px}.tile{padding:12px 5px}}
+
+/* accounts + sharing */
+#authActions{display:flex;gap:6px;flex:none}
+#acct{position:relative;flex:none}
+#acctbtn{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px}
+#acctav{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:800;font-style:normal;letter-spacing:.02em;flex:none}
+#acctname{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acctmenu{position:absolute;right:0;top:calc(100% + 8px);z-index:25;min-width:215px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 18px 40px rgba(20,28,54,.18);display:flex;flex-direction:column;gap:10px;text-align:left}
+.acctmenu .acctmail{font-size:12.5px;color:var(--mute);word-break:break-all}
+.sharedwrap{margin-top:30px}
+.sharedwrap h2{margin-bottom:12px}
+.sharedgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:18px}
+.badge{align-self:flex-start;font-size:11.5px;font-weight:700;color:var(--blue);background:color-mix(in srgb,var(--blue) 12%,transparent);border-radius:999px;padding:3px 9px}
+.authcard{width:min(440px,100%);text-align:center;position:relative;padding:28px 24px}
+.authcard h3{font-size:22px;margin:0 0 6px;letter-spacing:-.02em}
+.authcard .hint{margin:0 0 18px}
+.xbtn{position:absolute;right:12px;top:10px;border:0;background:none;font-size:24px;line-height:1;color:var(--mute);cursor:pointer;padding:6px 10px;border-radius:10px}
+.xbtn:hover{background:var(--bg);color:var(--ink)}
+.authlogo{width:54px;height:54px;margin:4px auto 14px;display:grid;place-items:center;border-radius:16px;background:var(--acc);color:#fff;font-weight:800;font-size:19px;box-shadow:0 10px 24px rgba(217,71,43,.28)}
+.authbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px;margin-bottom:10px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);font-weight:600;font-size:15px;cursor:pointer;transition:transform .16s var(--motion-spring),border-color .16s,box-shadow .16s}
+.authbtn:hover{transform:translateY(-1px);border-color:var(--blue);box-shadow:0 6px 16px rgba(27,34,64,.1)}
+.authbtn svg{width:18px;height:18px;flex:none}
+#authform input,#shmail,#shrole{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--ink);font:inherit;-webkit-appearance:none;appearance:none}
+#authform input:focus,#shmail:focus,#shrole:focus{outline:3px solid var(--focus-ring);outline-offset:1px;border-color:var(--blue)}
+#authform{text-align:left;margin-top:4px}
+#authform label{display:block;margin:12px 0 4px;font-weight:600}
+.authgo{width:100%;min-height:48px;margin-top:16px;border-radius:12px;font-size:15px}
+.autherr{color:#c02b12;font-size:13px;font-weight:600;margin:10px 0 0}
+.autherr[hidden]{display:none}
+.authswitch{margin:16px 0 0;font-size:13.5px;color:var(--mute)}
+.authswitch .link{border:0;background:none;color:var(--blue);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline;padding:0}
+.shlist{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.shrow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--bg)}
+.shav{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:800;flex:none}
+.shwho{flex:1;min-width:0;text-align:left;display:flex;flex-direction:column}
+.shwho b{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.shwho small{font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:900px){
+ header{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px}
+ header .logo{grid-column:1;grid-row:1}
+ #authActions,#acct{grid-column:2;grid-row:1;justify-self:end;display:flex;gap:6px}
+ #authActions .btn{min-height:38px;padding:6px 12px;font-size:13px;border-radius:10px}
+ #acct .btn{min-height:38px}
+ #tools{grid-column:1/-1;grid-row:2}
+ header .sp{display:none}
+}
 </style>
 </head>
 <body data-sheet="">
@@ -466,6 +512,17 @@ aside input[type=range]{height:38px}
     <button class="btn play" id="playb" title="Test your website (Ctrl+Enter)"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>Play</button>
     <button class="btn pri" id="save" aria-label="Save design" title="Save design"><span class="save-long">Save design</span><span class="save-short" aria-hidden="true">Save</span></button>
   </div>
+    <span id="authActions">
+      <button class="btn" id="loginb" type="button">Log in</button>
+      <button class="btn pri" id="signupb" type="button">Sign up</button>
+    </span>
+    <span id="acct" hidden>
+      <button class="btn" id="acctbtn" type="button" aria-haspopup="menu" aria-expanded="false"><i id="acctav" aria-hidden="true">U</i><span id="acctname">Account</span></button>
+      <div id="acctmenu" class="acctmenu" role="menu" hidden>
+        <div class="acctmail" id="acctmail"></div>
+        <button class="btn sm" id="logoutb" type="button" role="menuitem">Log out</button>
+      </div>
+    </span>
 </header>
 <section id="homev">
   <div class="hero">
@@ -504,6 +561,36 @@ aside input[type=range]{height:38px}
 <div id="mobileActions"><button class="btn pri" id="fab">+ Insert</button><button class="btn" id="editFab" hidden>Edit</button></div>
 </div>
 
+<div id="authmodal" class="modal"><div class="card authcard" role="dialog" aria-modal="true" aria-labelledby="atitle">
+  <button class="xbtn" id="authx" type="button" aria-label="Close">&times;</button>
+  <div class="authlogo" aria-hidden="true">UI</div>
+  <h3 id="atitle">Create a UIDrop account</h3>
+  <p class="hint" id="asub">Save your designs to your account and invite other people to edit them.</p>
+  <button class="authbtn" id="authgoogle" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23 12.2c0-.8-.1-1.4-.2-2H12v3.9h6.2c-.1 1-.8 2.5-2.3 3.5l3.5 2.7c2.1-1.9 3.6-4.8 3.6-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.4-2.7l-3.5-2.7c-1 .7-2.3 1.2-3.9 1.2-3 0-5.6-2-6.5-4.8l-3.7 2.8C3.7 20.4 7.5 23 12 23z"/><path fill="#FBBC05" d="M5.5 14c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2L1.8 6.8C1 8.4.6 10.1.6 11.8s.4 3.4 1.2 5l3.7-2.8z"/><path fill="#EA4335" d="M12 4.6c1.7 0 3.2.6 4.3 1.7l3.1-3.1C17.5 1.4 15 .4 12 .4 7.5.4 3.7 3 1.8 6.8L5.5 9.6C6.4 6.8 9 4.6 12 4.6z"/></svg>Continue with Google</button>
+  <button class="authbtn" id="authemail" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>Continue with Email</button>
+  <form id="authform" hidden>
+    <label for="aname" id="anamelab">Your name</label>
+    <input id="aname" type="text" autocomplete="name" placeholder="Alex Rivera">
+    <label for="aemail">Email</label>
+    <input id="aemail" type="email" autocomplete="email" placeholder="you@example.com" required>
+    <label for="apass">Password</label>
+    <input id="apass" type="password" autocomplete="new-password" placeholder="At least 6 characters" required>
+    <p class="autherr" id="autherr" role="alert" hidden></p>
+    <button class="btn pri authgo" id="authgo" type="submit">Create account</button>
+  </form>
+  <p class="authswitch" id="authswitch">Already have an account? <button class="link" id="authflip" type="button">Log in</button></p>
+</div></div>
+<div id="sharemodal" class="modal"><div class="card narrow" role="dialog" aria-modal="true" aria-labelledby="shtitle">
+  <h3 id="shtitle">Share this project</h3>
+  <p class="hint" style="margin:0 0 6px">Invite another UIDrop account by email. Editors can open the project and change it; their changes are saved for both of you.</p>
+  <label for="shmail">Their account email</label>
+  <input id="shmail" type="email" placeholder="teammate@example.com">
+  <label for="shrole">Permission</label>
+  <select id="shrole"><option value="edit">Can edit</option><option value="view">Can view only</option></select>
+  <p class="autherr" id="sherr" role="alert" hidden></p>
+  <div id="shlist" class="shlist"></div>
+  <div class="acts" style="margin-top:16px"><button class="btn" id="shclose" type="button">Close</button><button class="btn pri" id="shgo" type="button">Share</button></div>
+</div></div>
 <div id="modal" class="modal"><div class="card" role="dialog" aria-modal="true" aria-labelledby="mt">
   <h3 id="mt">Save your design</h3>
   <div class="hint" style="margin:0">Your work is saved in this browser automatically. Choose a copy to download.</div>
@@ -1155,14 +1242,14 @@ function load(d){Object.values(nodes).forEach(n=>n.remove());for(const k in node
 $('#clear').onclick=()=>{if(!els.length&&bg=='#ffffff')return;checkpoint();load({elements:[],bg:'#ffffff'});toast('Cleared. Press Undo to bring it back.')};
 // projects and home
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(mem))}catch(_){toast('Could not store projects here. Save a folder to keep your work.')}}
-function saveProj(){if(!proj)return;syncPage();proj.updated=Date.now();try{proj.thumb=png(.3)}catch(_){}persist();savedPulse()}
+function saveProj(){if(!proj)return;syncPage();proj.updated=Date.now();try{proj.thumb=png(.3)}catch(_){}persist();if(window.Cloud)Cloud.queuePush(proj);savedPulse()}
 let savedT=null;
 function savedPulse(){const s=$('#saved');if(s){s.textContent='Saved just now';s.classList.add('on');clearTimeout(savedT);savedT=setTimeout(()=>{s.textContent='All changes saved';s.classList.remove('on')},2200)}}
 function savingHint(){const s=$('#saved');if(s){s.textContent='Saving\u2026';s.classList.remove('on')}}
 function show(v){$('#homev').hidden=v!='home';$('#editor').hidden=v!='edit';$('#tools').hidden=v!='edit';body.classList.toggle('ed',v=='edit');if(v!='edit')sheet('')}
 function home(){show('home');
  $('#grid').innerHTML=`<button class="pcard new" id="newc"><span>+</span>Make a website</button>`+mem.slice().sort((a,b)=>b.updated-a.updated).map(p=>`<div class="pcard"><div class="th">${p.thumb?`<img alt="" src="${p.thumb}">`:''}</div><b>${esc(p.name)}</b><small>${DEV[p.device].n}, ${new Date(p.updated).toLocaleDateString()}</small><div class="acts"><button class="btn" data-o="${p.id}">Open</button><button class="btn" data-d="${p.id}">Delete</button></div></div>`).join('');
- $('#none').hidden=mem.length>0}
+ $('#none').hidden=mem.length>0;if(window.Cloud)Cloud.decorateHome()}
 function openProj(p){proj=p;H_={};codeManual=false;
  if(!p.pages){p.pages=[{id:'p1',name:'Home',file:'index.html',bg:p.bg||'#ffffff',elements:p.elements||[]}];delete p.bg;delete p.elements}
  p.pages.forEach(pg=>(pg.elements||[]).forEach(migrate));setDims();p.cur=Math.min(p.cur||0,p.pages.length-1);show('edit');setCodeVisible(desk());showPage();
@@ -1179,7 +1266,7 @@ $('#newh').onclick=openNew;
 $('#grid').onclick=e=>{const o=e.target.closest('[data-o]'),d=e.target.closest('[data-d]');
  if(e.target.closest('#newc'))return openNew();
  if(o)openProj(mem.find(p=>p.id==o.dataset.o));
- if(d){if(d.dataset.s){mem=mem.filter(p=>p.id!=d.dataset.d);persist();home()}else{d.dataset.s=1;d.textContent='Sure?'}}};
+ if(d){if(d.dataset.s){mem=mem.filter(p=>p.id!=d.dataset.d);persist();if(window.Cloud)Cloud.deleteProject(d.dataset.d);home()}else{d.dataset.s=1;d.textContent='Sure?'}}};
 $('#home').onclick=()=>{clearTimeout(st);saveProj();home()};
 let codeManual=false;
 function setCodeVisible(visible,manual=false){const c=$('#code'),t=$('#tcode'),sm=matchMedia('(max-width:560px)').matches;c.hidden=!visible;t.textContent=visible?'Hide code':(sm?'Code':'View code');t.setAttribute('aria-pressed',String(visible));if(manual)codeManual=true}
@@ -1317,6 +1404,9 @@ new MutationObserver(()=>{if(!$('#play').classList.contains('on'))$('#pframe').s
 
 home();
 
+// ---------- accounts / cloud sync bridge (see cloud.js)
+window.UICloudBridge={get mem(){return mem},set mem(v){mem=v},get proj(){return proj},open:p=>openProj(p),reload:()=>home(),toast:m=>toast(m)};
+
 // ---------- welcome screen: animation, name, continue
 const UKEY='dropform:user';let uname='';
 try{uname=(localStorage.getItem(UKEY)||'').slice(0,30)}catch(_){}
@@ -1343,5 +1433,7 @@ addEventListener('keydown',e=>{if(e.key=='Escape'&&!wl.hidden&&uname&&!wl.classL
 greet();if(!uname)welcome(true);
 
 </script>
+<script>window.UICLOUD_CONFIG={url:'',anonKey:''};</script>
+<script type="module" src="cloud.js"></script>
 </body>
 </html>
