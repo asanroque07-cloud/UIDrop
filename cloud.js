@@ -105,8 +105,29 @@ async function submitAuth(e) {
 
 async function googleAuth() {
   if (!ON) { authError('Accounts are not connected yet. Add your Supabase project URL and anon key.'); return; }
-  const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname } });
-  if (error) authError(/provider is not enabled/i.test(error.message) ? 'Google sign-in is not switched on for this project yet. Use email instead.' : error.message);
+  try {
+    const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname } });
+    if (error) throw error;
+  } catch (err) {
+    const m = String((err && err.message) || err);
+    authError(/provider is not enabled|unsupported provider/i.test(m)
+      ? 'Google sign-in is not switched on for this project yet. Use email instead.'
+      : m);
+  }
+}
+
+/* Supabase only advertises the providers that are switched on. Hide the Google
+   button when it is not configured, instead of letting it fail on click. */
+async function probeProviders() {
+  const btn = $('#authgoogle');
+  if (!btn || !ON) return;
+  try {
+    const r = await fetch(SB_URL + '/auth/v1/settings', { headers: { apikey: SB_KEY } });
+    if (!r.ok) return;
+    const s = await r.json();
+    const ext = (s && s.external) || {};
+    if (ext.google === false || ext.google == null) btn.style.display = 'none';
+  } catch (_) { }
 }
 
 function initials(name, email) {
@@ -437,6 +458,8 @@ async function boot() {
     renderAccount();
     return;
   }
+
+  probeProviders();
 
   const { data } = await sb.auth.getSession();
   user = data && data.session ? data.session.user : null;
