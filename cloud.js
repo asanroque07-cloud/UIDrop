@@ -14,6 +14,7 @@ let user = null;
 let mode = 'signup';
 let shareId = null;
 let members = [];
+let profileName = '';
 const queue = new Map();
 let flushTimer = 0;
 let sharedRole = {};
