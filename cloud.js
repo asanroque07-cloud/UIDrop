@@ -15,6 +15,7 @@ let mode = 'signup';
 let shareId = null;
 let members = [];
 let profileName = '';
+let googleOn = true;
 const queue = new Map();
 let flushTimer = 0;
 let sharedRole = {};
@@ -105,6 +106,7 @@ async function submitAuth(e) {
 
 async function googleAuth() {
   if (!ON) { authError('Accounts are not connected yet. Add your Supabase project URL and anon key.'); return; }
+  if (!googleOn) { authError('Google sign-in is not switched on for this project yet. Use email instead.'); return; }
   try {
     const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname } });
     if (error) throw error;
@@ -116,17 +118,17 @@ async function googleAuth() {
   }
 }
 
-/* Supabase only advertises the providers that are switched on. Hide the Google
-   button when it is not configured, instead of letting it fail on click. */
+/* Supabase only advertises the providers that are switched on. Remember
+   whether Google is one of them so a click explains itself instead of failing
+   with the raw GoTrue error. */
 async function probeProviders() {
-  const btn = $('#authgoogle');
-  if (!btn || !ON) return;
+  if (!ON) return;
   try {
     const r = await fetch(SB_URL + '/auth/v1/settings', { headers: { apikey: SB_KEY } });
     if (!r.ok) return;
     const s = await r.json();
     const ext = (s && s.external) || {};
-    if (ext.google === false || ext.google == null) btn.style.display = 'none';
+    googleOn = !(ext.google === false || ext.google == null);
   } catch (_) { }
 }
 
