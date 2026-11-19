@@ -10,6 +10,6 @@
 
    Leave both empty to keep the app in local-only guest mode. */
 window.UICLOUD_CONFIG = {
-  url: '',
-  anonKey: ''
+  url: 'https://bvfzhfbqgmvpdldfvjqr.supabase.co',
+  anonKey: 'sb_publishable_MNUG9v7bZCuBwfuftflJkQ_08v0agcE'
 };
