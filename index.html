@@ -754,7 +754,31 @@ const DEF={
  menubar:{pre:1,w:720,h:60,fill:'#1c1f3b',radius:6,ic:'\u2261',label:'Menu bar'},
  sidebarmenu:{pre:1,w:240,h:60,fill:'#1c1f3b',radius:6,ic:'\u2630',label:'Sidebar menu'},
  dropmenu:{pre:1,w:150,h:46,fill:'#3b3fd8',radius:10,ic:'\u25be',label:'Dropdown menu'},
- footer:{w:720,h:80,fill:'#e6e9f5',radius:0,text:'Made with UIVisualBuilder',color:'#1c1f3b',fs:14,fw:400,full:'bottom',tag:'footer',label:'Footer'}};
+ footer:{w:720,h:80,fill:'#e6e9f5',radius:0,text:'Made with UIVisualBuilder',color:'#1c1f3b',fs:14,fw:400,full:'bottom',tag:'footer',label:'Footer'},
+ /* game objects */
+ player:{w:56,h:56,fill:'#ffd166',radius:14,ic:'P',label:'Player'},
+ enemy:{w:48,h:48,fill:'#e5484d',radius:12,ic:'E',label:'Enemy'},
+ ball:{w:30,h:30,fill:'#ffffff',radius:15,label:'Ball'},
+ platform:{w:240,h:18,fill:'#3b3fd8',radius:8,label:'Platform'},
+ ground:{w:600,h:24,fill:'#1b2450',radius:10,label:'Ground'},
+ block:{w:90,h:90,fill:'#3b3fd8',radius:8,label:'Block'},
+ spike:{w:44,h:44,fill:'#ff5a36',radius:4,label:'Spike'},
+ coin:{w:32,h:32,fill:'#ffd166',radius:16,ic:'C',label:'Coin'},
+ gem:{w:34,h:34,fill:'#2ec4b6',radius:6,ic:'G',label:'Gem'},
+ hud:{w:300,h:56,fill:'#111834',radius:12,border:'1px solid #2a3566',text:'Score 0',color:'#ffffff',fs:16,label:'HUD'},
+ jumpbtn:{w:120,h:44,fill:'#1c1f3b',radius:12,text:'Jump',color:'#ffffff',fs:15,tag:'button',label:'Jump button'},
+ skybox:{w:900,h:420,fill:'#0b1020',radius:18,label:'Sky box'},
+ /* character parts */
+ head:{w:120,h:120,fill:'#ffd2bd',radius:60,label:'Head'},
+ body:{w:160,h:180,fill:'#3b3fd8',radius:22,label:'Body'},
+ arm:{w:100,h:34,fill:'#ffd2bd',radius:17,label:'Arm'},
+ leg:{w:54,h:120,fill:'#1c1f3b',radius:16,label:'Leg'},
+ eye:{w:18,h:18,fill:'#1c1f3b',radius:9,label:'Eye'},
+ mouth:{w:44,h:14,fill:'#c96b5c',radius:7,label:'Mouth'},
+ hair:{w:130,h:60,fill:'#3a2a20',radius:40,label:'Hair'},
+ hat:{w:140,h:44,fill:'#e5484d',radius:10,label:'Hat'},
+ cape:{w:150,h:170,fill:'#e5484d',radius:18,label:'Cape'},
+ shadow:{w:120,h:18,fill:'rgba(0,0,0,.18)',radius:9,label:'Shadow'}};
 const SW=['#ff5a36','#3b3fd8','#1c1f3b','#ffffff','#ffd23f','#2ec4b6','#f3a6ff','#e6e9f5','linear-gradient(135deg,#ffb199,#ff0844)','linear-gradient(135deg,#3b3fd8,#2ec4b6)','linear-gradient(135deg,#ffd23f,#ff5a36)','linear-gradient(135deg,#1c1f3b,#3b3fd8)'];
 const ANIM={float:['3s ease-in-out','50%{transform:translateY(-14px)}','Float'],pulse:['1.6s ease-in-out','50%{transform:scale(1.08)}','Pulse'],bounce:['1s ease-in-out','0%,100%{transform:translateY(0)}40%{transform:translateY(-20px)}','Bounce'],wiggle:['1.2s ease-in-out','25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}','Wiggle'],sway:['2.4s ease-in-out','0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}','Sway'],heartbeat:['1.4s ease-in-out','0%,35%,65%,100%{transform:scale(1)}15%,50%{transform:scale(1.12)}','Heartbeat'],spin:['4s linear','to{transform:rotate(360deg)}','Spin'],glow:['2s ease-in-out','0%,100%{filter:drop-shadow(0 0 0 transparent)}50%{filter:drop-shadow(0 0 12px var(--ac,#3b3fd8))}','Glow']};
 const EA={fade:['.6s ease','from{opacity:0}','Fade in'],zoom:['.45s cubic-bezier(.2,1.4,.4,1)','from{transform:scale(.3);opacity:0}','Zoom in'],zoomout:['.5s cubic-bezier(.2,1.4,.4,1)','from{transform:scale(1.35);opacity:0}','Zoom settle'],slideup:['.55s ease-out','from{transform:translateY(44px);opacity:0}','Slide up'],slidedown:['.55s ease-out','from{transform:translateY(-44px);opacity:0}','Slide down'],slideleft:['.55s ease-out','from{transform:translateX(-64px);opacity:0}','Slide from left'],slideright:['.55s ease-out','from{transform:translateX(64px);opacity:0}','Slide from right'],rotatein:['.65s cubic-bezier(.2,1.4,.4,1)','from{transform:rotate(-16deg) scale(.75);opacity:0}','Rotate in'],flipin:['.7s ease-out','from{transform:perspective(600px) rotateY(-90deg);opacity:0}','Flip in'],flipinx:['.7s ease-out','from{transform:perspective(600px) rotateX(-90deg);opacity:0}','Flip in X'],pulse:['.5s ease','50%{transform:scale(1.15)}','Pulse'],shake:['.55s ease','20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}','Shake'],bounce:['.7s ease','0%,100%{transform:translateY(0)}40%{transform:translateY(-22px)}','Bounce'],flip:['.7s ease','from{transform:perspective(500px) rotateY(0)}to{transform:perspective(500px) rotateY(360deg)}','Flip Y'],flipx:['.7s ease','from{transform:perspective(500px) rotateX(0)}to{transform:perspective(500px) rotateX(360deg)}','Flip X'],spin:['.7s ease','to{transform:rotate(360deg)}','Spin'],heart:['.7s ease-in-out','0%,100%{transform:scale(1)}25%,60%{transform:scale(1.18)}45%,80%{transform:scale(1.08)}','Heartbeat'],rubberband:['.8s ease','0%{transform:scale3d(1,1,1)}30%{transform:scale3d(1.25,.75,1)}40%{transform:scale3d(.75,1.25,1)}50%{transform:scale3d(1.15,.85,1)}65%{transform:scale3d(.95,1.05,1)}75%{transform:scale3d(1.05,.95,1)}100%{transform:scale3d(1,1,1)}','Rubber band'],jello:['.9s ease','11%,33%{transform:skewX(-8deg) skewY(-8deg)}22%,44%{transform:skewX(8deg) skewY(8deg)}55%{transform:skewX(-4deg) skewY(-4deg)}66%{transform:skewX(4deg) skewY(4deg)}77%{transform:skewX(-2deg) skewY(-2deg)}88%{transform:skewX(2deg) skewY(2deg)}100%{transform:none}','Jello'],tada:['.9s ease','0%{transform:scale(1)}10%,20%{transform:scale(.9) rotate(-4deg)}30%,50%,70%,90%{transform:scale(1.12) rotate(4deg)}40%,60%,80%{transform:scale(1.12) rotate(-4deg)}100%{transform:scale(1) rotate(0)}','Tada'],wobble:['.8s ease','0%{transform:translateX(0)}15%{transform:translateX(-12px) rotate(-5deg)}30%{transform:translateX(9px) rotate(3deg)}45%{transform:translateX(-7px) rotate(-3deg)}60%{transform:translateX(5px) rotate(2deg)}75%{transform:translateX(-3px) rotate(-1deg)}100%{transform:translateX(0)}','Wobble'],swing:['.8s ease','20%{transform:rotate(15deg)}40%{transform:rotate(-10deg)}60%{transform:rotate(5deg)}80%{transform:rotate(-5deg)}100%{transform:rotate(0)}','Swing'],flash:['.7s linear','0%,50%,100%{opacity:1}25%,75%{opacity:0}','Flash']};
@@ -812,8 +836,16 @@ function migrate(e){
 // palette
 const CATS=[['Objects',['box','circle','line','card']],['Text',['heading','paragraph','link']],['Buttons',['button','outline','submit','reset','fab','softbtn','ghostbtn','gradientbtn']],['Image',['image','avatar','banner']],['Input',['input','email','password','number','phone','date','search','textarea','file','color','slider']],['Selection',['dropdown','radio','checklist','checkbox','switch']],['Menus',['menubar','sidebarmenu','dropmenu','menubtn','dropbtn','sidebar']],['Sections',['navbar','footer']]];
 const tileB=d=>`<b style="background:${d.fill};border-radius:${Math.min(d.radius,12)}px;${d.fill=='transparent'?'border:1px dashed var(--mute);':''}${d.border?'border:2px solid var(--mute);':''}${d.shadow?'box-shadow:0 2px 6px rgba(0,0,0,.25);':''}${d.h<10?'height:4px;margin:10px auto 12px;':''}color:${d.fill=='transparent'||d.fill=='#ffffff'?'var(--ink)':'#fff'}">${d.ic||''}</b>`;
-$('#menu').innerHTML=CATS.map(([n,ks],i)=>`<div class="cat${i?'':' open'}"><button class="ch" aria-expanded="${!i}">${n}<i></i></button><div class="cp"><div class="ci"><div class="tiles">${ks.map(k=>`<div class="tile" draggable="true" tabindex="0" role="button" aria-label="Add ${DEF[k].label}" data-t="${k}">${tileB(DEF[k])}${DEF[k].label}</div>`).join('')}${n=='Image'?'<div class="tile" tabindex="0" data-up="1"><b style="color:#fff">+</b>Upload image</div>':''}</div></div></div></div>`).join('')+`<div class="cat"><button class="ch" aria-expanded="false">Colors<i></i></button><div class="cp"><div class="ci"><div class="sws" id="sws"></div><p class="hint" style="margin:8px 0 12px">Drop a color on a shape or the canvas, or click it.</p></div></div></div>`;
-$('#sws').innerHTML=SW.map(c=>`<div class="sw" draggable="true" tabindex="0" data-c="${c}" style="background:${c}" title="${c.startsWith('lin')?'Gradient':c}"></div>`).join('');
+const INSERTS={
+ site:CATS,
+ game:[['Player',['player','enemy','ball']],['Level pieces',['platform','ground','block','spike']],['Pickups',['coin','gem']],['On screen',['hud','jumpbtn']],['Backdrop',['skybox','box','card']],['Text',['heading','paragraph']],['Image',['image','photo']]],
+ char:[['Body parts',['head','body','arm','leg']],['Face',['eye','mouth','hair','hat']],['Extras',['cape','shadow']],['Basic shapes',['circle','box']],['Text',['heading','paragraph']],['Image',['image','photo']]]
+};
+function renderMenu(kind){const k=kind==='char'?'char':String(kind||'').startsWith('game')?'game':'site';
+ const h=document.querySelector('#menuA .sh h2');if(h)h.textContent=k==='game'?'Game objects':k==='char'?'Character parts':'Insert';
+ $('#menu').innerHTML=INSERTS[k].map(([n,ks],i)=>`<div class="cat${i?'':' open'}"><button class="ch" aria-expanded="${!i}">${n}<i></i></button><div class="cp"><div class="ci"><div class="tiles">${ks.map(x=>`<div class="tile" draggable="true" tabindex="0" role="button" aria-label="Add ${DEF[x].label}" data-t="${x}">${tileB(DEF[x])}${DEF[x].label}</div>`).join('')}${n=='Image'?'<div class="tile" tabindex="0" data-up="1"><b style="color:#fff">+</b>Upload image</div>':''}</div></div></div></div>`).join('')+`<div class="cat"><button class="ch" aria-expanded="false">Colors<i></i></button><div class="cp"><div class="ci"><div class="sws" id="sws"></div><p class="hint" style="margin:8px 0 12px">Drop a color on a shape or the canvas, or click it.</p></div></div></div>`;
+ $('#sws').innerHTML=SW.map(c=>`<div class="sw" draggable="true" tabindex="0" data-c="${c}" style="background:${c}" title="${c.startsWith('lin')?'Gradient':c}"></div>`).join('')}
+renderMenu('site');
 let dragData='';
 document.addEventListener('dragstart',e=>{const t=e.target.closest('[data-t],[data-c]');if(!t)return;dragData=t.dataset.t?'t:'+t.dataset.t:'c:'+t.dataset.c;e.dataTransfer.setData('text/plain',dragData);e.dataTransfer.effectAllowed='copy'});
 document.addEventListener('dragend',()=>{dragData='';hideGhost()});
@@ -1299,10 +1331,10 @@ const WCAT={site:{n:'Website',card:'Make a website',name:'My website',mk:'Create
 const kindOf=p=>WCAT[p.kind]?p.kind:'site';
 function el_(id,type,x,y,over){return {id,type,...DEF[type],x,y,...(over||{})}}
 function tplFor(k){
- if(k==='game2d')return {bg:'#101433',elements:[el_(1,'heading',330,34,{text:'My 2D game',color:'#ffffff',fs:38}),el_(2,'box',470,428,{w:64,h:64,fill:'#ffd166',radius:14,label:'Player'}),el_(3,'box',250,520,{w:230,h:16,fill:'#3b3fd8',radius:8,label:'Platform'}),el_(4,'box',700,428,{w:220,h:16,fill:'#3b3fd8',radius:8,label:'Platform'}),el_(5,'circle',860,170,{w:36,h:36,fill:'#ff5a36',label:'Coin'})]};
- if(k==='game3d')return {bg:'#0b1020',elements:[el_(1,'heading',300,34,{text:'My 3D game',color:'#ffffff',fs:38}),el_(2,'card',330,150,{w:440,h:300,fill:'#111834',radius:18,border:'1px solid #2a3566',shadow:'none',label:'Scene'}),el_(3,'box',400,262,{w:120,h:120,fill:'#3b3fd8',radius:8,label:'Cube'}),el_(4,'box',560,320,{w:150,h:90,fill:'#2a3566',radius:8,label:'Block'}),el_(5,'box',250,468,{w:600,h:24,fill:'#1b2450',radius:10,label:'Ground'})]};
- if(k==='gameiso')return {bg:'#101433',elements:[el_(1,'heading',300,34,{text:'My isometric game',color:'#ffffff',fs:36}),el_(2,'box',430,300,{w:90,h:90,fill:'#3b3fd8',radius:6,label:'Tile'}),el_(3,'box',530,330,{w:90,h:90,fill:'#5a61ff',radius:6,label:'Tile'}),el_(4,'box',330,360,{w:90,h:90,fill:'#2a3566',radius:6,label:'Tile'})]};
- if(k==='char')return {bg:'#f6f7fb',elements:[el_(1,'heading',360,26,{text:'My character',fs:32}),el_(2,'circle',500,116,{w:120,h:120,fill:'#ffd2bd',label:'Head'}),el_(3,'box',480,258,{w:160,h:180,fill:'#3b3fd8',radius:22,label:'Body'}),el_(4,'box',360,268,{w:100,h:34,fill:'#ffd2bd',radius:17,label:'Left arm'}),el_(5,'box',660,268,{w:100,h:34,fill:'#ffd2bd',radius:17,label:'Right arm'}),el_(6,'box',495,452,{w:54,h:120,fill:'#1c1f3b',radius:16,label:'Left leg'}),el_(7,'box',571,452,{w:54,h:120,fill:'#1c1f3b',radius:16,label:'Right leg'})]};
+ if(k==='game2d')return {bg:'#101433',elements:[el_(1,'heading',330,30,{text:'My 2D game',color:'#ffffff',fs:38}),el_(2,'hud',40,30,{w:200,h:46}),el_(3,'player',470,420),el_(4,'platform',240,500,{w:260}),el_(5,'platform',690,420,{w:240}),el_(6,'spike',790,376),el_(7,'coin',856,166),el_(8,'coin',896,166),el_(9,'ground',230,560,{w:680,h:20})]};
+ if(k==='game3d')return {bg:'#0b1020',elements:[el_(1,'heading',300,30,{text:'My 3D game',color:'#ffffff',fs:38}),el_(2,'skybox',300,120,{w:520,h:340}),el_(3,'block',380,250,{w:130,h:130}),el_(4,'block',540,300,{w:160,h:96,fill:'#2a3566'}),el_(5,'block',720,340,{w:80,h:70,fill:'#5a61ff'}),el_(6,'ground',300,470,{w:520,h:22}),el_(7,'jumpbtn',940,470)]};
+ if(k==='gameiso')return {bg:'#101433',elements:[el_(1,'heading',300,30,{text:'My isometric game',color:'#ffffff',fs:36}),el_(2,'block',420,250,{w:100,h:100}),el_(3,'block',540,300,{w:100,h:100,fill:'#5a61ff'}),el_(4,'block',640,240,{w:100,h:100,fill:'#2a3566'}),el_(5,'coin',700,180),el_(6,'ground',300,420,{w:520,h:22})]};
+ if(k==='char')return {bg:'#f6f7fb',elements:[el_(1,'heading',360,20,{text:'My character',fs:32}),el_(2,'hair',495,86),el_(3,'head',500,110),el_(4,'eye',540,158),el_(5,'eye',584,158),el_(6,'mouth',538,196),el_(7,'body',480,236),el_(8,'arm',372,250),el_(9,'arm',648,250),el_(10,'leg',492,420),el_(11,'leg',566,420)]};
  return null}
 function setWcat(k){wcat=WCAT[k]?k:'site';document.querySelectorAll('#side .snav').forEach(b=>b.classList.toggle('on',b.dataset.k===wcat));home()}
 function home(){show('home');
@@ -1314,7 +1346,7 @@ $('#side').addEventListener('click',e=>{const b=e.target.closest('.snav');if(!b)
  if(b.dataset.k)setWcat(b.dataset.k)});
 $('#sideLogout')&&($('#sideLogout').onclick=()=>{window.Cloud&&Cloud.logout?Cloud.logout():toast('Log in to use accounts')});
 $('#sideSwitch')&&($('#sideSwitch').onclick=()=>{window.Cloud&&Cloud.switchAccount?Cloud.switchAccount():toast('Log in to use accounts')});
-function openProj(p){proj=p;H_={};codeManual=false;
+function openProj(p){proj=p;H_={};codeManual=false;renderMenu(p.kind||'site');
  if(!p.pages){p.pages=[{id:'p1',name:'Home',file:'index.html',bg:p.bg||'#ffffff',elements:p.elements||[]}];delete p.bg;delete p.elements}
  p.pages.forEach(pg=>(pg.elements||[]).forEach(migrate));setDims();p.cur=Math.min(p.cur||0,p.pages.length-1);show('edit');setCodeVisible(desk());showPage();
  $('#pname').value=p.name;sizeUI();fit();requestAnimationFrame(fit)}
