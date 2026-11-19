@@ -135,6 +135,58 @@ pre{margin:0;max-height:210px;overflow:auto;background:#14162b;color:#cfd4ff;pad
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,80px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;transition:transform .3s;z-index:30;max-width:calc(100vw - 32px)}
 #toast.on{transform:translate(-50%,0)}
 [hidden]{display:none!important}
+/* character studio */
+.cstudio{width:min(1060px,100%);padding:0;background:#0c1122;color:#e9edff;border-radius:18px;overflow:hidden;border:1px solid rgba(120,150,255,.22);box-shadow:0 30px 80px rgba(4,8,24,.6)}
+.cstop{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.09);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0))}
+.cstop h3{margin:0;font-size:17px;color:#fff;flex:1;display:flex;align-items:center;gap:8px}
+.cstop h3 i{width:9px;height:9px;border-radius:50%;background:#2ec4b6;box-shadow:0 0 12px #2ec4b6;display:block}
+.cstop .btn{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#e9edff;min-height:34px;padding:6px 12px}
+.cstop .btn:hover{background:rgba(255,255,255,.15)}
+.cstop .btn.pri{background:linear-gradient(135deg,#7f9cff,#2ec4b6);border-color:transparent;color:#08122a;font-weight:800}
+.csbody{display:grid;grid-template-columns:206px minmax(0,1fr) 248px;min-height:0}
+.csslots{display:flex;flex-direction:column;gap:3px;padding:10px;border-right:1px solid rgba(255,255,255,.08);max-height:min(74vh,600px);overflow:auto;scrollbar-width:none}
+.csslots::-webkit-scrollbar{display:none}
+.csslot{display:flex;align-items:center;gap:9px;padding:8px 9px;border:1px solid transparent;border-radius:9px;background:none;color:#c4cdf2;font:600 13px system-ui;text-align:left;cursor:pointer}
+.csslot:hover{background:rgba(255,255,255,.07);color:#fff}
+.csslot.on{background:rgba(110,140,255,.2);border-color:rgba(130,160,255,.55);color:#fff}
+.csslot i{width:15px;height:15px;border-radius:4px;flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 1px 4px rgba(0,0,0,.4)}
+.csslot span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.csslot b{font:600 10.5px system-ui;color:#8b97c9;letter-spacing:.04em;text-transform:uppercase}
+.csstage{position:relative;display:flex;flex-direction:column;min-height:0;padding:10px 12px 12px;background:radial-gradient(60% 46% at 50% 22%,rgba(96,128,255,.22),transparent 72%),linear-gradient(180deg,#141c38,#070b18);overflow:hidden}
+.cspv{position:relative;flex:1;min-height:0;overflow:hidden}
+#charPrev{position:absolute;left:50%;top:50%;width:300px;height:520px;margin:-260px 0 0 -150px;transform-origin:50% 50%}
+#charPrev .el{cursor:pointer;pointer-events:auto}
+#charPrev .el:hover{filter:brightness(1.1)}
+.cspresets{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;padding:6px 0 4px}
+.csp{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:#dfe5ff;border-radius:999px;padding:5px 10px;font:600 11.5px system-ui;cursor:pointer;display:flex;align-items:center;gap:5px}
+.csp:hover{background:rgba(255,255,255,.15)}
+.csp.on{border-color:rgba(140,170,255,.8);background:rgba(110,140,255,.24);color:#fff}
+.csp em{width:9px;height:9px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.cshint{margin:2px 0 0;text-align:center;font-size:11.5px;color:#8d99c8}
+.cspane{padding:13px;border-left:1px solid rgba(255,255,255,.08);max-height:min(74vh,600px);overflow:auto}
+.cspane h4{margin:0 0 2px;font-size:14.5px;color:#fff;text-transform:uppercase;letter-spacing:.06em}
+.cspane p.hint{color:#8d99c8;font-size:12px;margin:0 0 10px}
+.cspane label{display:block;font:600 11px system-ui;text-transform:uppercase;letter-spacing:.06em;color:#9aa5d2;margin:12px 0 5px}
+.cspane input[type=color]{width:100%;height:46px;border:0;border-radius:11px;background:rgba(255,255,255,.1);padding:3px;cursor:pointer}
+.csw{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.csw button{aspect-ratio:1;border:0;border-radius:7px;cursor:pointer;padding:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.csw button:hover{transform:scale(1.12)}
+.cstog{display:flex;gap:6px;margin-top:10px}
+.cstog button{flex:1;padding:7px;border-radius:9px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#c4cdf2;font:700 12px system-ui;cursor:pointer}
+.cstog button.on{background:rgba(46,196,182,.22);border-color:rgba(46,196,182,.7);color:#fff}
+.cspane select{width:100%;padding:8px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:#131a30;color:#e9edff;font:600 13px system-ui}
+.cspane input[type=range]{width:100%;accent-color:#7f9cff}
+.csrow{display:flex;justify-content:space-between;font:600 11px system-ui;color:#9aa5d2;margin-top:2px}
+@media(max-width:860px){
+ .csbody{grid-template-columns:1fr;max-height:calc(100dvh - 150px);overflow:auto}
+ .csslots{flex-direction:row;border-right:0;border-bottom:1px solid rgba(255,255,255,.08);max-height:none;overflow-x:auto;overflow-y:hidden}
+ .csslot{flex:0 0 auto}.csslot b{display:none}
+ .csstage{min-height:0;padding:6px 10px 8px}
+ .cspv{height:min(42vh,330px);flex:none}
+ .cshint{display:none}
+ .cspane{border-left:0;border-top:1px solid rgba(255,255,255,.08);max-height:none}
+ .cstop h3{font-size:14px}.cstop .btn{padding:6px 9px}
+}
 /* home */
 #homev{max-width:1000px;width:100%;margin:0 auto;padding:28px 18px}
 .hero{display:flex;flex-wrap:wrap;align-items:end;gap:16px;justify-content:space-between;margin-bottom:22px}
@@ -588,6 +640,7 @@ aside input[type=range]{height:38px}
       <button class="btn sm" id="addpage">+ Add page</button>
       <button class="btn sm" id="pset">Page settings</button>
       <button class="btn sm" id="layersb">Layers</button>
+      <button class="btn sm" id="charopen" type="button" hidden>Character studio</button>
       <button class="btn sm" id="snap" aria-pressed="false" title="Snap to grid (8px)">Snap</button>
       <select id="bp" aria-label="Edit responsive layout"><option value="base">Base layout</option><option value="tablet">Tablet · ≤959px</option><option value="phone">Phone · ≤640px</option></select>
       <button class="btn sm" id="resetbp" type="button" hidden>Reset layout</button>
@@ -677,6 +730,18 @@ aside input[type=range]{height:38px}
   <p class="hint" style="margin:0 0 10px">Reorder, hide, lock, or select any element. Top of the list is drawn on top.</p>
   <div id="llist" class="llist"></div>
   <div class="acts" style="margin-top:16px"><button class="btn" id="lclose">Close</button></div>
+</div></div>
+<div id="cmodal" class="modal"><div class="card cstudio" role="dialog" aria-modal="true" aria-labelledby="cst">
+  <div class="cstop"><h3 id="cst"><i></i>Character studio</h3><button class="btn sm" id="csreset" type="button">Reset</button><button class="btn sm" id="csclose" type="button">Close</button><button class="btn sm pri" id="csapply" type="button">Use character</button></div>
+  <div class="csbody">
+    <div class="csslots" id="csslots" role="tablist" aria-label="Character parts"></div>
+    <div class="csstage">
+      <div class="cspv" id="cspv"><div id="charPrev"></div></div>
+      <div class="cspresets" id="cspresets"></div>
+      <p class="cshint">Click a part in the preview or choose a slot to change it.</p>
+    </div>
+    <div class="cspane" id="cspane"></div>
+  </div>
 </div></div>
 <div id="play" class="modal"><div class="pwrap" role="dialog" aria-modal="true" aria-label="Play your website">
   <div class="pbar">
@@ -782,6 +847,15 @@ const DEF={
  hair:{w:130,h:60,fill:'#3a2a20',radius:40,label:'Hair'},
  hat:{w:140,h:44,fill:'#e5484d',radius:10,label:'Hat'},
  cape:{w:150,h:170,fill:'#e5484d',radius:18,label:'Cape'},
+ brow:{w:24,h:7,fill:'#3a2a20',radius:4,label:'Eyebrow'},
+ neck:{w:30,h:36,fill:'#ffd2bd',radius:10,label:'Neck'},
+ helmet:{w:140,h:120,fill:'#a9b6d6',radius:58,label:'Helmet'},
+ armor:{w:160,h:150,fill:'#3b3fd8',radius:26,label:'Armor'},
+ pants:{w:150,h:60,fill:'#27305a',radius:20,label:'Pants'},
+ glove:{w:42,h:40,fill:'#1e2544',radius:14,label:'Gloves'},
+ boot:{w:70,h:44,fill:'#151a30',radius:16,label:'Boots'},
+ belt:{w:160,h:20,fill:'#e0b344',radius:9,label:'Belt'},
+ sword:{w:26,h:150,fill:'#cfd8f0',radius:4,label:'Sword'},
  shadow:{w:120,h:18,fill:'rgba(0,0,0,.18)',radius:9,label:'Shadow'}};
 const SW=['#ff5a36','#3b3fd8','#1c1f3b','#ffffff','#ffd23f','#2ec4b6','#f3a6ff','#e6e9f5','linear-gradient(135deg,#ffb199,#ff0844)','linear-gradient(135deg,#3b3fd8,#2ec4b6)','linear-gradient(135deg,#ffd23f,#ff5a36)','linear-gradient(135deg,#1c1f3b,#3b3fd8)'];
 const ANIM={float:['3s ease-in-out','50%{transform:translateY(-14px)}','Float'],pulse:['1.6s ease-in-out','50%{transform:scale(1.08)}','Pulse'],bounce:['1s ease-in-out','0%,100%{transform:translateY(0)}40%{transform:translateY(-20px)}','Bounce'],wiggle:['1.2s ease-in-out','25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}','Wiggle'],sway:['2.4s ease-in-out','0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}','Sway'],heartbeat:['1.4s ease-in-out','0%,35%,65%,100%{transform:scale(1)}15%,50%{transform:scale(1.12)}','Heartbeat'],spin:['4s linear','to{transform:rotate(360deg)}','Spin'],glow:['2s ease-in-out','0%,100%{filter:drop-shadow(0 0 0 transparent)}50%{filter:drop-shadow(0 0 12px var(--ac,#3b3fd8))}','Glow']};
@@ -843,7 +917,7 @@ const tileB=d=>`<b style="background:${d.fill};border-radius:${Math.min(d.radius
 const INSERTS={
  site:CATS,
  game:[['3D field',['field','goal','wall']],['Player',['player','enemy','ball']],['Level pieces',['platform','ground','block','spike']],['Pickups',['coin','gem']],['On screen',['hud','jumpbtn']],['Backdrop',['skybox','box','card']],['Text',['heading','paragraph']],['Image',['image','photo']]],
- char:[['Body parts',['head','body','arm','leg']],['Face',['eye','mouth','hair','hat']],['Extras',['cape','shadow']],['Basic shapes',['circle','box']],['Text',['heading','paragraph']],['Image',['image','photo']]]
+ char:[['Character',['head','neck','hair','eye','brow','mouth']],['Gear',['helmet','armor','pants','glove','boot','belt']],['Hands',['sword','cape']],['Basic shapes',['circle','box','body','arm','leg']],['Face extras',['hat','shadow']],['Text',['heading','paragraph']],['Image',['image','photo']]]
 };
 function renderMenu(kind){const k=kind==='char'?'char':String(kind||'').startsWith('game')?'game':'site';
  const h=document.querySelector('#menuA .sh h2');if(h)h.textContent=k==='game'?'Game objects':k==='char'?'Character parts':'Insert';
@@ -1176,6 +1250,65 @@ function sceneCss(pre){
  const p=pre?pre+' ':'',stage=pre?'#art[data-d3="1"]':'.stage';
  return `\n${stage}{box-shadow:inset 0 0 150px rgba(84,116,255,.22),0 28px 70px rgba(0,0,0,.5)!important;background-image:radial-gradient(72% 62% at 50% 40%,rgba(96,124,255,.20),transparent 72%),radial-gradient(48% 40% at 50% 102%,rgba(46,196,182,.13),transparent 72%)!important;background-repeat:no-repeat!important}\n${p}.el.ty-field{background-image:url("${PITCH}"),repeating-linear-gradient(180deg,rgba(255,255,255,.055) 0 26px,rgba(0,0,0,.055) 26px 52px)!important;background-size:100% 100%,100% 100%!important;background-repeat:no-repeat!important;box-shadow:0 14px 0 #1b5a2b,0 0 0 6px rgba(255,255,255,.06),0 34px 62px rgba(0,0,0,.55)!important}\n${p}.el.ty-block{background-image:linear-gradient(160deg,rgba(255,255,255,.24),rgba(0,0,0,.34))!important;box-shadow:0 9px 0 rgba(6,9,22,.85),0 0 0 1px rgba(255,255,255,.06),0 18px 28px rgba(0,0,0,.45),inset 0 2px 0 rgba(255,255,255,.3)!important}\n${p}.el.ty-wall{background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(0,0,0,.3))!important;box-shadow:0 7px 0 rgba(6,9,22,.8),0 14px 22px rgba(0,0,0,.4)!important}\n${p}.el.ty-goal{box-shadow:0 4px 0 rgba(90,110,160,.7),0 10px 18px rgba(0,0,0,.45)!important}\n${p}.el.ty-ball{background-image:radial-gradient(circle at 34% 28%,#fff,#dbe2f2 58%,#9aa6c2)!important;box-shadow:inset -4px -6px 10px rgba(0,0,0,.2),0 5px 0 rgba(0,0,0,.22),0 12px 18px rgba(0,0,0,.45)!important}`;
 }
+/* ---------- characters: layered, shaded parts + the studio that builds them */
+const DEFAULT_CHAR={skin:'#f3b998',hair:'#2c1b14',hairStyle:'short',eye:'#20263f',mouth:'#c4645b',top:'#3348e0',pants:'#27305a',glove:'#1e2544',boot:'#151a30',belt:'#e0b344',cape:'#e5484d',helmet:'#a9b6d6',weapon:'#cfd8f0',helmetOn:false,capeOn:false,weaponOn:false,build:1,height:1};
+const CHARPART={head:1,neck:1,hair:1,helmet:1,eye:1,brow:1,mouth:1,armor:1,body:1,arm:1,leg:1,pants:1,glove:1,boot:1,belt:1,cape:1,sword:1,hat:1,shadow:1};
+function charSpecEls(sp,W0,H0){
+ const st={...DEFAULT_CHAR,...sp};
+ const k=Math.max(.45,Math.min(1.25,(H0-60)/500));
+ const bx=Math.max(.82,Math.min(1.24,+st.build||1)),hy=Math.max(.86,Math.min(1.16,+st.height||1));
+ const cx=150,out=[],OX=W0/2-cx*k,OY=H0-64-462*k;
+ const P=(type,x,y,w,h,fill,rad,extra)=>{out.push({type,x:Math.round(OX+x*k),y:Math.round(OY+y*k),w:Math.max(2,Math.round(w*k)),h:Math.max(2,Math.round(h*k)),fill,radius:Math.max(0,Math.round(rad*k)),walk:1,anim:'',...(extra||{})})};
+ const feet=462,bootH=44,bootY=feet-bootH,legLen=Math.round(112*hy),legY=bootY-legLen+10;
+ const hipY=legY+4,hipH=58,torsoH=152,torsoY=hipY-140,torsoW=Math.round(150*bx),beltY=torsoY+128,beltH=20;
+ const armW=Math.round(38*bx),armH=118,armY=torsoY+14,armLX=cx-torsoW/2-armW+10,armRX=cx+torsoW/2-10;
+ const legW=Math.round(52*bx),legL=cx-torsoW/2+8,legR=cx+torsoW/2-8-legW;
+ const neckY=torsoY-18,headW=124,headH=124,headY=neckY-headH+16,hx=cx-headW/2;
+ P('shadow',cx-84,feet-18,168,30,'rgba(20,26,52,.16)',0);
+ if(st.capeOn)P('cape',cx-92,torsoY-30,184,torsoH+96,st.cape,28);
+ if(st.hairStyle=='long')P('hair',hx-8,headY-12,headW+16,headH+86,st.hair,34);
+ else if(st.hairStyle=='bun')P('hair',cx-32,headY-34,64,50,st.hair,24);
+ P('leg',legL,legY,legW,legLen,st.pants,18);P('leg',legR,legY,legW,legLen,st.pants,18);
+ P('boot',legL-8,bootY,legW+16,bootH,st.boot,18);P('boot',legR-8,bootY,legW+16,bootH,st.boot,18);
+ P('pants',cx-torsoW/2+4,hipY,torsoW-8,hipH,st.pants,20);
+ P('armor',cx-torsoW/2,torsoY,torsoW,torsoH,st.top,26);
+ P('arm',armLX,armY,armW,armH,st.top,18);P('arm',armRX,armY,armW,armH,st.top,18);
+ P('glove',armLX-2,armY+armH-14,armW+4,Math.round(40*bx),st.glove,15);P('glove',armRX-2,armY+armH-14,armW+4,Math.round(40*bx),st.glove,15);
+ P('belt',cx-torsoW/2,beltY,torsoW,beltH,st.belt,9);
+ P('neck',cx-15,neckY,30,36,st.skin,10);
+ P('head',hx,headY,headW,headH,st.skin,62);
+ P('eye',cx-30,headY+66,20,16,st.eye,10);P('eye',cx+10,headY+66,20,16,st.eye,10);
+ P('brow',cx-30,headY+50,24,7,st.hair,4);P('brow',cx+6,headY+50,24,7,st.hair,4);
+ P('mouth',cx-15,headY+100,30,10,st.mouth,5);
+ if(st.hairStyle!='bald'){const sh=st.hairStyle=='short'?74:st.hairStyle=='spiky'?88:80;P('hair',hx-6,headY-16,headW+12,sh,st.hair,st.hairStyle=='spiky'?16:36)}
+ if(st.helmetOn)P('helmet',hx-8,headY-18,headW+16,headH+12,st.helmet,58);
+ if(st.weaponOn)P('sword',armRX+armW-4,armY+armH-46,Math.round(26*bx),150,st.weapon,4);
+ return out}
+function charSceneCss(pre){const stage=pre?'#art[data-ch="1"]':'.stage';
+ return `\n${stage}{background-image:radial-gradient(72% 56% at 50% 24%,rgba(122,152,255,.16),rgba(122,152,255,0) 72%),radial-gradient(58% 26% at 50% 100%,rgba(18,24,52,.16),rgba(18,24,52,0) 72%)!important;background-repeat:no-repeat!important}`}
+function charPartsCss(pre){const p=pre?pre+' ':'',g='rgba(255,255,255,.3)',d='rgba(0,0,0,.3)';
+ return `\n${p}.el.ty-head{background-image:radial-gradient(62% 54% at 34% 24%,rgba(255,255,255,.5),rgba(255,255,255,0) 72%),linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.18))!important;box-shadow:inset -12px -12px 22px rgba(90,40,20,.16),inset 10px 8px 18px rgba(255,255,255,.2),0 12px 22px rgba(18,24,48,.18)!important}`
++`\n${p}.el.ty-neck{background-image:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,0) 62%)!important;box-shadow:inset 0 -8px 14px rgba(60,20,10,.28)!important}`
++`\n${p}.el.ty-hair{background-image:radial-gradient(70% 58% at 38% 16%,rgba(255,255,255,.3),rgba(255,255,255,0) 70%),linear-gradient(160deg,rgba(255,255,255,.06),rgba(0,0,0,.42))!important;box-shadow:inset 0 5px 0 rgba(255,255,255,.12),inset 0 -8px 14px rgba(0,0,0,.35),0 8px 16px rgba(10,14,30,.22)!important}`
++`\n${p}.el.ty-eye{background-image:radial-gradient(circle at 32% 26%,rgba(255,255,255,.9),rgba(255,255,255,0) 46%)!important;box-shadow:inset 0 -2px 4px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.35)!important}`
++`\n${p}.el.ty-brow{background-image:linear-gradient(90deg,rgba(0,0,0,.15),rgba(0,0,0,.42))!important;box-shadow:none!important}`
++`\n${p}.el.ty-mouth{background-image:radial-gradient(70% 90% at 50% 26%,rgba(255,255,255,.4),rgba(0,0,0,.12))!important;box-shadow:inset 0 -2px 3px rgba(90,20,20,.45)!important}`
++`\n${p}.el.ty-armor{background-image:linear-gradient(168deg,${g},rgba(255,255,255,0) 44%,${d}),radial-gradient(56% 34% at 50% 4%,rgba(255,255,255,.34),rgba(255,255,255,0) 70%),repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 3px,rgba(0,0,0,.06) 3px 7px)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,.26),inset 0 -18px 26px rgba(0,0,0,.3),0 14px 24px rgba(12,18,40,.26)!important}`
++`\n${p}.el.ty-armor:after{content:"";position:absolute;left:50%;top:16%;width:36%;height:28%;margin-left:-18%;border-radius:8px;border:2px solid rgba(255,255,255,.34);border-bottom-color:rgba(0,0,0,.22);background:linear-gradient(160deg,rgba(255,255,255,.2),rgba(0,0,0,.16))}`
++`\n${p}.el.ty-body{background-image:linear-gradient(165deg,${g},rgba(0,0,0,.28))!important;box-shadow:inset 0 4px 0 rgba(255,255,255,.22),0 12px 20px rgba(12,18,40,.25)!important}`
++`\n${p}.el.ty-arm{background-image:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,0) 45%,${d})!important;box-shadow:inset 3px 0 0 rgba(255,255,255,.18),inset -6px -8px 14px rgba(0,0,0,.28),0 8px 14px rgba(12,18,40,.22)!important}`
++`\n${p}.el.ty-leg{background-image:linear-gradient(180deg,rgba(255,255,255,.16),rgba(0,0,0,.28)),repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 2px,rgba(0,0,0,.05) 2px 5px)!important;box-shadow:inset -8px -10px 16px rgba(0,0,0,.3),0 6px 12px rgba(10,14,30,.2)!important}`
++`\n${p}.el.ty-pants{background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(0,0,0,.3)),repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 2px,rgba(0,0,0,.07) 2px 6px)!important;box-shadow:inset 0 4px 0 rgba(255,255,255,.16),inset 0 -14px 20px rgba(0,0,0,.34)!important}`
++`\n${p}.el.ty-glove{background-image:linear-gradient(160deg,rgba(255,255,255,.3),rgba(0,0,0,.36))!important;box-shadow:inset 0 3px 0 rgba(255,255,255,.22),0 6px 12px rgba(10,14,30,.3)!important}`
++`\n${p}.el.ty-boot{background-image:linear-gradient(160deg,rgba(255,255,255,.32),rgba(0,0,0,.4))!important;box-shadow:inset 0 4px 0 rgba(255,255,255,.2),0 8px 0 rgba(8,10,22,.9),0 16px 20px rgba(8,10,22,.32)!important}`
++`\n${p}.el.ty-belt{background-image:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 50%,rgba(0,0,0,.3))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 2px 4px rgba(0,0,0,.25)!important}`
++`\n${p}.el.ty-belt:after{content:"";position:absolute;left:50%;top:-2px;width:24%;height:calc(100% + 4px);margin-left:-12%;border-radius:5px;background:linear-gradient(160deg,rgba(255,255,255,.85),rgba(255,255,255,.35) 46%,rgba(0,0,0,.25));box-shadow:0 1px 3px rgba(0,0,0,.35)}`
++`\n${p}.el.ty-cape{clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)!important;background-image:linear-gradient(160deg,rgba(255,255,255,.34),rgba(255,255,255,0) 40%,rgba(0,0,0,.42)),repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 4px,rgba(255,255,255,.05) 4px 9px)!important;box-shadow:none!important;filter:drop-shadow(0 16px 16px rgba(10,14,30,.35))!important}`
++`\n${p}.el.ty-helmet{clip-path:polygon(50% 0,86% 10%,100% 44%,100% 100%,0 100%,0 44%,14% 10%)!important;background-image:linear-gradient(165deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%,rgba(0,0,0,.38))!important;box-shadow:inset 0 6px 0 rgba(255,255,255,.25)!important}`
++`\n${p}.el.ty-helmet:after{content:"";position:absolute;left:9%;right:9%;top:42%;height:30%;border-radius:999px;background:linear-gradient(180deg,rgba(12,20,40,.9),rgba(64,86,138,.9));box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -4px 8px rgba(0,0,0,.5)}`
++`\n${p}.el.ty-sword{clip-path:polygon(50% 0,100% 20%,100% 100%,0 100%,0 20%)!important;background-image:linear-gradient(90deg,rgba(255,255,255,.7),rgba(255,255,255,0) 30%,rgba(0,0,0,.3) 70%,rgba(255,255,255,.35))!important;box-shadow:none!important;filter:drop-shadow(0 6px 6px rgba(10,14,30,.35))!important}`
++`\n${p}.el.ty-hat{background-image:linear-gradient(160deg,rgba(255,255,255,.35),rgba(0,0,0,.32))!important;box-shadow:0 6px 0 rgba(10,14,30,.35),0 12px 18px rgba(10,14,30,.25)!important}`
++`\n${p}.el.ty-shadow{background-image:radial-gradient(ellipse at center,rgba(12,18,40,.34),rgba(12,18,40,0) 72%)!important;box-shadow:none!important;border-radius:50%!important}`}
 function presetCss(s,pre){
  const p=pre?pre+' ':'',root=pre||'body';
  if(s==='pixel')return `\n${root}{font-family:"Courier New",ui-monospace,monospace;letter-spacing:.03em}\n${p}.el{border-radius:0!important;box-shadow:none!important}\n${p}button.el,${p}a.el{border:3px solid #101433!important;box-shadow:4px 4px 0 #101433!important;text-transform:uppercase;letter-spacing:.06em}\n${p}input.el,${p}select.el,${p}textarea.el{border:3px solid #101433!important;border-radius:0!important}`;
@@ -1184,11 +1317,11 @@ function presetCss(s,pre){
  return '';
 }
 function applyStylePreset(){
- const s=(proj&&proj.style)||'flat',art=$('#art'),sc3=!!(proj&&(proj.kind==='game3d'||proj.kind==='gameiso'));
- if(art){art.dataset.st=s;art.dataset.d3=proj&&proj.kind==='game3d'?'1':''}
+ const s=(proj&&proj.style)||'flat',art=$('#art'),sc3=!!(proj&&(proj.kind==='game3d'||proj.kind==='gameiso')),kc=!!(proj&&proj.kind==='char');
+ if(art){art.dataset.st=s;art.dataset.d3=proj&&proj.kind==='game3d'?'1':'';art.dataset.ch=kc?'1':''}
  let st=document.getElementById('presetcss');
  if(!st){st=document.createElement('style');st.id='presetcss';document.head.appendChild(st)}
- st.textContent=presetCss(s,'#art')+(sc3?sceneCss('#art'):'');
+ st.textContent=presetCss(s,'#art')+(sc3?sceneCss('#art'):'')+(kc?charSceneCss('#art')+charPartsCss('#art')+charPartsCss('#charPrev'):'');
  const sel=$('#pstyl');if(sel&&sel.value!==s)sel.value=s;
 }
 function parts(preview=false){
@@ -1201,6 +1334,7 @@ function parts(preview=false){
  let css=`:root{--motion-fast:180ms;--motion-spring:cubic-bezier(.22,1,.36,1);--focus-ring:rgba(59,63,216,.5)}\n*{box-sizing:border-box;margin:0}\nhtml{background:${bg}}\nbody{font-family:system-ui,sans-serif;background:${bg};min-height:100vh}\ninput,select,textarea,button,a{font:inherit;border:0;text-decoration:none}\ninput[type=text],input[type=email],input[type=password],input[type=search],input[type=tel],textarea,button{appearance:none}\ninput::placeholder,textarea::placeholder{color:inherit;opacity:.55}\n:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px}\nbutton,a.el,label{cursor:pointer}\nbutton:hover,a.el:hover{filter:brightness(1.1)}\ninput.el,select.el,textarea.el{display:block}\ntextarea.el{resize:none;line-height:1.4}\n.stage{position:relative;width:100%;max-width:${rs=='fixed'?Math.round(W*1.6)+'px':'none'};aspect-ratio:${W}/${H};container-type:inline-size;margin:0 auto;overflow:hidden;background:${bg}}\n.el{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:600;line-height:1.1;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}`;
  if(proj&&proj.style&&proj.style!=='flat')css+=presetCss(proj.style,'');
  if(proj&&(proj.kind==='game3d'||proj.kind==='gameiso'))css+=sceneCss('');
+ if(proj&&proj.kind==='char')css+=charSceneCss('')+charPartsCss('');
  if(has('check','switch','file'))css+=`\nlabel.el{gap:.6em}\nlabel.el span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\nlabel.el input[type=checkbox]{accent-color:var(--ac,#3b3fd8);width:1.15em;height:1.15em;margin:0;flex:none}\nlabel.el input[type=file]{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}`;
  if(has('switch'))css+=`\nlabel.el input.tg{appearance:none;width:2.6em;height:1.5em;border-radius:1em;background:#b8bddb;position:relative;margin:0;flex:none;transition:background .2s}\nlabel.el input.tg::after{content:"";position:absolute;left:.15em;top:.15em;width:1.2em;height:1.2em;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}\nlabel.el input.tg:checked{background:var(--ac,#3b3fd8)}\nlabel.el input.tg:checked::after{left:1.25em}`;
  if(has('radio','checks'))css+=`\n.col{flex-direction:column;align-items:flex-start;justify-content:center}\n.col label{display:flex;align-items:center;gap:.6em;height:1.6em;white-space:nowrap}\n.col input{accent-color:var(--ac,#3b3fd8);width:1.15em;height:1.15em;margin:0}`;
@@ -1358,11 +1492,11 @@ const WCAT={site:{n:'Website',card:'Make a website',name:'My website',mk:'Create
  char:{n:'Character',card:'Make a character',name:'My character',mk:'Create character',empty:'No characters yet. Every part on the canvas can be dragged.'}};
 const kindOf=p=>WCAT[p.kind]?p.kind:'site';
 function el_(id,type,x,y,over){return {id,type,...DEF[type],x,y,...(over||{})}}
-function tplFor(k){
+function tplFor(k,w,h){
  if(k==='game2d')return {bg:'#101433',elements:[el_(1,'heading',330,30,{text:'My 2D game',color:'#ffffff',fs:38}),el_(2,'hud',40,30,{w:200,h:46}),el_(3,'player',470,420),el_(4,'platform',240,500,{w:260}),el_(5,'platform',690,420,{w:240}),el_(6,'spike',790,376),el_(7,'coin',856,166),el_(8,'coin',896,166),el_(9,'ground',230,560,{w:680,h:20})]};
  if(k==='game3d')return {bg:'#070b16',elements:[el_(1,'field',230,120,{w:640,h:380,fill:'#2f9e44'}),el_(2,'goal',505,114,{w:90,h:20}),el_(3,'goal',505,486,{w:90,h:20}),el_(4,'block',330,212,{w:120,h:64,fill:'#4a568f'}),el_(5,'block',600,330,{w:72,h:96,fill:'#39406b'}),el_(6,'ball',562,240,{w:26,h:26}),el_(7,'player',430,320,{w:46,h:46})]};
  if(k==='gameiso')return {bg:'#101433',elements:[el_(1,'heading',300,30,{text:'My isometric game',color:'#ffffff',fs:36}),el_(2,'block',420,250,{w:100,h:100}),el_(3,'block',540,300,{w:100,h:100,fill:'#5a61ff'}),el_(4,'block',640,240,{w:100,h:100,fill:'#2a3566'}),el_(5,'coin',700,180),el_(6,'ground',300,420,{w:520,h:22})]};
- if(k==='char')return {bg:'#f6f7fb',elements:[el_(1,'heading',360,20,{text:'My character',fs:32,walk:0}),el_(2,'hair',495,86,{walk:1}),el_(3,'head',500,110,{walk:1}),el_(4,'eye',540,158,{walk:1}),el_(5,'eye',584,158,{walk:1}),el_(6,'mouth',538,196,{walk:1}),el_(7,'body',480,236,{walk:1}),el_(8,'arm',372,250,{walk:1}),el_(9,'arm',648,250,{walk:1}),el_(10,'leg',492,420,{walk:1}),el_(11,'leg',566,420,{walk:1})]};
+ if(k==='char')return {bg:'#eef1f8',elements:charSpecEls(DEFAULT_CHAR,w||1100,h||620).map((o,i)=>({...o,id:i+1}))};
  return null}
 function setWcat(k){wcat=WCAT[k]?k:'site';document.querySelectorAll('#side .snav').forEach(b=>b.classList.toggle('on',b.dataset.k===wcat));home()}
 function home(){show('home');
@@ -1374,7 +1508,7 @@ $('#side').addEventListener('click',e=>{const b=e.target.closest('.snav');if(!b)
  if(b.dataset.k)setWcat(b.dataset.k)});
 $('#sideLogout')&&($('#sideLogout').onclick=()=>{window.Cloud&&Cloud.logout?Cloud.logout():toast('Log in to use accounts')});
 $('#sideSwitch')&&($('#sideSwitch').onclick=()=>{window.Cloud&&Cloud.switchAccount?Cloud.switchAccount():toast('Log in to use accounts')});
-function openProj(p){proj=p;H_={};codeManual=false;renderMenu(p.kind||'site');applyStylePreset();
+function openProj(p){proj=p;H_={};codeManual=false;renderMenu(p.kind||'site');applyStylePreset();if($('#charopen'))$('#charopen').hidden=(p.kind||'site')!=='char';
  if(!p.pages){p.pages=[{id:'p1',name:'Home',file:'index.html',bg:p.bg||'#ffffff',elements:p.elements||[]}];delete p.bg;delete p.elements}
  p.pages.forEach(pg=>(pg.elements||[]).forEach(migrate));setDims();p.cur=Math.min(p.cur||0,p.pages.length-1);show('edit');setCodeVisible(desk());showPage();
  $('#pname').value=p.name;sizeUI();fit();requestAnimationFrame(fit)}
@@ -1385,7 +1519,7 @@ $('#devs').innerHTML=Object.keys(DEV).map(k=>`<button class="opt${k==dev?' on':'
 $('#devs').onclick=e=>{const o=e.target.closest('.opt');if(!o)return;dev=o.dataset.v;document.querySelectorAll('#devs .opt').forEach(x=>x.classList.toggle('on',x==o))};
 $('#dcancel').onclick=()=>dm.classList.remove('on');
 dm.onclick=e=>{if(e.target==dm)dm.classList.remove('on')};
-$('#mk').onclick=()=>{dm.classList.remove('on');const[w,h]=$('#dsz').value.split('x').map(Number);newProj($('#dn').value.trim()||WCAT[wcat].name,dev,tplFor(wcat),{w,h,rot:!!(drot&&ROT[dev]),kind:wcat})};
+$('#mk').onclick=()=>{dm.classList.remove('on');const[w,h]=$('#dsz').value.split('x').map(Number);newProj($('#dn').value.trim()||WCAT[wcat].name,dev,tplFor(wcat,w,h),{w,h,rot:!!(drot&&ROT[dev]),kind:wcat})};
 $('#newh').onclick=openNew;
 $('#grid').onclick=e=>{const o=e.target.closest('[data-o]'),d=e.target.closest('[data-d]');
  if(e.target.closest('#newc'))return openNew();
@@ -1507,7 +1641,7 @@ function plSizes(){const all=proj.device=='all'||RS()!='fixed';$('#psize').hidde
 function openPlay(){if(!proj||$('#editor').hidden)return;syncPage();
  if(proj.pages.every(p=>!p.elements.length)){toast('Add something to the canvas first, then press Play');return}
  pl.site={};proj.pages.forEach(pg=>{pl.site[pth(pg)]=partsFor(pg,true).full.replace('</body>',()=>'<script>window.__UID_KIND='+JSON.stringify(proj.kind||'site')+'<\/script>'+PSCRIPT+PLAYCTRL+'</body>')});
- pl.hist=[];pl.vw=W;pl.vh=H;pl.home=proj.kind==='game3d'?'Play: WASD or arrows to move, Space to jump, drag to look around.':PHINT;
+ pl.hist=[];pl.vw=W;pl.vh=H;pl.home=proj.kind==='game3d'?'Play: WASD or arrows to move, Space to jump, drag to look around.':proj.kind==='char'?'Play: arrow keys or A and D walk, Space jumps.':PHINT;
  $('#ppage').innerHTML=proj.pages.map((p,i)=>`<option value="${i}">${esc(p.name)} (${pth(p)})</option>`).join('');
  plSizes();plHint();$('#play').classList.add('on');plGo(proj.cur);requestAnimationFrame(plFit)}
 function stopPlay(){$('#play').classList.remove('on')}
@@ -1527,6 +1661,87 @@ addEventListener('message',e=>{
  if(i<0)plHint('That link does not go to a page yet.',1);else plGo(i)});
 new ResizeObserver(()=>requestAnimationFrame(plFit)).observe($('#pstage'));
 new MutationObserver(()=>{if(!$('#play').classList.contains('on'))$('#pframe').srcdoc=''}).observe($('#play'),{attributes:true,attributeFilter:['class']});
+
+// ---------- character studio: choose a character, then tune every part
+const CSLOTS=[
+ {k:'skin',n:'Skin',key:'skin'},
+ {k:'hair',n:'Hair',key:'hair'},
+ {k:'face',n:'Face',key:'eye'},
+ {k:'mouth',n:'Mouth',key:'mouth'},
+ {k:'helmet',n:'Helmet',key:'helmet',opt:'helmetOn'},
+ {k:'top',n:'Armor',key:'top'},
+ {k:'pants',n:'Pants',key:'pants'},
+ {k:'glove',n:'Gloves',key:'glove'},
+ {k:'boot',n:'Boots',key:'boot'},
+ {k:'belt',n:'Belt',key:'belt'},
+ {k:'cape',n:'Cape',key:'cape',opt:'capeOn'},
+ {k:'weapon',n:'Weapon',key:'weapon',opt:'weaponOn'},
+ {k:'shape',n:'Body shape'}];
+const CS_MAP={};CSLOTS.forEach(s=>{if(s.key)CS_MAP[s.k]=s.key});
+const CS_TYPES={head:'skin',neck:'skin',hair:'hair',eye:'face',brow:'face',mouth:'mouth',helmet:'helmet',hat:'helmet',armor:'top',body:'top',arm:'top',pants:'pants',leg:'pants',glove:'glove',boot:'boot',belt:'belt',cape:'cape',sword:'weapon'};
+const CSSW=['#f3b998','#e0a07a','#b9754f','#7a4a30','#ffd9c2','#2c1b14','#5b3a24','#a9b6d6','#c3cee6','#7d8aa8','#4d566e','#3348e0','#5b7bff','#2ec4b6','#2f9e44','#4f7a3a','#e5484d','#b8232a','#ff8b3d','#e0b344','#ffffff','#e6e9f5','#27305a','#0d1024'];
+const CS_PRESETS=[
+ {n:'Hero',s:{}},
+ {n:'Knight',s:{skin:'#e8b48f',hair:'#3b2a1c',top:'#7c88b0',pants:'#39415e',glove:'#525b78',boot:'#242a40',belt:'#d9c07a',helmetOn:true,helmet:'#c3cee6',capeOn:true,cape:'#2f6fb8',weaponOn:true,weapon:'#dfe7ff',eye:'#33405e'}},
+ {n:'Ranger',s:{skin:'#e0a07a',hair:'#6b3f1f',top:'#2f7a4f',pants:'#3a4a30',glove:'#4a3a26',boot:'#2a2118',belt:'#8a5a2b',capeOn:true,cape:'#4f7a3a',weaponOn:true}},
+ {n:'Mage',s:{skin:'#e9c0a2',hair:'#e8e2ff',top:'#5b2f8a',pants:'#3a2456',glove:'#2a1b3d',boot:'#211630',belt:'#c9a227',capeOn:true,cape:'#7a3fd8',weaponOn:true,weapon:'#8fd8ff',eye:'#5b3fd0'}},
+ {n:'Ninja',s:{skin:'#c98f6a',hair:'#141420',top:'#1c1f2e',pants:'#191c2a',glove:'#101322',boot:'#0d0f1a',belt:'#c0392b',capeOn:true,cape:'#232838',weaponOn:true,weapon:'#8f9bb8',mouth:'#9a5a52'}},
+ {n:'Robot',s:{skin:'#b8c2d8',hair:'#8f9bb8',hairStyle:'bald',top:'#8b95ad',pants:'#5c6580',glove:'#454f6b',boot:'#2b3247',belt:'#2ec4b6',eye:'#2ec4b6',mouth:'#5c6580',helmetOn:true,helmet:'#c3cee6'}},
+ {n:'Athlete',s:{skin:'#8a5a3a',hair:'#101018',top:'#e5484d',pants:'#e6e9f5',glove:'#ffffff',boot:'#1c1f3b',belt:'#ffffff',eye:'#20263f',mouth:'#a85a52'}}];
+let csSpec={...DEFAULT_CHAR},csOn='skin',csPreset='Hero';
+function csColour(k){const m=CS_MAP[k];return m&&/^#[0-9a-f]{6}$/i.test(csSpec[m]||'')?csSpec[m]:'#7c8ab0'}
+function csSlotsHTML(){const box=$('#csslots');if(!box)return;
+ box.innerHTML=CSLOTS.map(s=>`<button class="csslot${csOn==s.k?' on':''}" type="button" role="tab" aria-selected="${csOn==s.k}" data-s="${s.k}"><i style="background:${s.k=='shape'?'linear-gradient(135deg,#7f9cff,#2ec4b6)':csColour(s.k)}"></i><span>${s.n}</span>${s.opt?`<b>${csSpec[s.opt]?'On':'Off'}</b>`:''}</button>`).join('')}
+function csPresetsHTML(){const box=$('#cspresets');if(!box)return;
+ box.innerHTML=CS_PRESETS.map(p=>`<button class="csp${csPreset==p.n?' on':''}" type="button" data-p="${p.n}"><em style="background:${(p.s.top||DEFAULT_CHAR.top)}"></em>${p.n}</button>`).join('')}
+function csFit(){const v=$('#cspv'),b=$('#charPrev');if(!v||!b)return;const s=Math.min((v.clientWidth||300)/300,(v.clientHeight||420)/520);b.style.transform='scale('+Math.max(.24,Math.min(1.35,s)).toFixed(3)+')'}
+function csPaint(){const box=$('#charPrev');if(!box)return;
+ box.innerHTML=charSpecEls(csSpec,300,520).map(o=>`<div class="el ty-${o.type}" data-slot="${CS_TYPES[o.type]||''}" style="left:${o.x}px;top:${o.y}px;width:${o.w}px;height:${o.h}px;background:${o.fill};border-radius:${o.radius}px;${o.type=='shadow'?'pointer-events:none;':''}"></div>`).join('');
+ csFit()}
+function csPane(){const s=CSLOTS.find(x=>x.k==csOn)||CSLOTS[0],p=$('#cspane');if(!p)return;
+ if(s.k=='shape'){p.innerHTML=`<h4>Body shape</h4><p class="hint">Make the frame broader or taller. Every piece of gear follows the body.</p>
+  <label for="csBuild">Build <span id="csBuildV">${Math.round(csSpec.build*100)}%</span></label><input type="range" id="csBuild" min="82" max="124" value="${Math.round(csSpec.build*100)}">
+  <label for="csHeight">Height <span id="csHeightV">${Math.round(csSpec.height*100)}%</span></label><input type="range" id="csHeight" min="86" max="116" value="${Math.round(csSpec.height*100)}">
+  <p class="hint" style="margin-top:16px">Drag on the preview to check the silhouette from any angle.</p>`;return}
+ const col=csColour(s.k),blank=!csSpec[s.key];
+ p.innerHTML=`<h4>${s.n}</h4><p class="hint">Pick a color for the ${s.n.toLowerCase()}.</p>
+  <input type="color" id="csColor" value="${blank?'#7c8ab0':col}" aria-label="${s.n} color">
+  <label>Palette</label><div class="csw">${CSSW.map(c=>`<button type="button" data-c="${c}" style="background:${c}" aria-label="Use ${c}"></button>`).join('')}</div>
+  ${s.k=='hair'?`<label for="csHair">Hair style</label><select id="csHair">${['short','long','bun','spiky','bald'].map(v=>`<option value="${v}"${csSpec.hairStyle==v?' selected':''}>${v[0].toUpperCase()+v.slice(1)}</option>`).join('')}</select>`:''}
+  ${s.opt?`<div class="cstog"><button type="button" data-tog="${s.opt}" class="${csSpec[s.opt]?'on':''}">${csSpec[s.opt]?'Worn — tap to hide':'Hidden — tap to wear'}</button></div>`:''}
+  <p class="hint" style="margin-top:16px">Tap any part of the character to switch to its color.</p>`}
+function csRender(){csSlotsHTML();csPresetsHTML();csPaint();csPane()}
+function csFromCanvas(){const one=t=>els.find(e=>e.type==t&&!e.parent),sp={...DEFAULT_CHAR};
+ const pick=(t,k)=>{const e=one(t);if(e&&e.fill)sp[k]=e.fill};
+ pick('head','skin');pick('hair','hair');pick('eye','eye');pick('mouth','mouth');pick('pants','pants');pick('leg','pants');pick('glove','glove');pick('boot','boot');pick('belt','belt');
+ const ar=one('armor')||one('body');if(ar&&ar.fill)sp.top=ar.fill;
+ const cp=one('cape');if(cp){sp.cape=cp.fill;sp.capeOn=true}
+ const hm=one('helmet');if(hm){sp.helmet=hm.fill;sp.helmetOn=true}
+ const sw=one('sword');if(sw){sp.weapon=sw.fill;sp.weaponOn=true}
+ return sp}
+function csOpen(){if(!proj)return;csSpec=csFromCanvas();csOn='skin';csPreset='';csRender();$('#cmodal').classList.add('on');requestAnimationFrame(csFit);setTimeout(csFit,140)}
+function csApply(){if(!proj)return;checkpoint();
+ els.filter(e=>CHARPART[e.type]&&!e.parent).forEach(e=>{if(nodes[e.id]){nodes[e.id].remove();delete nodes[e.id]}});
+ els=els.filter(e=>!(CHARPART[e.type]&&!e.parent));
+ charSpecEls(csSpec,W,H).forEach(o=>{const e={...o,id:++uid};els.push(e);mk(e,true)});
+ select(null);updateEmpty();update();$('#cmodal').classList.remove('on');toast('Character added to the canvas')}
+$('#charopen')&&($('#charopen').onclick=csOpen);
+$('#csclose').onclick=()=>$('#cmodal').classList.remove('on');
+$('#csreset').onclick=()=>{csSpec={...DEFAULT_CHAR};csPreset='Hero';csRender();toast('Character reset to the default look')};
+$('#csapply').onclick=csApply;
+$('#cmodal').addEventListener('click',e=>{if(e.target.id=='cmodal')e.target.classList.remove('on')});
+$('#csslots').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;csOn=b.dataset.s;csSlotsHTML();csPane()});
+$('#cspresets').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=CS_PRESETS.find(x=>x.n==b.dataset.p);if(!p)return;csPreset=p.n;csSpec={...DEFAULT_CHAR,...p.s};csRender()});
+$('#charPrev').addEventListener('click',e=>{const n=e.target.closest('[data-slot]');if(!n||!n.dataset.slot)return;csOn=n.dataset.slot;csSlotsHTML();csPane()});
+$('#cspane').addEventListener('input',e=>{const t=e.target;
+ if(t.id=='csColor'){const k=CS_MAP[csOn];if(k)csSpec[k]=t.value;csPaint();csSlotsHTML();csPresetsHTML()}
+ else if(t.id=='csBuild'){csSpec.build=Math.max(.82,Math.min(1.24,(+t.value||100)/100));$('#csBuildV').textContent=Math.round(csSpec.build*100)+'%';csPaint()}
+ else if(t.id=='csHeight'){csSpec.height=Math.max(.86,Math.min(1.16,(+t.value||100)/100));$('#csHeightV').textContent=Math.round(csSpec.height*100)+'%';csPaint()}});
+$('#cspane').addEventListener('change',e=>{if(e.target.id=='csHair'){csSpec.hairStyle=e.target.value;csPaint()}});
+$('#cspane').addEventListener('click',e=>{const sw=e.target.closest('[data-c]'),tg=e.target.closest('[data-tog]');
+ if(sw){const k=CS_MAP[csOn];if(!k)return;csSpec[k]=sw.dataset.c;const ci=$('#csColor');if(ci)ci.value=sw.dataset.c;csPaint();csSlotsHTML();csPresetsHTML()}
+ if(tg){csSpec[tg.dataset.tog]=!csSpec[tg.dataset.tog];csPane();csSlotsHTML();csPaint()}});
+addEventListener('resize',()=>{if($('#cmodal')&&$('#cmodal').classList.contains('on'))csFit()});
 
 home();
 
