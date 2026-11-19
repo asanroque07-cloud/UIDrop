@@ -144,6 +144,8 @@ function renderAccount() {
   if (!acct || !actions) return;
   acct.hidden = !signed;
   actions.hidden = signed;
+  const sidefoot = $('#sidefoot');
+  if (sidefoot) sidefoot.hidden = !signed;
   if (!signed) return;
   const name = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || (user.email || '').split('@')[0];
   profileName = name;
@@ -439,6 +441,12 @@ async function boot() {
     queuePush,
     deleteProject,
     decorateHome,
+    logout: async () => { try { await sb.auth.signOut() } catch (_) { } },
+    switchAccount: async () => {
+      $('#acctmenu') && ($('#acctmenu').hidden = true);
+      try { await sb.auth.signOut() } catch (_) { }
+      openAuth('login');
+    },
     get user() { return user; }
   };
 
