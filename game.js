@@ -30,6 +30,12 @@ const CAM_FOR = { side: 'side', top: 'top', three: 'third' };
 const KEYS = ['left', 'right', 'up', 'down', 'jump', 'run', 'interact', 'pause'];
 const KEY_LABEL = { left: 'Move left', right: 'Move right', up: 'Up / forward', down: 'Down / back', jump: 'Jump', run: 'Run', interact: 'Interact', pause: 'Pause' };
 const DEFAULT_KEYS = { left: 'a', right: 'd', up: 'w', down: 's', jump: ' ', run: 'shift', interact: 'e', pause: 'escape' };
+const BG_PRESETS = { dark: '#101a33', light: '#dfe8f6' };
+function bgIsLight(hex) {
+  if (!/^#[0-9a-f]{6}$/i.test(hex || '')) return false;
+  const n = parseInt(hex.slice(1), 16);
+  return (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 150;
+}
 
 let maps = [], cur = null, charLib = [];
 let selId = null, tool = 'select', placeType = null, keyWatch = null;
@@ -56,7 +62,7 @@ function prettyKey(k) {
 function blankMap(name, mode) {
   return {
     v: 1, id: uid(), name: name || 'Untitled map', mode: mode || 'side',
-    w: 2400, h: mode === 'side' ? 900 : 1600, bg: '#101a33',
+    w: 2400, h: mode === 'side' ? 900 : 1600, bg: '#101a33', bgMode: 'dark',
     spawn: { x: 140, y: mode === 'side' ? 760 : 300 },
     camera: CAM_FOR[mode || 'side'],
     gravity: 2200,
@@ -134,6 +140,7 @@ function loadMaps() {
     m.keys = Object.assign({}, DEFAULT_KEYS, m.keys || {});
     m.gravity = m.gravity == null ? 2200 : m.gravity;
     m.objects = m.objects || [];
+    if (m.bgMode !== 'light' && m.bgMode !== 'custom') m.bgMode = 'dark';
   });
 }
 function saveMaps() {
@@ -162,7 +169,9 @@ function syncAll() {
   $('#spawnY').textContent = Math.round(cur.spawn.y);
   $('#setMode').value = cur.mode;
   $('#setW').value = cur.w; $('#setH').value = cur.h;
+  $('#setBgMode').value = cur.bgMode || 'dark';
   $('#setBg').value = /^#[0-9a-f]{6}$/i.test(cur.bg) ? cur.bg : '#101a33';
+  $('#setBg').disabled = cur.bgMode !== 'custom';
   $('#setGravity').value = cur.gravity;
   fillCameraSelect();
   renderObjList(); renderPalette(); renderRules(); renderChars(); renderInspector(); refreshKeys();
@@ -204,12 +213,14 @@ function draw() {
   vctx.translate(-camX * zoom, -camY * zoom);
   vctx.scale(zoom, zoom);
   const bg = /^#[0-9a-f]{6}$/i.test(cur.bg) ? cur.bg : '#101a33';
+  const lightBg = bgIsLight(bg);
   vctx.fillStyle = bg; vctx.fillRect(0, 0, cur.w, cur.h);
   const sky = vctx.createLinearGradient(0, 0, 0, cur.h);
-  sky.addColorStop(0, 'rgba(255,255,255,.06)'); sky.addColorStop(1, 'rgba(0,0,0,.22)');
+  if (lightBg) { sky.addColorStop(0, 'rgba(255,255,255,.5)'); sky.addColorStop(1, 'rgba(20,35,60,.10)'); }
+  else { sky.addColorStop(0, 'rgba(255,255,255,.06)'); sky.addColorStop(1, 'rgba(0,0,0,.22)'); }
   vctx.fillStyle = sky; vctx.fillRect(0, 0, cur.w, cur.h);
   if ($('#gridChk').checked) {
-    vctx.strokeStyle = 'rgba(150,170,220,.10)'; vctx.lineWidth = 1 / zoom;
+    vctx.strokeStyle = lightBg ? 'rgba(30,50,90,.16)' : 'rgba(150,170,220,.10)'; vctx.lineWidth = 1 / zoom;
     vctx.beginPath();
     for (let x = 0; x <= cur.w; x += 60) { vctx.moveTo(x, 0); vctx.lineTo(x, cur.h); }
     for (let y = 0; y <= cur.h; y += 60) { vctx.moveTo(0, y); vctx.lineTo(cur.w, y); }
@@ -223,14 +234,15 @@ function draw() {
   list.forEach(o => paintObj(vctx, o, zoom >= .42 && o.type !== 'coin' && o.type !== 'gem' && o.type !== 'decor'));
   // spawn marker
   const sp = cur.spawn;
+  const markClr = lightBg ? '#12203a' : '#ffffff';
   vctx.save();
   vctx.globalAlpha = .95;
-  vctx.strokeStyle = '#ffffff'; vctx.lineWidth = 2 / zoom;
+  vctx.strokeStyle = markClr; vctx.lineWidth = 2 / zoom;
   vctx.setLineDash([6 / zoom, 4 / zoom]);
   const pw = 34, ph = 54;
   vctx.strokeRect(sp.x - pw / 2, sp.y - ph, pw, ph);
   vctx.setLineDash([]);
-  vctx.fillStyle = '#ffffff';
+  vctx.fillStyle = markClr;
   vctx.beginPath(); vctx.arc(sp.x, sp.y - ph, 4 / zoom + 1, 0, 7); vctx.fill();
   vctx.beginPath(); vctx.moveTo(sp.x, sp.y - ph - 14); vctx.lineTo(sp.x + 9, sp.y - ph - 9); vctx.lineTo(sp.x, sp.y - ph - 4); vctx.closePath(); vctx.fill();
   vctx.font = `${11 / zoom}px Inter,system-ui`; vctx.textAlign = 'center';
@@ -639,7 +651,15 @@ function bindPanels() {
   };
   $('#setW').oninput = e => { cur.w = clamp(+e.target.value || 800, 480, 8000); draw(); saveSoon(); };
   $('#setH').oninput = e => { cur.h = clamp(+e.target.value || 600, 360, 8000); draw(); saveSoon(); };
-  $('#setBg').oninput = e => { cur.bg = e.target.value; draw(); saveSoon(); };
+  $('#setBgMode').onchange = e => {
+    cur.bgMode = e.target.value;
+    if (cur.bgMode !== 'custom') cur.bg = BG_PRESETS[cur.bgMode] || BG_PRESETS.dark;
+    $('#setBg').value = cur.bg;
+    $('#setBg').disabled = cur.bgMode !== 'custom';
+    draw(); saveSoon();
+    toast(cur.bgMode === 'light' ? 'Light background' : cur.bgMode === 'dark' ? 'Dark background' : 'Pick a background colour');
+  };
+  $('#setBg').oninput = e => { cur.bg = e.target.value; cur.bgMode = 'custom'; $('#setBgMode').value = 'custom'; $('#setBg').disabled = false; draw(); saveSoon(); };
   $('#setCam').onchange = e => { cur.camera = e.target.value; saveSoon(); renderInspector(); };
   $('#setGravity').oninput = e => { cur.gravity = clamp(+e.target.value || 0, 0, 6000); saveSoon(); };
   const ruleMap = { rCoins: 'coins', rHazard: 'hazard', rEnemies: 'enemies', rChecks: 'checks', rMovers: 'movers', rGravity: 'gravity', rHud: 'hud' };
@@ -1740,6 +1760,7 @@ function render3D(c, W, H) {
   const cam = G.cam3 || buildCam3();
   cam.W = W; cam.H = H; cam.focal = Math.min(W, H) * 1.15;
   const bg = /^#[0-9a-f]{6}$/i.test(G.map.bg) ? G.map.bg : '#0b1224';
+  const lightBg = bgIsLight(bg);
   const sky = c.createLinearGradient(0, 0, 0, H);
   sky.addColorStop(0, shade(bg, 1.5)); sky.addColorStop(.55, shade(bg, 1.1)); sky.addColorStop(1, shade(bg, .55));
   c.fillStyle = sky; c.fillRect(0, 0, W, H);
@@ -1750,7 +1771,7 @@ function render3D(c, W, H) {
     c.beginPath(); c.moveTo(gp[0].x, gp[0].y); gp.slice(1).forEach(p => c.lineTo(p.x, p.y)); c.closePath(); c.fill();
   }
   c.save();
-  c.strokeStyle = 'rgba(150,180,255,.14)'; c.lineWidth = 1;
+  c.strokeStyle = lightBg ? 'rgba(30,55,105,.25)' : 'rgba(150,180,255,.14)'; c.lineWidth = 1;
   for (let x = 0; x <= G.map.w; x += 120) {
     const a = project3({ x: x, y: .5, z: 0 }, cam), b = project3({ x: x, y: .5, z: G.map.h }, cam);
     if (!a || !b) continue;
@@ -1767,7 +1788,7 @@ function render3D(c, W, H) {
   const sp3 = project3({ x: G.player.x, y: 1, z: G.player.z }, cam);
   if (sp3) {
     const rr = 34 * cam.focal / sp3.z;
-    c.fillStyle = 'rgba(4,7,14,.45)';
+    c.fillStyle = lightBg ? 'rgba(20,35,65,.28)' : 'rgba(4,7,14,.45)';
     c.beginPath(); c.ellipse(sp3.x, sp3.y, rr, rr * .34, 0, 0, 7); c.fill();
   }
   const polys = [];

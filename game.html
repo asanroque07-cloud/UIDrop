@@ -70,6 +70,7 @@ label.f{display:block;font-size:10.5px;letter-spacing:.07em;text-transform:upper
 label.f:first-child{margin-top:0}
 input.f,select.f,textarea.f{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;color:var(--ink);font-size:13px}
 input.f:focus,select.f:focus,textarea.f:focus{outline:none;border-color:var(--blue)}
+input.f:disabled,select.f:disabled{opacity:.45;cursor:not-allowed}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .chk{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(38,49,74,.55);font-size:12.5px}
 .chk:last-child{border-bottom:0}
@@ -236,7 +237,13 @@ input.f:focus,select.f:focus,textarea.f:focus{outline:none;border-color:var(--bl
         <div><label class="f" for="setW">Width</label><input class="f" id="setW" type="number" min="480" max="8000" step="80"></div>
         <div><label class="f" for="setH">Height / depth</label><input class="f" id="setH" type="number" min="360" max="8000" step="80"></div>
       </div>
-      <label class="f" for="setBg">Background</label>
+      <label class="f" for="setBgMode">Background</label>
+      <select class="f" id="setBgMode">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="custom">Custom colour</option>
+      </select>
+      <label class="f" for="setBg">Colour</label>
       <input class="f" id="setBg" type="color">
       <label class="f" for="setCam">Camera</label>
       <select class="f" id="setCam"></select>
