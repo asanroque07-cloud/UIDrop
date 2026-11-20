@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map Studio — Build and play your own game maps</title>
+<style>
+:root{
+  --bg:#0a0e16;--panel:#111827;--panel2:#18202f;--line:#26314a;--ink:#eaeffc;--mute:#8c9ab6;--dim:#5d6a86;
+  --acc:#e5484d;--blue:#7c8cff;--green:#2fbf71;--gold:#ffd166;--shadow:0 18px 44px rgba(0,0,0,.45);
+  color-scheme:dark;box-sizing:border-box;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--blue)}
+h1,h2,h3,p{margin:0}
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 13px;color:var(--ink);cursor:pointer;font-weight:600;font-size:13.5px;transition:border-color .15s,background .15s,filter .15s}
+.btn:hover{border-color:#3a4869;background:#1e2738}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.pri:hover{filter:brightness(1.08);background:var(--acc)}
+.btn.sm{padding:5px 9px;border-radius:8px;font-size:12.5px}
+.btn.ghost{background:transparent}
+.btn[aria-pressed="true"]{border-color:var(--blue);background:rgba(124,140,255,.16);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* header */
+#top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel);position:relative;z-index:20}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800;letter-spacing:.01em;white-space:nowrap}
+.brand i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(150deg,var(--acc),#ff8a5b);color:#fff;font-style:normal;font-size:17px;box-shadow:0 6px 16px rgba(229,72,77,.3)}
+.brand span{display:flex;flex-direction:column;line-height:1.05}
+.brand small{font-size:9.5px;letter-spacing:.14em;color:var(--mute);font-weight:700}
+.pname{flex:1 1 200px;max-width:360px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;color:var(--ink);font-weight:700;font-size:15px}
+.pname:focus{outline:none;border-color:var(--blue)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;border:1px solid rgba(124,140,255,.35);background:rgba(124,140,255,.12);color:#c8d2ff;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.spacer{flex:1}
+#btnPlay{font-size:14px;padding:9px 18px}
+
+/* editor */
+#editor{display:grid;grid-template-columns:264px minmax(0,1fr) 282px;min-height:0;overflow:hidden}
+.panel{background:var(--panel);overflow:auto;scrollbar-width:thin;scrollbar-color:#334155 transparent}
+.panel.left{border-right:1px solid var(--line);display:flex;flex-direction:column}
+.panel.right{border-left:1px solid var(--line);padding:13px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:3}
+.tabs button{background:transparent;border:1px solid transparent;border-radius:7px;padding:7px 2px;font-size:11.5px;font-weight:700;color:var(--mute);cursor:pointer}
+.tabs button.on{background:rgba(124,140,255,.16);border-color:rgba(124,140,255,.4);color:#fff}
+.tabbody{padding:11px;display:none}
+.tabbody.on{display:block}
+.tabbody h3{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--dim);margin:2px 0 8px;font-weight:800}
+.tabbody p.hint{font-size:11.5px;color:var(--mute);margin:0 0 10px;line-height:1.5}
+.grp{border-top:1px solid var(--line);padding-top:11px;margin-top:11px}
+.grp:first-child{border:0;margin-top:0;padding-top:0}
+
+.pal{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pal button{display:flex;align-items:center;gap:7px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font-size:12px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left}
+.pal button:hover{border-color:#3a4869}
+.pal button.on{border-color:var(--acc);background:rgba(229,72,77,.14)}
+.pal i{width:11px;height:11px;border-radius:3px;flex:0 0 auto;display:block}
+
+.objlist{display:flex;flex-direction:column;gap:4px}
+.orow{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid transparent;border-radius:7px;padding:5px 7px;font-size:12px;cursor:pointer}
+.orow:hover{border-color:#33415f}
+.orow.on{border-color:var(--acc);background:rgba(229,72,77,.12)}
+.orow i{width:9px;height:9px;border-radius:2px;flex:0 0 auto}
+.orow b{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.orow span{color:var(--dim);font-size:10.5px;font-variant-numeric:tabular-nums}
+
+label.f{display:block;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);font-weight:800;margin:10px 0 4px}
+label.f:first-child{margin-top:0}
+input.f,select.f,textarea.f{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;color:var(--ink);font-size:13px}
+input.f:focus,select.f:focus,textarea.f:focus{outline:none;border-color:var(--blue)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(38,49,74,.55);font-size:12.5px}
+.chk:last-child{border-bottom:0}
+.chk input{width:17px;height:17px;accent-color:var(--acc)}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:4px 0;color:var(--mute)}
+.kv b{color:var(--ink);font-weight:600}
+.empty{padding:16px;text-align:center;color:var(--mute);font-size:12px;border:1px dashed var(--line);border-radius:10px}
+
+/* stage */
+#stage{display:flex;flex-direction:column;min-width:0;min-height:0;background:radial-gradient(60% 50% at 50% 0%,#141c2e,#080b12 72%)}
+.sbar{display:flex;align-items:center;gap:7px;padding:8px 11px;border-bottom:1px solid var(--line);background:rgba(15,21,33,.82);flex-wrap:wrap}
+.sbar .btn{padding:5px 9px;font-size:12px}
+.zlab{font-variant-numeric:tabular-nums;color:var(--mute);min-width:44px;text-align:center;font-size:12px}
+#wrap{position:relative;flex:1;min-height:0;overflow:hidden;cursor:default}
+#view{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#view.pan{cursor:grab}
+#view.place{cursor:crosshair}
+#view.erase{cursor:not-allowed}
+.sfoot{display:flex;align-items:center;gap:14px;padding:6px 12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--mute);background:rgba(15,21,33,.82)}
+.sfoot b{color:var(--ink);font-weight:600}
+
+/* character cards */
+.chars{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ccard{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:6px;cursor:pointer;text-align:center}
+.ccard:hover{border-color:#3a4869}
+.ccard.on{border-color:var(--acc);box-shadow:0 0 0 2px rgba(229,72,77,.22)}
+.ccard img,.ccard .noimg{width:100%;height:86px;object-fit:contain;border-radius:6px;background:#0b101b;display:block}
+.ccard .noimg{display:grid;place-items:center;color:var(--dim);font-size:11px}
+.ccard b{display:block;font-size:11.5px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ccard small{display:block;font-size:10px;color:var(--dim)}
+
+/* controls editor */
+.ctrl{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;font-size:12px;border-bottom:1px solid rgba(38,49,74,.5)}
+.ctrl kbd{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font:700 11px/1.2 ui-monospace,monospace;min-width:56px;text-align:center;text-transform:capitalize;cursor:pointer}
+.ctrl kbd.wait{border-color:var(--acc);color:var(--acc)}
+
+/* library */
+#lib{position:fixed;inset:0;z-index:40;background:rgba(6,9,15,.86);backdrop-filter:blur(6px);overflow:auto;padding:28px 18px}
+.libbox{max-width:1080px;margin:0 auto}
+.libhead{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.libhead h2{font-size:20px;font-weight:800}
+.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(230px,100%),1fr));gap:13px}
+.mcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;cursor:pointer;transition:transform .15s,border-color .15s}
+.mcard:hover{border-color:#3a4869;transform:translateY(-2px)}
+.mcard .shot{height:112px;border-radius:9px;overflow:hidden;background:#0b101b;display:grid;place-items:center;color:var(--dim);font-size:11px}
+.mcard .shot img{width:100%;height:100%;object-fit:cover;display:block}
+.mcard b{display:block;margin-top:8px;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mcard small{display:block;color:var(--dim);font-size:11px;margin-top:1px}
+.mcard .row{display:flex;gap:6px;margin-top:8px}
+.mcard .row .btn{flex:1;justify-content:center}
+.mcard.new{border:2px dashed var(--acc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:190px;background:rgba(229,72,77,.04);color:var(--ink);font-weight:700}
+.mcard.new span{font-size:34px;color:var(--acc);line-height:1}
+
+/* modal */
+#modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(6,9,15,.78);padding:18px}
+#modal[hidden]{display:none}
+.card{width:min(560px,100%);background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);max-height:88vh;display:flex;flex-direction:column}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.mhead h2{font-size:16px;font-weight:800}
+.x{background:none;border:0;color:var(--mute);font-size:22px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:6px}
+.x:hover{background:var(--panel2);color:#fff}
+.mbody{padding:16px;overflow:auto}
+.mbody label{display:block;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);font-weight:800;margin:12px 0 4px}
+.mbody label:first-child{margin-top:0}
+.mbody input[type=text],.mbody input[type=number],.mbody select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;color:var(--ink)}
+.mbody p.hint{color:var(--mute);font-size:12px;margin:10px 0 0}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.modes button{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:10px 8px;color:var(--ink);font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+.modes button.on{border-color:var(--acc);background:rgba(229,72,77,.14)}
+.mfoot{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+
+/* game */
+#game{position:fixed;inset:0;z-index:70;background:#05070d}
+#game[hidden]{display:none}
+#gview{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hud{position:absolute;left:14px;top:12px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none;z-index:2}
+.pill{display:flex;align-items:center;gap:7px;background:rgba(10,15,26,.78);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;backdrop-filter:blur(4px)}
+.pill b{color:var(--gold);font-variant-numeric:tabular-nums}
+.pill.hearts b{color:#ff6b6b;letter-spacing:2px}
+#gbar{position:absolute;right:12px;top:12px;display:flex;gap:7px;z-index:3}
+#gbar .btn{background:rgba(10,15,26,.8);border-color:rgba(255,255,255,.16)}
+#gbar .btn:hover{background:rgba(24,32,47,.95)}
+#prompt{position:absolute;left:50%;bottom:86px;transform:translateX(-50%);background:rgba(10,15,26,.88);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;z-index:3;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+#prompt[hidden]{display:none}
+#toast2{position:absolute;left:50%;top:74px;transform:translateX(-50%);background:rgba(10,15,26,.9);border:1px solid var(--line);padding:9px 16px;border-radius:10px;font-size:13px;z-index:4;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+#toast2.on{opacity:1}
+#pause{position:absolute;inset:0;display:grid;place-items:center;background:rgba(5,8,14,.7);backdrop-filter:blur(4px);z-index:5}
+#pause[hidden]{display:none}
+.pausebox{width:min(460px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);text-align:center}
+.pausebox h2{font-size:20px;font-weight:800;margin-bottom:4px}
+.pausebox p{color:var(--mute);font-size:12.5px;margin-bottom:16px}
+.pausebox .acts{display:flex;flex-direction:column;gap:8px}
+.pausebox .btn{justify-content:center;padding:10px}
+.keys{text-align:left;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;font-size:11.5px;color:var(--mute)}
+.keys b{color:var(--ink);font-weight:700}
+#win{position:absolute;inset:0;display:grid;place-items:center;background:rgba(5,8,14,.74);z-index:6}
+#win[hidden]{display:none}
+#touch{position:absolute;inset:auto 0 0 0;display:none;justify-content:space-between;padding:12px;pointer-events:none;z-index:3}
+#touch .pad{display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(2,50px);gap:6px;pointer-events:auto}
+#touch button{background:rgba(255,255,255,.14);border:0;border-radius:12px;color:#fff;font-weight:800;font-size:15px}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,90px);background:#151d2c;border:1px solid var(--line);color:#fff;padding:10px 16px;border-radius:10px;z-index:80;transition:transform .25s;font-size:13px;box-shadow:var(--shadow);pointer-events:none;max-width:90vw}
+#toast.on{transform:translate(-50%,0)}
+.hidden{display:none!important}
+
+@media(max-width:1120px){#editor{grid-template-columns:232px minmax(0,1fr) 250px}}
+@media(max-width:940px){
+  body{overflow:auto;display:block}
+  #editor{display:flex;flex-direction:column}
+  .panel.left{max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+  .panel.right{border-left:0;border-top:1px solid var(--line)}
+  #stage{min-height:60vh}
+  .pname{max-width:none}
+  .brand small{display:none}
+}
+@media(max-width:560px){
+  #top{flex-wrap:wrap;gap:8px;padding:9px 10px}
+  .pname{order:5;flex:1 1 100%;max-width:none}
+  .pal{grid-template-columns:1fr 1fr}
+  .chars{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <a class="brand" href="index.html" title="Back to UIVisualBuilder"><i>▣</i><span>Map Studio<small>BUILD · PLAY · SHARE</small></span></a>
+  <input id="mapName" class="pname" maxlength="48" value="Untitled map" aria-label="Map name">
+  <span class="badge" id="modeBadge">2D side-scroll</span>
+  <span class="spacer"></span>
+  <button class="btn" id="btnLibrary" type="button">Maps</button>
+  <button class="btn" id="btnSave" type="button">Save</button>
+  <button class="btn pri" id="btnPlay" type="button">▶ Play</button>
+</header>
+
+<div id="editor">
+  <aside class="panel left">
+    <nav class="tabs" role="tablist" aria-label="Map tools">
+      <button class="on" data-tab="objects" type="button">Objects</button>
+      <button data-tab="map" type="button">Map</button>
+      <button data-tab="character" type="button">Character</button>
+      <button data-tab="rules" type="button">Rules</button>
+    </nav>
+
+    <div class="tabbody on" id="tabObjects">
+      <h3>Add an object</h3>
+      <div class="pal" id="pal"></div>
+      <p class="hint">Pick an object, then click the map to place it. Drag with Select to move; press Delete to remove.</p>
+      <div class="grp">
+        <h3>Objects on this map · <span id="objCount">0</span></h3>
+        <div class="objlist" id="objList"></div>
+        <button class="btn wide sm" id="btnClear" type="button" style="width:100%;margin-top:8px;justify-content:center">Clear all objects</button>
+      </div>
+    </div>
+
+    <div class="tabbody" id="tabMap">
+      <h3>Map</h3>
+      <label class="f" for="setMode">Game type</label>
+      <select class="f" id="setMode">
+        <option value="side">2D side-scroll</option>
+        <option value="top">2D top-down</option>
+        <option value="three">3D</option>
+      </select>
+      <div class="two">
+        <div><label class="f" for="setW">Width</label><input class="f" id="setW" type="number" min="480" max="8000" step="80"></div>
+        <div><label class="f" for="setH">Height / depth</label><input class="f" id="setH" type="number" min="360" max="8000" step="80"></div>
+      </div>
+      <label class="f" for="setBg">Background</label>
+      <input class="f" id="setBg" type="color">
+      <label class="f" for="setCam">Camera</label>
+      <select class="f" id="setCam"></select>
+      <div class="grp">
+        <h3>Spawn point</h3>
+        <div class="kv"><span>X</span><b id="spawnX">0</b></div>
+        <div class="kv"><span>Y / Z</span><b id="spawnY">0</b></div>
+        <button class="btn sm" id="btnSpawnTool" type="button" style="margin-top:8px" aria-pressed="false">Place spawn on map</button>
+      </div>
+      <div class="grp">
+        <h3>World</h3>
+        <label class="f" for="setGravity">Gravity</label>
+        <input class="f" id="setGravity" type="number" min="0" max="6000" step="100">
+        <div class="kv" style="margin-top:8px"><span>Objects</span><b id="setObjN">0</b></div>
+      </div>
+      <p class="hint" style="margin-top:10px">In 3D maps the editor is top-down: X runs right, Y is depth (toward the camera), and each object has an elevation.</p>
+    </div>
+
+    <div class="tabbody" id="tabCharacter">
+      <h3>Playable character</h3>
+      <p class="hint">Characters come from your Character Studio library. Their real animations play while you move.</p>
+      <div class="chars" id="charList"></div>
+      <p id="charEmpty" class="empty" hidden>No characters yet.<br><a href="studio.html">Create one in Character Studio</a></p>
+      <div class="grp">
+        <div class="kv"><span>Selected</span><b id="charName">Default avatar</b></div>
+        <button class="btn sm" id="btnOpenStudio" type="button" style="margin-top:8px">Open Character Studio</button>
+      </div>
+    </div>
+
+    <div class="tabbody" id="tabRules">
+      <h3>Gameplay</h3>
+      <div class="chk"><span>Collectibles</span><input id="rCoins" type="checkbox"></div>
+      <div class="chk"><span>Damage &amp; respawn</span><input id="rHazard" type="checkbox"></div>
+      <div class="chk"><span>Enemies</span><input id="rEnemies" type="checkbox"></div>
+      <div class="chk"><span>Checkpoints</span><input id="rChecks" type="checkbox"></div>
+      <div class="chk"><span>Moving platforms</span><input id="rMovers" type="checkbox"></div>
+      <div class="chk"><span>Gravity (2D)</span><input id="rGravity" type="checkbox"></div>
+      <div class="chk"><span>Show HUD</span><input id="rHud" type="checkbox"></div>
+      <div class="grp">
+        <h3>Controls</h3>
+        <div id="ctrlList"></div>
+        <button class="btn sm" id="btnResetKeys" type="button" style="margin-top:9px">Reset to defaults</button>
+        <p class="hint" style="margin-top:8px">Click a key, then press the new one.</p>
+      </div>
+    </div>
+  </aside>
+
+  <section id="stage">
+    <div class="sbar">
+      <button class="btn sm" id="tSelect" type="button" aria-pressed="true">Select</button>
+      <button class="btn sm" id="tPan" type="button" aria-pressed="false">Pan</button>
+      <button class="btn sm" id="tErase" type="button" aria-pressed="false">Erase</button>
+      <span style="width:1px;height:22px;background:var(--line);margin:0 3px"></span>
+      <button class="btn sm" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+      <span class="zlab" id="zoomLab">100%</span>
+      <button class="btn sm" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+      <button class="btn sm" id="zoomFit" type="button">Fit</button>
+      <span style="width:1px;height:22px;background:var(--line);margin:0 3px"></span>
+      <label class="btn sm" style="gap:6px;cursor:pointer"><input id="gridChk" type="checkbox" checked style="accent-color:var(--acc)"> Grid</label>
+      <label class="btn sm" style="gap:6px;cursor:pointer"><input id="snapChk" type="checkbox" checked style="accent-color:var(--acc)"> Snap 24</label>
+      <span class="spacer" style="flex:1"></span>
+      <span class="zlab" id="toolLab" style="min-width:0">Select</span>
+    </div>
+    <div id="wrap"><canvas id="view"></canvas></div>
+    <div class="sfoot">
+      <span>Objects <b id="footObj">0</b></span>
+      <span>Spawn <b id="footSpawn">0, 0</b></span>
+      <span id="footHint">Click an object to edit it</span>
+    </div>
+  </section>
+
+  <aside class="panel right" id="insp"></aside>
+</div>
+
+<div id="lib" hidden>
+  <div class="libbox">
+    <div class="libhead">
+      <h2>Your maps</h2>
+      <span class="spacer" style="flex:1"></span>
+      <button class="btn" id="libClose" type="button">Back to editor</button>
+    </div>
+    <div class="libgrid" id="libgrid"></div>
+    <p id="libempty" class="empty" style="margin-top:14px" hidden>No saved maps yet. Create one to get started.</p>
+  </div>
+</div>
+
+<div id="modal" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+    <div class="mhead"><h2 id="mtitle">Dialog</h2><button class="x" id="mx" type="button" aria-label="Close">×</button></div>
+    <div class="mbody" id="mbody"></div>
+    <div class="mfoot" id="mfoot"></div>
+  </div>
+</div>
+
+<div id="game" hidden>
+  <canvas id="gview"></canvas>
+  <div id="hud"></div>
+  <div id="gbar">
+    <button class="btn sm" id="gPause" type="button">Pause</button>
+    <button class="btn sm" id="gRestart" type="button">Restart</button>
+    <button class="btn sm" id="gExit" type="button">Exit</button>
+  </div>
+  <div id="prompt" hidden></div>
+  <div id="toast2"></div>
+  <div id="pause" hidden>
+    <div class="pausebox">
+      <h2>Paused</h2>
+      <p id="pauseSub">Take a breath.</p>
+      <div class="acts">
+        <button class="btn pri" id="pResume" type="button">Resume</button>
+        <button class="btn" id="pRestart" type="button">Restart map</button>
+        <button class="btn" id="pExit" type="button">Exit to editor</button>
+      </div>
+      <div class="keys" id="pauseKeys"></div>
+    </div>
+  </div>
+  <div id="win" hidden>
+    <div class="pausebox">
+      <h2>Map complete!</h2>
+      <p id="winSub"></p>
+      <div class="acts">
+        <button class="btn pri" id="wReplay" type="button">Play again</button>
+        <button class="btn" id="wExit" type="button">Back to editor</button>
+      </div>
+    </div>
+  </div>
+  <div id="touch">
+    <div class="pad">
+      <span></span><button type="button" data-k="up">▲</button><span></span>
+      <button type="button" data-k="left">◀</button><button type="button" data-k="down">▼</button><button type="button" data-k="right">▶</button>
+    </div>
+    <div class="pad" style="grid-template-columns:64px 64px;grid-template-rows:64px">
+      <button type="button" data-k="run">Run</button><button type="button" data-k="jump" style="background:rgba(229,72,77,.85)">Jump</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="game.js"></script>
+</body>
+</html>
