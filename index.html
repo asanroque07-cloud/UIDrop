@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' aria-hidden='true'%3E%3Cdefs%3E%3ClinearGradient id='lg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff7a45'/%3E%3Cstop offset='1' stop-color='%23ff4a2e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23lg)'/%3E%3Cpath d='M18 15V34a14 14 0 0 0 28 0V15M32 33V47' fill='none' stroke='%23fff' stroke-width='5.5' stroke-linecap='round'/%3E%3Cpath class='drop' d='M32 7C32 7 25.5 14.5 25.5 19a6.5 6.5 0 0 0 13 0C38.5 14.5 32 7 32 7Z' fill='%231c1f3b'/%3E%3C/svg%3E">
 <title>UIVisualBuilder – Make your first UI in just a minute</title>
+<script>try{var t=localStorage.getItem('uivb:theme');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t}catch(_){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
 <style>
 :root{--bg:#f3f5fa;--panel:#fff;--ink:#1b2240;--mute:#58627b;--line:#dbe1ed;--acc:#d9472b;--blue:#4945c8;--motion-fast:180ms;--motion-spring:cubic-bezier(.22,1,.36,1);--focus-ring:rgba(73,69,200,.48);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -22,6 +23,17 @@ header{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;padding:10px 
 @keyframes drip{0%,100%{transform:translateY(-1px)}50%{transform:translateY(3px)}}
 @media(prefers-reduced-motion:reduce){.logo .drop{animation:none}}
 header .sp{flex:1}
+/* dark / light switch */
+.themebtn{position:relative;display:inline-flex;align-items:center;justify-content:space-between;width:66px;height:34px;padding:0 8px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--mute);cursor:pointer;flex:none;transition:border-color .16s,background .16s}
+.themebtn svg{width:15px;height:15px;position:relative;z-index:1;transition:opacity .2s,color .2s}
+.themebtn .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--panel);border:1px solid var(--line);box-shadow:0 2px 6px rgba(20,28,54,.2);transition:transform .26s var(--motion-spring)}
+.themebtn .sun{color:#e8a33d}
+.themebtn .moon{color:var(--blue)}
+:root[data-theme="dark"] .themebtn .knob{transform:translateX(32px)}
+:root[data-theme="light"] .themebtn .moon{opacity:.35}
+:root[data-theme="dark"] .themebtn .sun{opacity:.35}
+.themebtn:hover{border-color:var(--blue)}
+.themebtn:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px}
 .tag{color:var(--mute);font-size:13px;white-space:nowrap}
 @media(max-width:1180px){.tag{display:none}}
 #tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;min-width:0}
@@ -428,10 +440,10 @@ header{position:relative;z-index:10;min-height:64px;padding:10px 18px;background
 }
 #grid{gap:18px}
 .pcard{padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:17px;box-shadow:0 5px 18px rgba(26,36,66,.06);transition:transform .18s var(--motion-spring),box-shadow .18s,border-color .18s}
-.pcard:not(.new):hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(26,36,66,.12);border-color:#b7bee0}
-.pcard.new{min-height:250px;border:2px dashed #d48b7c;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.4));gap:12px}
-.pcard.new:hover{border-color:var(--acc);background:#fff8f5;box-shadow:0 12px 26px rgba(217,71,43,.1)}
-.pcard.new span{display:grid;place-items:center;width:58px;height:58px;border-radius:18px;background:#fff0eb;color:var(--acc);font-size:36px;box-shadow:inset 0 0 0 1px rgba(217,71,43,.12)}
+.pcard:not(.new):hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(26,36,66,.12);border-color:color-mix(in srgb,var(--blue) 45%,var(--line))}
+.pcard.new{min-height:250px;border:2px dashed #d48b7c;background:linear-gradient(180deg,color-mix(in srgb,var(--panel) 94%,transparent),color-mix(in srgb,var(--bg) 65%,transparent));gap:12px}
+.pcard.new:hover{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 7%,var(--panel));box-shadow:0 12px 26px rgba(217,71,43,.1)}
+.pcard.new span{display:grid;place-items:center;width:58px;height:58px;border-radius:18px;background:color-mix(in srgb,var(--acc) 13%,var(--panel));color:var(--acc);font-size:36px;box-shadow:inset 0 0 0 1px rgba(217,71,43,.12)}
 .th{border:1px solid var(--line);border-radius:11px;background:var(--bg)}
 #editor>main{grid-template-columns:minmax(210px,250px) minmax(0,1fr) minmax(270px,310px);gap:16px;padding:16px}
 aside{padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 5px 18px rgba(26,36,66,.05)}
@@ -450,7 +462,7 @@ h2{margin-bottom:12px;color:var(--ink);font-size:15px;font-weight:700;letter-spa
 .hint{color:var(--mute);line-height:1.55}
 .pagebar{gap:8px;align-items:center;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:0 3px 12px rgba(26,36,66,.04)}
 .tab{min-height:36px;padding:7px 14px;background:var(--bg);border-color:var(--line);font-weight:600}
-.tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .sizer select{min-height:36px;padding:6px 10px;border-radius:10px;background:var(--bg);border-color:var(--line);font-weight:600}
 .btn.sm{min-height:36px;padding:7px 11px;border-radius:9px}
 .stage-wrap{background-color:var(--panel);background-image:radial-gradient(rgba(96,108,145,.18) 1px,transparent 1px);background-size:18px 18px;border-color:var(--line);border-radius:18px;padding:20px;box-shadow:inset 0 1px 2px rgba(26,36,66,.03)}
@@ -565,8 +577,9 @@ aside input[type=range]{height:38px}
 .shwho b{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .shwho small{font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:900px){
- header{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px}
+ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px}
  header .logo{grid-column:1;grid-row:1}
+ #themeBtn{grid-column:3;grid-row:1;justify-self:end}
  #authActions,#acct{grid-column:2;grid-row:1;justify-self:end;display:flex;gap:6px}
  #authActions .btn{min-height:38px;padding:6px 12px;font-size:13px;border-radius:10px}
  #acct .btn{min-height:38px}
@@ -593,6 +606,11 @@ aside input[type=range]{height:38px}
     <button class="btn play" id="playb" title="Test your website (Ctrl+Enter)"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>Play</button>
     <button class="btn pri" id="save" aria-label="Save design" title="Save design"><span class="save-long">Save design</span><span class="save-short" aria-hidden="true">Save</span></button>
   </div>
+    <button class="themebtn" id="themeBtn" type="button" role="switch" aria-checked="false" aria-label="Switch to dark mode" title="Switch between dark and light mode">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.6 14.9A8.7 8.7 0 0 1 9.1 3.4a8.8 8.8 0 1 0 11.5 11.5z"/></svg>
+      <span class="knob" aria-hidden="true"></span>
+    </button>
     <span id="authActions">
       <button class="btn" id="loginb" type="button">Log in</button>
       <button class="btn pri" id="signupb" type="button">Sign up</button>
@@ -617,6 +635,7 @@ aside input[type=range]{height:38px}
         <button class="snav sub" type="button" data-k="gameiso">Isometric game</button>
       </div>
     </div>
+    <button class="snav" type="button" data-k="char">Character</button>
     <a class="snav studio" href="studio.html" title="Create a character and animate it by hand"><span>Character studio</span><span class="car" aria-hidden="true">↗</span></a>
     <a class="snav studio" href="game.html" title="Build a game map and play it"><span>Map studio</span><span class="car" aria-hidden="true">↗</span></a>
     <div class="sidefoot" id="sidefoot" hidden>
@@ -625,7 +644,7 @@ aside input[type=range]{height:38px}
     </div>
   </nav>
   <div class="hero">
-    <div><p class="greet" id="greet" hidden></p><p class="eyebrow">YOUR CREATIVE WORKSPACE</p><h1>Your projects</h1><p>Start with a blank canvas, add the pieces you need, and watch your design become code.</p></div>
+    <div><p class="greet" id="greet" hidden></p><p class="eyebrow" id="heroEyebrow">YOUR CREATIVE WORKSPACE</p><h1 id="heroTitle">Your projects</h1><p id="heroSub">Start with a blank canvas, add the pieces you need, and watch your design become code.</p></div>
     <div class="acts"><a class="btn" href="studio.html" style="margin:0;text-decoration:none;display:inline-flex;align-items:center;color:var(--ink);font-size:15px" title="Create characters and hand-animate them in the studio">Character studio</a><label class="btn" style="margin:0;color:var(--ink);font-size:15px">Open design file<input id="file" type="file" accept=".json" hidden></label><button class="btn pri" id="newh">Make a website</button></div>
   </div>
   <p id="none" class="hint">No projects yet. Make your first website.</p>
@@ -1489,11 +1508,12 @@ function savedPulse(){const s=$('#saved');if(s){s.textContent='Saved just now';s
 function savingHint(){const s=$('#saved');if(s){s.textContent='Saving\u2026';s.classList.remove('on')}}
 function show(v){$('#homev').hidden=v!='home';$('#editor').hidden=v!='edit';$('#tools').hidden=v!='edit';body.classList.toggle('ed',v=='edit');if(v!='edit')sheet('')}
 let wcat='site';
-const WCAT={site:{n:'Website',card:'Make a website',name:'My website',mk:'Create website',empty:'No websites yet. Make your first website.'},
- game2d:{n:'2D game',card:'Make a 2D game',name:'My 2D game',mk:'Create 2D game',empty:'No 2D games yet. Make your first 2D game.'},
- game3d:{n:'3D game',card:'Make a 3D game',name:'My 3D game',mk:'Create 3D game',empty:'No 3D games yet. Make your first 3D game.'},
- gameiso:{n:'Isometric game',card:'Make an isometric game',name:'My isometric game',mk:'Create game',empty:'No isometric games yet. Make your first one.'},
- char:{n:'Character',card:'Make a character',name:'My character',mk:'Create character',empty:'No characters yet. Every part on the canvas can be dragged.'}};
+const WCAT={
+ site:{n:'Website',card:'Make a website',name:'My website',mk:'Create website',empty:'No websites yet. Make your first website.',eyebrow:'YOUR CREATIVE WORKSPACE',title:'Your projects',sub:'Start with a blank canvas, add the pieces you need, and watch your design become code.'},
+ game2d:{n:'2D game',card:'Make a 2D game',name:'My 2D game',mk:'Create 2D game',empty:'No 2D games yet. Make your first 2D game.',eyebrow:'2D GAME WORKSPACE',title:'Your 2D games',sub:'Build a side-scrolling level, then play it with a character and a map in Map studio.'},
+ game3d:{n:'3D game',card:'Make a 3D game',name:'My 3D game',mk:'Create 3D game',empty:'No 3D games yet. Make your first 3D game.',eyebrow:'3D GAME WORKSPACE',title:'Your 3D games',sub:'Lay out a 3D course with blocks, goals and a player, then test it in first person.'},
+ gameiso:{n:'Isometric game',card:'Make an isometric game',name:'My isometric game',mk:'Create game',empty:'No isometric games yet. Make your first one.',eyebrow:'ISOMETRIC WORKSPACE',title:'Your isometric games',sub:'Design isometric scenes with blocks, coins and ground for a top-down adventure.'},
+ char:{n:'Character',card:'Make a character',name:'My character',mk:'Create character',empty:'No characters yet. Every part on the canvas can be dragged.',eyebrow:'CHARACTER WORKSPACE',title:'Your characters',sub:'Create a character here, then animate it in Character studio and use it in your games.'}};
 const kindOf=p=>WCAT[p.kind]?p.kind:'site';
 function el_(id,type,x,y,over){return {id,type,...DEF[type],x,y,...(over||{})}}
 function tplFor(k,w,h){
@@ -1502,11 +1522,20 @@ function tplFor(k,w,h){
  if(k==='gameiso')return {bg:'#101433',elements:[el_(1,'heading',300,30,{text:'My isometric game',color:'#ffffff',fs:36}),el_(2,'block',420,250,{w:100,h:100}),el_(3,'block',540,300,{w:100,h:100,fill:'#5a61ff'}),el_(4,'block',640,240,{w:100,h:100,fill:'#2a3566'}),el_(5,'coin',700,180),el_(6,'ground',300,420,{w:520,h:22})]};
  if(k==='char')return {bg:'#eef1f8',elements:charSpecEls(DEFAULT_CHAR,w||1100,h||620).map((o,i)=>({...o,id:i+1}))};
  return null}
-function setWcat(k){wcat=WCAT[k]?k:'site';document.querySelectorAll('#side .snav').forEach(b=>b.classList.toggle('on',b.dataset.k===wcat));home()}
+function setWcat(k){wcat=WCAT[k]?k:'site';
+ document.querySelectorAll('#side .snav').forEach(b=>b.classList.toggle('on',b.dataset.k===wcat));
+ const tg=$('#gameTog'),sub=$('#subgame');if(tg&&sub){const inGame=wcat.indexOf('game')===0;tg.classList.toggle('on',inGame);if(inGame){sub.hidden=false;tg.setAttribute('aria-expanded','true')}}
+ home()}
 function home(){show('home');
+ const meta=WCAT[wcat];
+ $('#heroEyebrow').textContent=meta.eyebrow;$('#heroTitle').textContent=meta.title;$('#heroSub').textContent=meta.sub;$('#newh').textContent=meta.card;
  const list=mem.filter(p=>kindOf(p)===wcat);
  $('#grid').innerHTML=`<button class="pcard new" id="newc"><span>+</span>${WCAT[wcat].card}</button>`+list.slice().sort((a,b)=>b.updated-a.updated).map(p=>{const c=WCAT[kindOf(p)],dv=DEV[p.device]||DEV.pc;return `<div class="pcard"><div class="th">${p.thumb?`<img alt="" src="${p.thumb}">`:''}</div><b>${esc(p.name)}</b><small>${c.n} \u00b7 ${dv.n}, ${new Date(p.updated).toLocaleDateString()}</small><div class="acts"><button class="btn" data-o="${p.id}">Open</button><button class="btn" data-d="${p.id}">Delete</button></div></div>`}).join('');
- const none=$('#none');none.textContent=WCAT[wcat].empty;none.hidden=list.length>0;if(window.Cloud)Cloud.decorateHome()}
+ const none=$('#none');none.textContent=meta.empty;none.hidden=list.length>0;if(window.Cloud)Cloud.decorateHome()}
+// dark / light mode
+function paintTheme(t){document.documentElement.dataset.theme=t;const b=$('#themeBtn');if(b){b.setAttribute('aria-checked',String(t==='dark'));b.setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode')}}
+paintTheme(document.documentElement.dataset.theme==='dark'?'dark':'light');
+$('#themeBtn').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';paintTheme(t);try{localStorage.setItem('uivb:theme',t)}catch(_){}};
 $('#side').addEventListener('click',e=>{const b=e.target.closest('.snav');if(!b)return;
  if(b.dataset.grp){const s=$('#subgame'),open=s.hidden;s.hidden=!open;b.setAttribute('aria-expanded',String(open));return}
  if(b.dataset.k)setWcat(b.dataset.k)});
