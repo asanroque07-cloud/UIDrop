@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game Character Creator &amp; Animation Studio</title>
+<style>
+:root{
+  --bg:#0c0f15; --panel:#141924; --panel2:#1a2130; --panel3:#222b3c; --line:#2b3547;
+  --ink:#e9eefb; --mute:#8b98b0; --dim:#68748c;
+  --acc:#7c8cff; --acc2:#2ec4b6; --pri:#6d7cff; --danger:#ff6b6b; --warn:#ffb020;
+  --shadow:0 18px 50px rgba(0,0,0,.45);
+  font-synthesis:none;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  display:grid; grid-template-rows:auto minmax(0,1fr) auto; overflow:hidden;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+h1,h2,h3,h4{margin:0}
+a{color:inherit}
+
+/* header */
+#top{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--panel);border-bottom:1px solid var(--line);min-height:54px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.brand i{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#06101f;font-style:normal;font-size:14px}
+.brand small{display:block;font-weight:600;color:var(--mute);font-size:10.5px;letter-spacing:.12em}
+.pname{flex:0 1 260px;min-width:120px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-weight:700;outline:none}
+.pname:focus{border-color:var(--acc)}
+.badge{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#bcd0ff;background:rgba(124,140,255,.16);border:1px solid rgba(124,140,255,.35);border-radius:999px;padding:5px 10px;white-space:nowrap}
+.sp{flex:1}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;font-weight:600;transition:background .15s,border-color .15s,transform .12s}
+.btn:hover{background:var(--panel3);border-color:#3b4860}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:linear-gradient(135deg,#7a89ff,#5b6bff);border-color:#7d8dff;color:#08112c;font-weight:800}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.sm{padding:5px 9px;border-radius:8px;font-size:12.5px}
+.btn.wide{width:100%;display:block;text-align:center}
+.btn.danger{color:#ffb4b4;border-color:rgba(255,107,107,.35)}
+.btn.ghost{background:transparent}
+.btn[aria-pressed="true"]{border-color:var(--acc);background:rgba(124,140,255,.18);color:#fff}
+
+/* editor */
+#editor{display:grid;grid-template-columns:252px minmax(0,1fr) 278px;min-height:0;overflow:hidden}
+.panel{background:var(--panel);overflow:auto;scrollbar-width:thin;scrollbar-color:#334055 transparent}
+.panel.left{border-right:1px solid var(--line);display:flex;flex-direction:column}
+.panel.right{border-left:1px solid var(--line)}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
+.tabs button{background:transparent;border:1px solid transparent;border-radius:7px;padding:7px 2px;font-size:11.5px;font-weight:700;color:var(--mute);cursor:pointer}
+.tabs button.on{background:rgba(124,140,255,.16);border-color:rgba(124,140,255,.4);color:#fff}
+.tabbody{padding:10px}
+.tabbody h3{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:4px 0 8px}
+.tabbody p.hint{font-size:11.5px;color:var(--mute);margin:0 0 10px}
+.grp{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}
+.grp:first-child{border:0;margin-top:0;padding-top:0}
+
+/* stage */
+#stage{display:flex;flex-direction:column;min-width:0;min-height:0;background:radial-gradient(60% 50% at 50% 0%,#182033,#0a0d13 70%)}
+.stagebar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--line);background:rgba(15,20,29,.7);flex-wrap:wrap}
+.stagebar .btn{padding:5px 9px;font-size:12px}
+.zoomlab{font-variant-numeric:tabular-nums;color:var(--mute);min-width:48px;text-align:center;font-size:12px}
+#canvaswrap{position:relative;flex:1;min-height:0;display:grid;place-items:center;overflow:auto;padding:18px}
+#view{touch-action:none;box-shadow:var(--shadow);border-radius:4px;background:#fff;display:block;max-width:none}
+#view.pixel{image-rendering:pixelated;image-rendering:crisp-edges}
+#view.grab{cursor:grab}
+#view.grabbing{cursor:grabbing}
+#view.cross{cursor:crosshair}
+.emptyhint{position:absolute;left:50%;top:22px;transform:translateX(-50%);background:rgba(12,16,26,.86);border:1px solid var(--line);color:var(--mute);padding:7px 12px;border-radius:999px;font-size:12px;pointer-events:none;white-space:nowrap}
+.stagefoot{display:flex;align-items:center;gap:12px;padding:6px 12px;border-top:1px solid var(--line);color:var(--mute);font-size:12px;min-height:34px}
+.stagefoot .dot{width:7px;height:7px;border-radius:50%;background:var(--acc2);display:inline-block;margin-right:6px}
+
+/* left panel widgets */
+.partlist{display:flex;flex-direction:column;gap:4px}
+.partrow{display:flex;align-items:center;gap:7px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 7px;cursor:pointer;font-size:12.5px}
+.partrow:hover{border-color:#3d4a63}
+.partrow.on{border-color:var(--acc);background:rgba(124,140,255,.14)}
+.partrow i{width:12px;height:12px;border-radius:4px;flex:none;display:block}
+.partrow span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.partrow b{font-size:10px;color:var(--dim);font-weight:600;text-transform:uppercase}
+.toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.tool{background:var(--panel2);border:1px solid var(--line);border-radius:8px;height:38px;display:grid;place-items:center;cursor:pointer;font-size:15px;color:var(--mute)}
+.tool:hover{border-color:#3d4a63;color:#fff}
+.tool.on{border-color:var(--acc);background:rgba(124,140,255,.18);color:#fff}
+.field{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:7px 0;font-size:12px;color:var(--mute)}
+.field input[type=number],.field input[type=text],.field select{width:104px;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:5px 7px;color:var(--ink);font-size:12.5px}
+.field input[type=color]{width:44px;height:30px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);cursor:pointer}
+.field input[type=range]{width:118px;accent-color:var(--acc)}
+.swatches{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:8px 0}
+.swatches button{aspect-ratio:1;border-radius:6px;border:0;cursor:pointer;padding:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.swatches button:hover{transform:scale(1.1)}
+.layrow{display:flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 7px;font-size:12px;cursor:pointer;margin-bottom:4px}
+.layrow.on{border-color:var(--acc)}
+.layrow .eye{background:none;border:0;color:var(--mute);cursor:pointer;font-size:13px;padding:0 2px}
+.layrow span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini{font-size:11px;color:var(--dim)}
+.hint{color:var(--mute);font-size:12px;margin:6px 0}
+.sep{width:1px;height:22px;background:var(--line)}
+
+/* right panel */
+#props{padding:12px}
+#props h3{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+.selhead{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.selhead .sw{width:22px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.selhead b{font-size:14px}
+.selhead small{display:block;color:var(--dim);font-size:11px;font-weight:600}
+.empty{color:var(--mute);font-size:12.5px}
+.kv{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);padding:4px 0}
+
+/* timeline */
+#timebar{background:var(--panel);border-top:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.tlrow{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tl{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute);font-weight:600}
+.tl select,.tl input[type=number]{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:5px 7px;color:var(--ink);font-size:12.5px}
+.tl input[type=number]{width:64px}
+.tl input[type=range]{width:96px;accent-color:var(--acc)}
+#frames{display:flex;gap:8px;padding:10px 12px 12px;overflow-x:auto;overflow-y:hidden;min-height:96px;scrollbar-width:thin}
+.frame{flex:none;width:62px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:4px;cursor:pointer;position:relative}
+.frame.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+.frame canvas{width:52px;height:66px;display:block;border-radius:4px;background:#0f131b;image-rendering:auto}
+.frame span{position:absolute;left:5px;top:5px;font-size:9.5px;background:rgba(8,12,20,.75);border-radius:4px;padding:0 4px;color:#cdd8f2}
+.frame .dur{position:absolute;right:5px;bottom:5px;font-size:9px;color:var(--dim)}
+
+/* library */
+.lib{position:fixed;inset:0;z-index:30;background:var(--bg);overflow:auto;padding:24px clamp(16px,4vw,48px) 60px}
+.libhead{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.eyebrow{letter-spacing:.14em;font-size:11px;color:var(--dim);font-weight:800;margin:0 0 6px}
+.libhead h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.03em}
+.libacts{display:flex;gap:8px;flex-wrap:wrap}
+.libquote{color:var(--mute);margin:0 0 18px;max-width:70ch}
+.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:14px}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-align:left;cursor:pointer;transition:border-color .15s,transform .15s}
+.pcard:hover{border-color:#44547a;transform:translateY(-2px)}
+.pcard .thumb{height:150px;background:linear-gradient(180deg,#1a2231,#111722);display:grid;place-items:center;overflow:hidden}
+.pcard .thumb img{max-width:100%;max-height:100%}
+.pcard .meta{padding:10px 12px;border-top:1px solid var(--line)}
+.pcard b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard small{color:var(--diff,#8b98b0);font-size:11.5px}
+.pcard .row{display:flex;gap:6px;padding:0 12px 12px;flex-wrap:wrap}
+.pcard.new{border:2px dashed rgba(124,140,255,.5);background:transparent;align-items:center;justify-content:center;min-height:228px;font-weight:700;color:#b9c6ff;gap:6px}
+.pcard.new strong{font-size:40px;font-weight:400;line-height:1}
+.hintline{color:var(--mute);font-size:12.5px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(5,8,14,.65);z-index:50;display:grid;place-items:center;padding:16px;backdrop-filter:blur(3px)}
+.card{width:min(560px,100%);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px}
+.mhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.mhead h2{font-size:18px;flex:1}
+.x{background:none;border:0;color:var(--mute);font-size:22px;line-height:1;cursor:pointer}
+.mfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.stylegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0 4px}
+.stylecard{display:flex;gap:10px;align-items:center;background:var(--panel2);border:2px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;text-align:left}
+.stylecard.on{border-color:var(--acc);background:rgba(124,140,255,.12)}
+.stylecard .ib{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:18px;flex:none}
+.stylecard b{display:block;font-size:13.5px}
+.stylecard small{color:var(--mute);font-size:11px}
+.mbody label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:700;margin:12px 0 5px}
+.mbody input[type=text],.mbody input[type=number],.mbody select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 10px;color:var(--ink)}
+.mbody .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal .hint{color:var(--mute);font-size:12px;margin:10px 0 0}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);background:#111826;border:1px solid var(--line);color:#fff;padding:10px 16px;border-radius:10px;z-index:60;transition:transform .25s;font-size:13px;box-shadow:var(--shadow);pointer-events:none;max-width:90vw}
+#toast.on{transform:translate(-50%,0)}
+
+@media(max-width:1180px){
+  #editor{grid-template-columns:224px minmax(0,1fr) 240px}
+  .panel.right{font-size:13px}
+}
+@media(max-width:980px){
+  body{overflow:auto;display:block}
+  #editor{display:flex;flex-direction:column}
+  .panel.left{flex-direction:column;border-right:0;border-bottom:1px solid var(--line);max-height:none}
+  .panel.right{border-left:0;border-top:1px solid var(--line)}
+  #stage{min-height:62vh}
+  #timebar{position:sticky;bottom:0;z-index:8}
+  .stylegrid{grid-template-columns:1fr}
+  .panel.left .tabs{position:static}
+  .tabbody{max-height:none}
+  .pname{flex:1 1 140px}
+}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <a class="brand" href="index.html" title="Back to UIVisualBuilder"><i>◈</i><span>Character Studio<small>MANUAL ANIMATION TOOLKIT</small></span></a>
+  <input id="pname" class="pname" maxlength="40" value="Untitled character" aria-label="Character name">
+  <span id="styleBadge" class="badge">2D Cartoon</span>
+  <span class="sp"></span>
+  <button class="btn" id="btnLibrary" type="button">Library</button>
+  <button class="btn" id="btnSave" type="button">Save</button>
+  <button class="btn pri" id="btnExport" type="button">Export</button>
+</header>
+
+<main id="editor">
+  <aside class="panel left">
+    <div class="tabs" id="tabs" role="tablist">
+      <button data-tab="Parts" type="button" class="on">Parts</button>
+      <button data-tab="Draw" type="button">Draw</button>
+      <button data-tab="Layers" type="button">Layers</button>
+      <button data-tab="Colors" type="button">Colors</button>
+      <button data-tab="3D" type="button">3D</button>
+    </div>
+    <div class="tabbody" id="tabParts"></div>
+    <div class="tabbody" id="tabDraw" hidden></div>
+    <div class="tabbody" id="tabLayers" hidden></div>
+    <div class="tabbody" id="tabColors" hidden></div>
+    <div class="tabbody" id="tabObj3d" hidden></div>
+  </aside>
+
+  <section id="stage">
+    <div class="stagebar">
+      <span id="modeLab" class="mini">2D rig</span>
+      <span class="sep"></span>
+      <button class="btn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+      <span class="zoomlab" id="zoomLab">100%</span>
+      <button class="btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+      <button class="btn" id="zoomFit" type="button">Fit</button>
+      <button class="btn" id="btnOnion" type="button" aria-pressed="false" title="Show the previous frame ghosted">Onion</button>
+      <span class="sp"></span>
+      <button class="btn" id="btnPreview" type="button" aria-pressed="false">Preview mode</button>
+    </div>
+    <div id="canvaswrap">
+      <canvas id="view" width="420" height="560"></canvas>
+      <div id="emptyHint" class="emptyhint" hidden>Pick a part on the left, or draw on the canvas.</div>
+    </div>
+    <div class="stagefoot">
+      <span><i class="dot"></i><b id="modeName">2D Cartoon</b></span>
+      <span id="posLab">0, 0</span>
+      <span id="selLab">Nothing selected</span>
+      <span class="sp"></span>
+      <span id="frameLabFoot">Frame 1</span>
+    </div>
+  </section>
+
+  <aside class="panel right"><div id="props"></div></aside>
+</main>
+
+<footer id="timebar">
+  <div class="tlrow">
+    <label class="tl">Animation <select id="animsel" aria-label="Animation"></select></label>
+    <button class="btn sm" id="animAdd" type="button">+ New</button>
+    <button class="btn sm" id="animDup" type="button">Duplicate</button>
+    <button class="btn sm danger" id="animDel" type="button">Delete</button>
+    <span class="sep"></span>
+    <label class="tl">FPS <input id="fps" type="number" min="1" max="60" value="8" aria-label="Frames per second"></label>
+    <label class="tl"><input id="loopChk" type="checkbox" checked> Loop</label>
+    <label class="tl">Speed <input id="speed" type="range" min="20" max="200" step="5" value="100" aria-label="Playback speed"><b id="speedLab">1.0×</b></label>
+    <span class="sp"></span>
+    <button class="btn sm pri" id="playBtn" type="button">▶ Play</button>
+    <button class="btn sm" id="stopBtn" type="button">■ Stop</button>
+  </div>
+  <div class="tlrow">
+    <label class="tl">Frame <b id="frameNo">1</b> / <b id="frameCount">1</b></label>
+    <label class="tl">Duration <input id="dur" type="number" min="16" max="5000" step="10" value="125" aria-label="Frame duration in milliseconds"> ms</label>
+    <button class="btn sm" id="frameAdd" type="button">+ Frame</button>
+    <button class="btn sm" id="frameDup" type="button">Duplicate</button>
+    <button class="btn sm danger" id="frameDel" type="button">Delete</button>
+    <span class="sep"></span>
+    <label class="tl"><input id="onionChk" type="checkbox"> Onion skin</label>
+    <label class="tl" title="Blend between frames while playing"><input id="interpChk" type="checkbox"> Tween</label>
+    <span class="sp"></span>
+    <span class="mini" id="animInfo"></span>
+  </div>
+  <div id="frames" aria-label="Animation frames"></div>
+</footer>
+
+<div id="lib" class="lib" hidden>
+  <div class="libhead">
+    <div><p class="eyebrow">YOUR PROJECTS</p><h1>Character Library</h1></div>
+    <div class="libacts">
+      <label class="btn" for="importFile">Import project</label>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+      <button class="btn pri" id="newChar" type="button">+ New character</button>
+    </div>
+  </div>
+  <p class="libquote">Everything here is made by hand: pose the rig, draw on frames, key the timeline, then export PNG, sprite sheets, GIF or a glTF model. No generators, no prompts.</p>
+  <div id="libgrid" class="libgrid"></div>
+  <p id="libempty" class="hintline" hidden>No saved characters yet. Create one to get started.</p>
+</div>
+
+<div id="modal" class="modal" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+    <div class="mhead"><h2 id="mtitle">Dialog</h2><button class="x" id="mx" type="button" aria-label="Close">×</button></div>
+    <div id="mbody" class="mbody"></div>
+    <div id="mfoot" class="mfoot"></div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="studio.js"></script>
+</body>
+</html>
