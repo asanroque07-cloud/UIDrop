@@ -444,6 +444,9 @@ header{position:relative;z-index:10;min-height:64px;padding:10px 18px;background
 .pcard.new{min-height:250px;border:2px dashed #d48b7c;background:linear-gradient(180deg,color-mix(in srgb,var(--panel) 94%,transparent),color-mix(in srgb,var(--bg) 65%,transparent));gap:12px}
 .pcard.new:hover{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 7%,var(--panel));box-shadow:0 12px 26px rgba(217,71,43,.1)}
 .pcard.new span{display:grid;place-items:center;width:58px;height:58px;border-radius:18px;background:color-mix(in srgb,var(--acc) 13%,var(--panel));color:var(--acc);font-size:36px;box-shadow:inset 0 0 0 1px rgba(217,71,43,.12)}
+a.pcard{text-decoration:none;color:var(--ink)}
+#heroActs [hidden]{display:none!important}
+.pcard .acts a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink)}
 .th{border:1px solid var(--line);border-radius:11px;background:var(--bg)}
 #editor>main{grid-template-columns:minmax(210px,250px) minmax(0,1fr) minmax(270px,310px);gap:16px;padding:16px}
 aside{padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 5px 18px rgba(26,36,66,.05)}
@@ -627,17 +630,8 @@ aside input[type=range]{height:38px}
   <nav id="side" aria-label="Workspace">
     <p class="sidelab">Create</p>
     <button class="snav on" type="button" data-k="site">Website</button>
-    <div class="sgrp">
-      <button class="snav" type="button" id="gameTog" data-grp="game" aria-expanded="false" aria-controls="subgame">Game <span class="car" aria-hidden="true">▾</span></button>
-      <div class="ssub" id="subgame" hidden>
-        <button class="snav sub" type="button" data-k="game2d">2D game</button>
-        <button class="snav sub" type="button" data-k="game3d">3D game</button>
-        <button class="snav sub" type="button" data-k="gameiso">Isometric game</button>
-      </div>
-    </div>
-    <button class="snav" type="button" data-k="char">Character</button>
-    <a class="snav studio" href="studio.html" title="Create a character and animate it by hand"><span>Character studio</span><span class="car" aria-hidden="true">↗</span></a>
-    <a class="snav studio" href="game.html" title="Build a game map and play it"><span>Map studio</span><span class="car" aria-hidden="true">↗</span></a>
+    <button class="snav" type="button" data-k="charstudio">Character studio</button>
+    <button class="snav" type="button" data-k="mapstudio">Map studio</button>
     <div class="sidefoot" id="sidefoot" hidden>
       <button class="snav" type="button" id="sideSwitch">Switch account</button>
       <button class="snav" type="button" id="sideLogout">Log out</button>
@@ -645,7 +639,7 @@ aside input[type=range]{height:38px}
   </nav>
   <div class="hero">
     <div><p class="greet" id="greet" hidden></p><p class="eyebrow" id="heroEyebrow">YOUR CREATIVE WORKSPACE</p><h1 id="heroTitle">Your projects</h1><p id="heroSub">Start with a blank canvas, add the pieces you need, and watch your design become code.</p></div>
-    <div class="acts"><a class="btn" href="studio.html" style="margin:0;text-decoration:none;display:inline-flex;align-items:center;color:var(--ink);font-size:15px" title="Create characters and hand-animate them in the studio">Character studio</a><label class="btn" style="margin:0;color:var(--ink);font-size:15px">Open design file<input id="file" type="file" accept=".json" hidden></label><button class="btn pri" id="newh">Make a website</button></div>
+    <div class="acts"><a class="btn" id="actStudio" href="studio.html" style="margin:0;text-decoration:none;display:inline-flex;align-items:center;color:var(--ink);font-size:15px" title="Create characters and hand-animate them in the studio">Character studio</a><label class="btn" id="actFile" style="margin:0;color:var(--ink);font-size:15px">Open design file<input id="file" type="file" accept=".json" hidden></label><button class="btn pri" id="newh">Make a website</button></div>
   </div>
   <p id="none" class="hint">No projects yet. Make your first website.</p>
   <div id="grid"></div>
@@ -1513,7 +1507,9 @@ const WCAT={
  game2d:{n:'2D game',card:'Make a 2D game',name:'My 2D game',mk:'Create 2D game',empty:'No 2D games yet. Make your first 2D game.',eyebrow:'2D GAME WORKSPACE',title:'Your 2D games',sub:'Build a side-scrolling level, then play it with a character and a map in Map studio.'},
  game3d:{n:'3D game',card:'Make a 3D game',name:'My 3D game',mk:'Create 3D game',empty:'No 3D games yet. Make your first 3D game.',eyebrow:'3D GAME WORKSPACE',title:'Your 3D games',sub:'Lay out a 3D course with blocks, goals and a player, then test it in first person.'},
  gameiso:{n:'Isometric game',card:'Make an isometric game',name:'My isometric game',mk:'Create game',empty:'No isometric games yet. Make your first one.',eyebrow:'ISOMETRIC WORKSPACE',title:'Your isometric games',sub:'Design isometric scenes with blocks, coins and ground for a top-down adventure.'},
- char:{n:'Character',card:'Make a character',name:'My character',mk:'Create character',empty:'No characters yet. Every part on the canvas can be dragged.',eyebrow:'CHARACTER WORKSPACE',title:'Your characters',sub:'Create a character here, then animate it in Character studio and use it in your games.'}};
+ char:{n:'Character',card:'Make a character',name:'My character',mk:'Create character',empty:'No characters yet. Every part on the canvas can be dragged.',eyebrow:'CHARACTER WORKSPACE',title:'Your characters',sub:'Create a character here, then animate it in Character studio and use it in your games.'},
+ charstudio:{n:'Character studio',card:'Make a character',name:'My character',mk:'Create character',empty:'No characters yet. Open Character studio to make your first one.',eyebrow:'CHARACTER WORKSPACE',title:'Your characters',sub:'Create a character, pose it and animate it by hand in Character studio, then use it in your games.'},
+ mapstudio:{n:'Map studio',card:'Make a map',name:'My map',mk:'Create map',empty:'No maps yet. Open Map studio to build your first one.',eyebrow:'MAP WORKSPACE',title:'Your maps',sub:'Build 2D and 3D maps, place coins, doors and enemies, then play them in Map studio.'}};
 const kindOf=p=>WCAT[p.kind]?p.kind:'site';
 function el_(id,type,x,y,over){return {id,type,...DEF[type],x,y,...(over||{})}}
 function tplFor(k,w,h){
@@ -1524,11 +1520,26 @@ function tplFor(k,w,h){
  return null}
 function setWcat(k){wcat=WCAT[k]?k:'site';
  document.querySelectorAll('#side .snav').forEach(b=>b.classList.toggle('on',b.dataset.k===wcat));
- const tg=$('#gameTog'),sub=$('#subgame');if(tg&&sub){const inGame=wcat.indexOf('game')===0;tg.classList.toggle('on',inGame);if(inGame){sub.hidden=false;tg.setAttribute('aria-expanded','true')}}
  home()}
+function readStudio(k){try{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v.filter(x=>x&&x.id):[]}catch(_){return[]}}
+function renderStudioHome(){
+ const isChar=wcat==='charstudio',url=isChar?'studio.html':'game.html',lastKey=isChar?'charlab:last':'mapstudio:last';
+ const items=readStudio(isChar?'charlab:projects':'mapstudio:maps').sort((a,b)=>(b.updated||0)-(a.updated||0));
+ $('#grid').innerHTML=`<a class="pcard new" href="${url}"><span>+</span>${WCAT[wcat].card}</a>`+items.map(p=>{
+   const info=isChar?'Character':`${String(p.mode||'2D').toUpperCase()} map`;
+   const when=new Date(p.updated||Date.now()).toLocaleDateString();
+   return `<div class="pcard"><div class="th">${p.thumb?`<img alt="" src="${p.thumb}">`:''}</div><b>${esc(p.name||'Untitled')}</b><small>${info} \u00b7 ${when}</small><div class="acts"><a class="btn" href="${url}" data-last="${lastKey}" data-id="${esc(String(p.id))}">Open</a></div></div>`}).join('');
+ const none=$('#none');none.textContent=WCAT[wcat].empty;none.hidden=items.length>0;
+ $('#grid').querySelectorAll('[data-last]').forEach(a=>a.addEventListener('click',()=>{try{localStorage.setItem(a.dataset.last,a.dataset.id)}catch(_){}}));
+}
 function home(){show('home');
  const meta=WCAT[wcat];
  $('#heroEyebrow').textContent=meta.eyebrow;$('#heroTitle').textContent=meta.title;$('#heroSub').textContent=meta.sub;$('#newh').textContent=meta.card;
+ const studio=wcat==='charstudio'||wcat==='mapstudio';
+ const actStudio=$('#actStudio'),actFile=$('#actFile');
+ if(actStudio)actStudio.hidden=studio;
+ if(actFile)actFile.hidden=studio;
+ if(studio){renderStudioHome();return}
  const list=mem.filter(p=>kindOf(p)===wcat);
  $('#grid').innerHTML=`<button class="pcard new" id="newc"><span>+</span>${WCAT[wcat].card}</button>`+list.slice().sort((a,b)=>b.updated-a.updated).map(p=>{const c=WCAT[kindOf(p)],dv=DEV[p.device]||DEV.pc;return `<div class="pcard"><div class="th">${p.thumb?`<img alt="" src="${p.thumb}">`:''}</div><b>${esc(p.name)}</b><small>${c.n} \u00b7 ${dv.n}, ${new Date(p.updated).toLocaleDateString()}</small><div class="acts"><button class="btn" data-o="${p.id}">Open</button><button class="btn" data-d="${p.id}">Delete</button></div></div>`}).join('');
  const none=$('#none');none.textContent=meta.empty;none.hidden=list.length>0;if(window.Cloud)Cloud.decorateHome()}
@@ -1553,7 +1564,7 @@ $('#devs').onclick=e=>{const o=e.target.closest('.opt');if(!o)return;dev=o.datas
 $('#dcancel').onclick=()=>dm.classList.remove('on');
 dm.onclick=e=>{if(e.target==dm)dm.classList.remove('on')};
 $('#mk').onclick=()=>{dm.classList.remove('on');const[w,h]=$('#dsz').value.split('x').map(Number);newProj($('#dn').value.trim()||WCAT[wcat].name,dev,tplFor(wcat,w,h),{w,h,rot:!!(drot&&ROT[dev]),kind:wcat})};
-$('#newh').onclick=openNew;
+$('#newh').onclick=()=>{if(wcat==='charstudio'){location.href='studio.html';return}if(wcat==='mapstudio'){location.href='game.html';return}openNew()};
 $('#grid').onclick=e=>{const o=e.target.closest('[data-o]'),d=e.target.closest('[data-d]');
  if(e.target.closest('#newc'))return openNew();
  if(o)openProj(mem.find(p=>p.id==o.dataset.o));
