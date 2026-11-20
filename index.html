@@ -406,6 +406,9 @@ header{position:relative;z-index:10;min-height:64px;padding:10px 18px;background
 .snav:hover{background:var(--bg)}
 .snav.on{background:color-mix(in srgb,var(--blue) 12%,transparent);border-color:color-mix(in srgb,var(--blue) 26%,transparent);color:var(--blue)}
 .snav .car{font-size:11px;color:var(--mute);transition:transform .2s}
+.snav.studio{color:var(--blue);text-decoration:none}
+.snav.studio .car{color:currentColor;font-size:12px}
+.snav.studio:hover{background:color-mix(in srgb,var(--blue) 8%,var(--bg))}
 .snav[aria-expanded="true"] .car{transform:rotate(180deg)}
 .ssub{display:flex;flex-direction:column;gap:2px;margin:2px 0 4px 12px;padding-left:10px;border-left:1px solid var(--line)}
 .ssub[hidden]{display:none}
@@ -614,8 +617,7 @@ aside input[type=range]{height:38px}
         <button class="snav sub" type="button" data-k="gameiso">Isometric game</button>
       </div>
     </div>
-    <button class="snav" type="button" data-k="char">Character</button>
-    <a class="snav" href="studio.html" style="display:block;text-decoration:none" title="Open the manual character creator and animation timeline">Animation studio ↗</a>
+    <a class="snav studio" href="studio.html" title="Create a character and animate it by hand"><span>Character studio</span><span class="car" aria-hidden="true">↗</span></a>
     <div class="sidefoot" id="sidefoot" hidden>
       <button class="snav" type="button" id="sideSwitch">Switch account</button>
       <button class="snav" type="button" id="sideLogout">Log out</button>
